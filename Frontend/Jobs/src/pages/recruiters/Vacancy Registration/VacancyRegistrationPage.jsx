@@ -6,8 +6,8 @@ const VacancyRegistrationPage = () => {
   const [ formValues, handleOnChanges ] = useForm({})
 
   return (
-    <div className='w-full flex items-center justify-center h-full pt-8'>
-        <form action="" className='flex flex-col w-1/2 h-full overflow-y-auto border border-fifth pt-4 px-12 rounded-lg'>
+    <div className='w-full flex items-center justify-center pt-8'>
+        <form action="" className='flex flex-col w-1/2 h-full overflow-y-auto border border-fifth pt-4 px-12 rounded-lg mb-12'>
           <h1 className='text-center font-bold'>Nueva Vacante</h1>
             <input type="text" name="vacancyName" id="" placeholder='Puesto de Trabajo' />
             

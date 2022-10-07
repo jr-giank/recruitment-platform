@@ -5,7 +5,7 @@ import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 const VacancyViewPage = () => {
   return (
     <div className='flex w-full h-full'>
-
+      
       <div className='w-1/3 border-r-fifth border-r h-full pt-2'>
         <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
         <VacancyGrid name={"Ingeniero de Software"}/>
