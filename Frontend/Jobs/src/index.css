@@ -38,8 +38,6 @@
 } */
 
 #root{
-  overflow-x: hidden;
-  overflow-y: hidden;
   font-family: inter;
   height: 100vh;
 }
@@ -47,6 +45,45 @@
 p{
   font-size: 14px;
 }
+
+h1{
+  font-size:2rem;
+  line-height: 2rem;
+}
+
+h2{
+  font-size:1.5rem;
+  line-height: 2rem;
+}
+
+h3{
+  font-size: 20px;
+  line-height: 2rem;
+}
+
+h4{
+  font-size: 17px;
+  line-height: 2rem;
+}
+
+h5{
+  font-size: 15px;
+  line-height: 2rem;
+}
+
+input, textarea, select{
+  border: 1px solid #C0C0C0;
+  border-radius: 5px;
+  padding: 8px 5px;
+  outline: none;
+  margin-top: 12px;
+}
+
+textarea{
+  resize: none;
+  border-radius: 3px;
+}
+
 
 /* @media (prefers-color-scheme: light) {
   :root {

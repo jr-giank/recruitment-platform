@@ -1,15 +1,15 @@
 import React from 'react'
-import bag from '../../../assets/icons/maleta.png'
-import check from '../../../assets/icons/garrapata.png'
-import xSymbol from '../../../assets/icons/simbolo-x.png'
-import sitOnPc from '../../../assets/icons/lanza-libre.png'
+import bag from '../../../../assets/icons/maleta.png'
+import check from '../../../../assets/icons/garrapata.png'
+import xSymbol from '../../../../assets/icons/simbolo-x.png'
+import sitOnPc from '../../../../assets/icons/lanza-libre.png'
 
 const VacancyDescription = () => {
   return (
     <div className='flex flex-col px-4 w-full mb-20'>
 
       <div>
-        <h1 className='text-2xl font-semibold mt-2'>Desarrollador Web</h1>
+        <h2 className='font-semibold mt-2'>Desarrollador Web</h2>
         <small>150 Solicitudes</small>
       </div>
 
@@ -21,21 +21,21 @@ const VacancyDescription = () => {
       </div>
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold pb-2'>Descripción de la Vacante</h2>
+        <h4 className='font-semibold pb-2'>Descripción de la Vacante</h4>
         <p>
           Lorem isum lorem ipsum lorem ipsum lorem ipsum lorem ipsum llorem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem  orem 
         </p>
       </div>
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold pb-2'>Responsabilidades del Puesto</h2>
+        <h4 className='font-semibold pb-2'>Responsabilidades del Puesto</h4>
         <p>
           Lorem isum lorem ipsum lorem ipsum lorem ipsum lorem ipsum llorem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem  lorem 
         </p>
       </div>
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold pb-2'>Requisitos del Puesto</h2>
+        <h4 className='font-semibold pb-2'>Requisitos del Puesto</h4>
         <ul className='flex flex-col list-disc pl-6'>
           <li><p className='text-[14px]'>React Js</p> </li>
           <li><p>2 años de experiencia en Angular</p> </li>
@@ -47,7 +47,7 @@ const VacancyDescription = () => {
 
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold pb-2'>Requisitos opcionales</h2>
+        <h4 className='font-semibold pb-2'>Requisitos opcionales</h4>
         <ul className='flex flex-col list-disc pl-6'>
           <li> <p>Experiencia en AWS</p> </li>
           <li> <p>Conocimientos en Docker</p> </li>
@@ -56,7 +56,7 @@ const VacancyDescription = () => {
       </div>
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold pb-2'>Beneficios del Puesto</h2>
+        <h4 className='font-semibold pb-2'>Beneficios del Puesto</h4>
         <ul className='flex flex-col list-disc pl-6'>
           <li> <p>Plan de Seguro médico</p> </li>
           <li> <p>1 mes de vacaciones al año</p> </li>
@@ -65,7 +65,7 @@ const VacancyDescription = () => {
       </div>
 
       <div className='mt-4'>
-        <h2 className='text-lg font-semibold pb-2'>Rango Salarial</h2>
+        <h4 className='font-semibold pb-2'>Rango Salarial</h4>
           <p>RD$75,000 - RD$95,000</p>
       </div>
 

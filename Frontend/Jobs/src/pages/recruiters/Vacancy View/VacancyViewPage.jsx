@@ -1,8 +1,8 @@
 import React from 'react'
-import VacancyDescription from './components/VacancyDescription'
-import VacancyGrid from './components/VacancyGrid'
+import VacancyDescription from '../Vacancy View/components/VacancyDescription'
+import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 
-const CompanyRegistrationPage = () => {
+const VacancyViewPage = () => {
   return (
     <div className='flex w-full h-full'>
 
@@ -11,7 +11,7 @@ const CompanyRegistrationPage = () => {
         <VacancyGrid name={"Ingeniero de Software"}/>
         <VacancyGrid name={"Desarrollador Web Senior"}/>
         <VacancyGrid name={"Desarrollador Web Junior"}/>
-        <VacancyGrid name={"Desarrollador Móvil ioS"}/>
+        <VacancyGrid name={"Desarrollador Móvil iOS"}/>
         <VacancyGrid name={"Desarrollador Python"}/>
         <VacancyGrid name={"Desarrollador Android"}/>
       </div>
@@ -24,4 +24,4 @@ const CompanyRegistrationPage = () => {
   )
 }
 
-export default CompanyRegistrationPage
+export default VacancyViewPage

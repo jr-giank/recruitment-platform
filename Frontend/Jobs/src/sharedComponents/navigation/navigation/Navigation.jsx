@@ -5,7 +5,7 @@ const Navigation = () => {
     <nav className='w-full flex justify-between items-center pr-3 bg-primary h-16 text-white'>
 
     <div>
-      <h1 className='text-white ml-4 text-2xl font-extrabold'>ItJobs.Net</h1>
+      <h2 className='text-white ml-4  font-extrabold'>ItJobs.Net</h2>
     </div>
 
       <div className='flex items-center'>
