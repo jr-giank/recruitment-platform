@@ -11,11 +11,18 @@ export const useForm = (initialState = {}) => {
             [ target.name ]: target.value
         })
     }
+
+    const handleCheckChanges = ({target})=>{
+        setFormValues({
+            ...formValues,
+            [ target.name ]: target.checked
+        })
+    }
     
     const reset = () => {
         setFormValues(initialState)
     }
     
-    return [formValues, handleInputChanges, reset]
+    return [formValues, handleInputChanges, handleCheckChanges, reset]
 
 }

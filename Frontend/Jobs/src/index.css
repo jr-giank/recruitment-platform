@@ -38,6 +38,7 @@
 } */
 
 #root{
+  /* overflow: hidden; */
   font-family: inter;
   height: 100vh;
 }
@@ -79,10 +80,18 @@ input, textarea, select{
   margin-top: 12px;
 }
 
+input:focus, textarea:focus, select:focus{
+  border: 2px solid #0A66CE;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
 textarea{
   resize: none;
   border-radius: 3px;
+  white-space: pre-line;
+  overflow: auto;
 }
+
 
 /* @media (prefers-color-scheme: light) {
   :root {
