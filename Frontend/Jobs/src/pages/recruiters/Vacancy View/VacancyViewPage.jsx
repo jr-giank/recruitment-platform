@@ -4,9 +4,9 @@ import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 
 const VacancyViewPage = () => {
   return (
-    <div className='flex w-full h-full'>
-      
-      <div className='w-1/3 border-r-fifth border-r h-full pt-2'>
+    <div className='flex w-full mt-20'>
+
+      <div className='w-1/3 border-r-fifth border-r pt-2 overflow-auto'>
         <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
         <VacancyGrid name={"Ingeniero de Software"}/>
         <VacancyGrid name={"Desarrollador Web Senior"}/>
@@ -16,7 +16,7 @@ const VacancyViewPage = () => {
         <VacancyGrid name={"Desarrollador Android"}/>
       </div>
 
-      <div className='w-2/3 overflow-y-auto'>
+      <div className='w-2/3 overflow-auto'>
         <VacancyDescription />
       </div>
 
