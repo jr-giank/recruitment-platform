@@ -1,0 +1,7 @@
+asgiref==3.5.2
+dj-database-url==1.0.0
+Django==4.1.2
+psycopg2==2.9.4
+python-dotenv==0.21.0
+sqlparse==0.4.3
+tzdata==2022.4
