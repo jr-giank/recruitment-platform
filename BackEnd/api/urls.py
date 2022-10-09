@@ -14,19 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-from .views import api, crear_vacante, crear_empresa, obtener_vacantes, obtener_vacante, crear_solicitud
+from .views import ApiView, VacantesView, EmpresaView, ObtenerVacanteView, SolicitudesView, CandidatoView, SolicitudesVacanteView, VacantesEmpresaView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
 urlpatterns = [
-    path('', api, name='api_urls'),
+    path('', ApiView.as_view(), name='api_urls'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('crear/vacante/', crear_vacante, name='crear-vacante'),
-    path('crear/empresa/', crear_empresa, name='crear-empresa'),
-    path('obtener/vacantes/', obtener_vacantes, name='obtener-vacantes'),
-    path('obtener/vacante/<int:id>', obtener_vacante, name='obtener-vacante'),
-    path('crear/solicitud/', crear_solicitud, name='crear-solicitud'),
+    path('vacantes/', VacantesView.as_view(), name='crear-vacante'),
+    path('crear/empresa/', EmpresaView.as_view(), name='crear-empresa'),
+    path('obtener/vacante/<int:pk>',ObtenerVacanteView.as_view(), name='obtener-vacante'),
+    path('crear/solicitud/', SolicitudesView.as_view(), name='crear-solicitud'),
+    path('crear/candidato/', CandidatoView.as_view(), name='crear-candidato'),
+    path('solicitudes/vacante/<int:pk>/', SolicitudesVacanteView.as_view(), name='solicitudes-vacante'),
+    path('vacantes/empresa/<int:pk>/', VacantesEmpresaView.as_view(), name='vacantes-empresa'),
 ]

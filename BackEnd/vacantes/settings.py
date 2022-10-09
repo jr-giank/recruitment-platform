@@ -124,6 +124,9 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
+#CORS Origins
+CORS_ALLOW_ALL_ORIGINS = True
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
