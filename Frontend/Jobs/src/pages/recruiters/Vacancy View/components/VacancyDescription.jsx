@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import bag from '../../../../assets/icons/maleta.png'
 import check from '../../../../assets/icons/garrapata.png'
 import xSymbol from '../../../../assets/icons/simbolo-x.png'
 import sitOnPc from '../../../../assets/icons/lanza-libre.png'
+import VacancyRequests from './VacancyRequests'
 
-const VacancyDescription = () => {
+const VacancyDescription = ({vacancy}) => {
+  
+  const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState([])
+
+  const handleModalRequests = (e) => {
+    e.preventDefault()
+    setIsVacancyReqOpen(true)
+    document.getElementById("portal").classList.add("modal_show-modal")
+  }
+
   return (
-    <div className='flex flex-col px-4 w-full mb-20'>
+    <>
+    <div className='flex flex-col px-4 w-full mb-4'>
 
       <div>
         <h2 className='font-semibold mt-2'>Desarrollador Web</h2>
@@ -70,10 +81,18 @@ const VacancyDescription = () => {
       </div>
 
       <div className='flex justify-center items-center w-full'>
-         <button className='bg-secondary text-white rounded-md px-6 py-2'>Ver Solicitudes</button>
+         <button className='bg-secondary text-white rounded-md px-6 py-2' onClick={handleModalRequests}>Ver Solicitudes</button>
          <button className='bg-fourth text-white rounded-md px-6 ml-4 py-2'>Cerrar Vacantes</button>
       </div>
     </div>
+
+    {
+      isVacancyReqOpen && (
+        <VacancyRequests setIsVacancyReqOpen={setIsVacancyReqOpen} />
+      )
+    }
+
+    </>
   )
 }
 

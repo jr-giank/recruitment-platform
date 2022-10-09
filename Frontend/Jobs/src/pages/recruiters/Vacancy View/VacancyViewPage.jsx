@@ -16,7 +16,7 @@ const VacancyViewPage = () => {
         <VacancyGrid name={"Desarrollador Android"}/>
       </div>
 
-      <div className='w-2/3 overflow-auto'>
+      <div className='w-2/3 overflow-y-auto h-full'>
         <VacancyDescription />
       </div>
 
