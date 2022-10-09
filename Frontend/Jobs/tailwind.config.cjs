@@ -13,6 +13,8 @@ module.exports = {
       fifth: '#E6E8E6',
       sixth: '#C0C0C0',
       seventh: '#0A66CE',
+      eighth: '#f4f4f5',
+      nineth: '#e0f2fe',
       white : '#fff'
     },
 
