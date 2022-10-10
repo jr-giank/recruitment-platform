@@ -36,7 +36,7 @@ const AplicationGrid = () => {
             </div>
 
             <h4 className='text-lg font-medium'>Curriculum vitae</h4>
-            <input type="file" name="file" className='mx-8 w-[85%] ' onChange={changeHandler} />
+            <input type="file" name="file" className='mx-8 w-[85%] ' accept='application/pdf' onChange={changeHandler} />
             
 
             <button className='bg-primary text-white text-sm mt-5 ml-8 px-10 py-2 ' onClick={handleSubmission}>

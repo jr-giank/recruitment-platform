@@ -19,7 +19,7 @@ const AppRouter = () => {
               <Route path='/recruiter/createVacancy' element={<VacancyRegistrationPage />} />
               <Route path='/recruiter/viewVacancies' element={<VacancyViewPage />} />
               <Route path='/candidates/viewAllVacancies' element={<VacancyViewAll />} />
-              <Route path='/candidates/viewSingleVacancy' element={<VacancyViewSingle />} />
+              <Route path='/candidates/viewSingleVacancy/:id' element={<VacancyViewSingle />} />
           </Routes>
       </Router>
     </>
