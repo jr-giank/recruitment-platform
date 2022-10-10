@@ -1,12 +1,22 @@
-import React from 'react'
+import React , { useState } from 'react'
 import bag from '../../../../assets/icons/maleta.png'
 import check from '../../../../assets/icons/garrapata.png'
 import xSymbol from '../../../../assets/icons/simbolo-x.png'
 import sitOnPc from '../../../../assets/icons/lanza-libre.png'
+import Modal from './Modal'
 
 const VacancyDescriptionSingle = () => {
 
+  const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState([])
+
+  const handleModalRequests = (e) => {
+    e.preventDefault()
+    setIsVacancyReqOpen(true)
+    document.getElementById("portal").classList.add("modal_show-modal")
+  }
+
     return (
+      <>
         <div className='flex flex-col px-4  w-full mb-20  border-solid border-2 border-tertiary rounded-md bg-eighth'>
     
           <div>
@@ -71,9 +81,16 @@ const VacancyDescriptionSingle = () => {
           </div>
     
           <div className='flex justify-center items-center w-full'>
-             <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6'>Solicitar Vacante</button>
+             <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6' onClick={handleModalRequests}>Solicitar Vacante</button>
           </div>
         </div>
+
+          {
+            isVacancyReqOpen && (
+            <Modal setIsVacancyReqOpen={setIsVacancyReqOpen} />
+            )
+          }
+        </>
       )
 }
 
