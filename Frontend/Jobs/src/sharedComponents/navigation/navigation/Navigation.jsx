@@ -2,7 +2,7 @@ import React from 'react'
 
 const Navigation = () => {
   return (
-    <nav className='w-full flex justify-between items-center pr-3 bg-primary h-[12%] text-white fixed top-0'>
+    <nav className='w-full flex justify-between items-center pr-3 bg-primary h-[10%] text-white fixed top-0'>
 
     <div>
       <h2 className='text-white ml-4  font-extrabold'>ItJobs.Net</h2>

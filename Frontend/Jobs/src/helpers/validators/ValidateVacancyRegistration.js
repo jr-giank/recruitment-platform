@@ -1,7 +1,7 @@
 export const validateVacancyForm = (name, value) => {
 
     switch(name){
-        case "vacancyName":
+        case "nombre_puesto":
             if(value === ""){
                 return  "El nombre del puesto es requerido"
             }
@@ -10,31 +10,31 @@ export const validateVacancyForm = (name, value) => {
             }
             break
 
-        case "category":
+        case "categoria":
             if(value === ""){
                 return "Seleccione una categoría"
             }
             break
 
-        case "jobType":
+        case "tipo_trabajo":
             if(value === ""){
                 return "Seleccione el tipo de trabajo"
             }
             break
 
-        case "jobWay":
+        case "forma_trabajo":
             if(value === ""){
                 return "Seleccione la modalidad del trabajo"
             }
             break
 
-        case "duties":
+        case "responsabilidades_puesto":
             if(value === ""){
                 return "Detalle las responsabilidades del trabajo"
             }
             break
 
-        case "requirements":
+        case "requisitos_obligatorios":
             if(value === ""){
                 return "Detalle los requisitos obligatorios de la vacante"
             }

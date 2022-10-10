@@ -20,7 +20,6 @@ const AppRouter = () => {
               <Route path='/recruiter/viewVacancies' element={<VacancyViewPage />} />
               <Route path='/candidates/viewAllVacancies' element={<VacancyViewAll />} />
               <Route path='/candidates/viewSingleVacancy' element={<VacancyViewSingle />} />
-
           </Routes>
       </Router>
     </>
