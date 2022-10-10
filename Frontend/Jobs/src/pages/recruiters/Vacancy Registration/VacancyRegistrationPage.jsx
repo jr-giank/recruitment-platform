@@ -1,36 +1,42 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { validateVacancyForm } from '../../../helpers/validators/ValidateVacancyRegistration'
 import { useForm } from '../../../hooks/useForm'
+import { post } from '../../../services/services'
 
 const VacancyRegistrationPage = () => {
 
   const [ formValues, handleInputChanges, handleCheckChanges ] = useForm({
-    vacancyName:"Desarrollador Backend Java",
-    category: "Desarrollo Backend",
-    jobType: "Tiempo Completo",
-    jobWay: "Remoto",
-    experience: "Si",
-    duties: "Crear API REST.\nMantenimiento de componentes ya existentes.",
-    requirements: "5 años de experiencia en Java.\nPor lo menos un año de experiencia en HTML, CSS y JS.\nConocimiento de algún framework como React o Angular\nGit\nMetodología Scrum",
-    optional: "Manejo de Docker\nConocimientos de AWS",
-    benefits: "Plan de seguro médico familiar. \n1 mes de vacaciones al año.",
+    nombre_puesto:"Desarrollador Backend Java",
+    categoria: 1,
+    tipo_trabajo: "TEMPORAL",
+    forma_trabajo: "REMOTO",
+    experiencia: 'true',
+    responsabilidades_puesto: "Crear API REST.\nMantenimiento de componentes ya existentes.",
+    requisitos_obligatorios: "5 años de experiencia en Java.\nPor lo menos un año de experiencia en HTML, CSS y JS.\nConocimiento de algún framework como React o Angular\nGit\nMetodología Scrum",
+    requisitos_opcionales: "Manejo de Docker\nConocimientos de AWS",
+    beneficios: "Plan de seguro médico familiar. \n1 mes de vacaciones al año.",
     beginTime: "08:00",
     endTime: "16:00",
-    salaryFrom:75000,
-    salaryTo: 95000,
+    empresa: 1,
+    horario_trabajo:"8:00 a.m - 5:00 p.m",
+    salario_min:75000,
+    salario_max: 95000,
     companyDescription: true
   })
 
   const [ errors, setErrors ] = useState([
-      {name:"vacancyName", message: null, touched: false},
-      {name:"category", message: null, touched: false},
-      {name:"jobType", message: null, touched: false},
-      {name:"jobWay",message: null, touched: false},
-      {name:"duties",message: null, touched: false},
-      {name:"requirements",message: null, touched: false},
+      {name:"nombre_puesto", message: null, touched: false},
+      {name:"categoria", message: null, touched: false},
+      {name:"tipo_trabajo", message: null, touched: false},
+      {name:"forma_trabajo",message: null, touched: false},
+      {name:"responsabilidades_puesto",message: null, touched: false},
+      {name:"requisitos_obligatorios",message: null, touched: false},
   ]) 
 
   const [ isDisabled, setIsDisabled ] = useState(true)
+
+  const history = useNavigate()
 
   useEffect(()=> {
     
@@ -44,6 +50,11 @@ const VacancyRegistrationPage = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
+
+    formValues.experiencia = formValues.experiencia === 'true' ? true: false 
+    
+    post('vacantes/',{'Content-Type': 'application/json'}, formValues)
+        .then(() => history('/recruiter/viewVacancies'))   
   }
 
   const handleOnBlur = (e) =>{
@@ -64,49 +75,49 @@ const VacancyRegistrationPage = () => {
 
               <input 
                 type="text" 
-                name="vacancyName" 
-                id="vacancyNameInp" 
+                name="nombre_puesto" 
+                id="nombre_puestoInp" 
                 placeholder='Nombre del Puesto'
                 className={`${errors[0].message !== null && 'border-fourth shadow-md'}`}
-                value={formValues.vacancyName}
+                value={formValues.nombre_puesto}
                 onChange={handleInputChanges}
                 onBlur={handleOnBlur}
               />
               {errors[0].message !== null && <small className='text-fourth'>{errors[0]?.message}</small>}
               
-              <select name="category" id="" value={formValues.category} onChange={handleInputChanges} onBlur={handleOnBlur}  
+              <select name="categoria" id="" value={formValues.categoria} onChange={handleInputChanges} onBlur={handleOnBlur}  
               className={`${errors[1].message !== null && 'border-fourth shadow-md'}`}>
 
-                <option value="">Categoría</option>
-                <option value="Desarrollo Web">Desarrollo Web</option>
-                <option value="Desarrollo Movil">Desarrollo Móvil</option>
-                <option value="Desarrollo Frontend">Desarrollo Frontend</option>
-                <option value="Desarrollo Backend">Desarrollo Backend</option>
-                <option value="Desarrollo de VideoJuegos">Desarrollo de VideoJuegos</option>
-                <option value="QA Automation">QA Automation</option>
-                <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+                <option value="">  Categoría</option>
+                <option value={1}> Desarrollo Web</option>
+                <option value={2}> Desarrollo Móvil</option>
+                <option value={3}> Desarrollo Frontend</option>
+                <option value={4}> Desarrollo Backend</option>
+                <option value={5}> Desarrollo de VideoJuegos</option>
+                <option value={6}> QA Automation</option>
+                <option value={7}> Inteligencia Artificial</option>
               
               </select>
               {errors[1].message !== null && <small className='text-fourth'>{errors[1].message}</small>}
 
-            <select name="jobType" value={formValues.jobType} onChange={handleInputChanges} id="" onBlur={handleOnBlur}
+            <select name="tipo_trabajo" value={formValues.tipo_trabajo} onChange={handleInputChanges} id="" onBlur={handleOnBlur}
              className={`${errors[2].message !== null && 'border-fourth shadow-md'}`}>
                 
                 <option value="">Tipo de Trabajo</option>
-                <option value="Tiempo Completo">A Tiempo Completo</option>
-                <option value="Medio Tiempo">Medio tiempo</option>
+                <option value="TEMPORAL">A Tiempo Completo</option>
+                <option value="INDEFINIDO">Medio tiempo</option>
                 <option value="Por Contrato">Por Contrato</option>
             
             </select>
             {errors[2].message !== null && <small className='text-fourth'>{errors[2].message}</small>}
 
-            <select name="jobWay" id="" value={formValues.jobWay} onChange={handleInputChanges} onBlur={handleOnBlur}
+            <select name="forma_trabajo" id="" value={formValues.forma_trabajo} onChange={handleInputChanges} onBlur={handleOnBlur}
              className={`${errors[3].message !== null && 'border-fourth shadow-md'}`}>
             
                 <option value="">Modalidad</option>
-                <option value="Remoto">Remoto</option>
-                <option value="Presencial">Presencial</option>
-                <option value="Híbrido">Híbrido</option>
+                <option value="REMOTO">Remoto</option>
+                <option value="PRESENCIAL">Presencial</option>
+                <option value="HIBRIDO">Híbrido</option>
             
             </select>
             {errors[3].message !== null && <small className='text-fourth'>{errors[3].message}</small>}
@@ -116,22 +127,22 @@ const VacancyRegistrationPage = () => {
               <span className=''>
                 <input 
                   type="radio"
-                  name="experience" 
+                  name="experiencia" 
                   id="noExperience"
-                  value="No"
-                  checked={formValues.experience === "No"} 
+                  value={false}
+                  checked={formValues.experiencia === 'false'} 
                   onChange={handleInputChanges}
-                  />
+                />
                 <label className='ml-1' htmlFor="noExperienice">No</label>
               </span>
 
               <span className='ml-4'>
                 <input
                   type="radio" 
-                  name="experience"
+                  name="experiencia"
                   id="reqExperience" 
-                  value="Si"
-                  checked={formValues.experience === "Si"} 
+                  value={true}
+                  checked={formValues.experiencia === 'true'} 
                   onChange={handleInputChanges} 
                   />
                 <label className='ml-1' htmlFor="reqExperience">Si</label>
@@ -140,11 +151,11 @@ const VacancyRegistrationPage = () => {
 
             <textarea 
               rows='8' 
-              name="duties" 
-              id="duties" 
+              name="responsabilidades_puesto" 
+              id="responsabilidades_puesto" 
               placeholder='Responsabilidades del puesto'
               className={`${errors[4].message !== null && 'border-fourth shadow-md'}`}
-              value={formValues.duties}
+              value={formValues.responsabilidades_puesto}
               onChange={handleInputChanges}
               onBlur={handleOnBlur}
             />
@@ -152,11 +163,11 @@ const VacancyRegistrationPage = () => {
 
             <textarea 
               rows='8' 
-              name="requirements" 
+              name="requisitos_obligatorios" 
               placeholder="Requisitos obligatorios del puesto"
               className={`${errors[5].message !== null && 'border-fourth shadow-md'}`}
               id='vacancyReqInp'
-              value={formValues.requirements}
+              value={formValues.requisitos_obligatorios}
               onChange={handleInputChanges}
               onBlur={handleOnBlur}
             /> 
@@ -164,18 +175,18 @@ const VacancyRegistrationPage = () => {
             
             <textarea 
               rows='8' 
-              name="optional" 
+              name="requisitos_opcionales" 
               placeholder="Requisitos Opcionales" 
               id='opReqInp' 
-              value={formValues.optional}
+              value={formValues.requisitos_opcionales}
               onChange={handleInputChanges}
             />
             <textarea 
               rows='8' 
-              name="benefits" 
+              name="beneficios" 
               placeholder="Beneficios del Puesto" 
-              id='benefitsInp' 
-              value={formValues.benefits}
+              id='beneficiosInp' 
+              value={formValues.beneficios}
               onChange={handleInputChanges} 
             />
             
@@ -204,19 +215,19 @@ const VacancyRegistrationPage = () => {
               
               <input 
                 className='w-32' 
-                name='salaryFrom' 
+                name='salario_min' 
                 type="number"
                 placeholder='Desde' 
-                value={formValues.salaryFrom}
+                value={formValues.salario_min}
                 onChange={handleInputChanges} 
               />
               
               <input 
                 className='w-32 ml-4' 
-                name='salaryTo' 
+                name='salario_max' 
                 type="number" 
                 placeholder='Hasta'
-                value={formValues.salaryTo}
+                value={formValues.salario_max}
                 onChange={handleInputChanges} 
               />
 
