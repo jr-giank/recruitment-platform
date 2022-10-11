@@ -4,10 +4,11 @@ import check from '../../../../assets/icons/garrapata.png'
 import xSymbol from '../../../../assets/icons/simbolo-x.png'
 import sitOnPc from '../../../../assets/icons/lanza-libre.png'
 import VacancyRequests from './VacancyRequests'
+import { uid } from 'uid';
 
 const VacancyDescription = ({vacancy}) => {
   
-  const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState([])
+  const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState(false)
 
   const handleModalRequests = (e) => {
     e.preventDefault()
@@ -46,7 +47,7 @@ const VacancyDescription = ({vacancy}) => {
             <ul className='list-disc pl-6 text-[14px]'>
               {
                 vacancy?.responsabilidades_puesto?.split("\n").map(text => (
-                  <li key={text}>{text}</li>
+                  <li key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -58,7 +59,7 @@ const VacancyDescription = ({vacancy}) => {
           <ul className='list-disc pl-6 text-[14px]'>
             {
               vacancy?.requisitos_obligatorios?.split("\n").map(text => (
-                <li key={text}>{text}</li>
+                <li key={uid()}>{text}</li>
               ))
             }
           </ul>
@@ -69,7 +70,7 @@ const VacancyDescription = ({vacancy}) => {
           <ul className='list-disc pl-6 text-[14px]'>
             {
               vacancy?.requisitos_opcionales?.split("\n").map(text => (
-                <li key={text}>{text}</li>
+                <li key={uid()}>{text}</li>
               ))
             }
           </ul>
@@ -80,7 +81,7 @@ const VacancyDescription = ({vacancy}) => {
           <ul className='list-disc pl-6 text-[14px]'>
             {
               vacancy?.beneficios?.split("\n").map(text => (
-                <li key={text}>{text}</li>
+                <li key={uid()}>{text}</li>
               ))
             }
           </ul>
@@ -99,7 +100,7 @@ const VacancyDescription = ({vacancy}) => {
 
       {
         isVacancyReqOpen && (
-          <VacancyRequests setIsVacancyReqOpen={setIsVacancyReqOpen} />
+          <VacancyRequests setIsVacancyReqOpen={setIsVacancyReqOpen} id={vacancy.id} />
         )
       }
     </>

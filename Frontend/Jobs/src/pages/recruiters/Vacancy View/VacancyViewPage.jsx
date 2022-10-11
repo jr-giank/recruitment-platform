@@ -19,9 +19,9 @@ const VacancyViewPage = () => {
   }, [])
 
   return (
-    <div className='flex w-full mt-20'>
+    <div className='flex w-full mt-16 h-[89%]'>
 
-      <div className='w-1/3 border-r-fifth border-r pt-2 overflow-auto'>
+      <div className='w-1/3 border-r-fifth border-r pt-2 overflow-y-auto'>
         <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
         {
           vacancies.map(vacancy => (
@@ -30,7 +30,7 @@ const VacancyViewPage = () => {
         }
       </div>
 
-      <div className='w-2/3 overflow-y-auto h-full'>
+      <div className='w-2/3 overflow-y-auto'>
         <VacancyDescription vacancy={currentVacancy} />
       </div>
 
