@@ -42,7 +42,8 @@ class Obtener_Vacantes_Serializer(serializers.ModelSerializer):
             "salario_max",
             "beneficios",
             "horario_trabajo",
-            "fecha_hora"
+            "fecha",
+            "hora"
         ]
 
 class Candidato_Serializer(serializers.ModelSerializer):
