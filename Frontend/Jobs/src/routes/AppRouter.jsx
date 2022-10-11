@@ -11,8 +11,9 @@ import Navigation from '../sharedComponents/navigation/navigation/Navigation'
 const AppRouter = () => {
   return (
     <>
-    <Navigation />
       <Router>
+        {/* <div className='h-screen overflow-hidden'> */}
+          <Navigation />
           <Routes>
               <Route path='/'  element={<VacancyViewPage /> } />
               <Route path='/recruiter/signUp' element={<CompanyRegistrationPage />} />
@@ -21,6 +22,8 @@ const AppRouter = () => {
               <Route path='/candidates/viewAllVacancies' element={<VacancyViewAll />} />
               <Route path='/candidates/viewSingleVacancy/:id' element={<VacancyViewSingle />} />
           </Routes>
+
+        {/* </div> */}
       </Router>
     </>
   )

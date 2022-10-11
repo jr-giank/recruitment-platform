@@ -21,27 +21,25 @@
   -webkit-text-size-adjust: 100%;
 } */
 
-/* body {
+ body {
   margin: 0;
   display: flex;
   width: 100%;
   min-width: 320px;
-  min-height: 100vh;
+  height: 100vh;
   font-family: inter;
-  overflow: hidden;
 }
 
 #root{
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  /* overflow: hidden; */
 } */
 
-#root{
-  /* overflow: hidden; */
+/* #root{
   font-family: inter;
-  height: 100vh;
-}
+  overflow: hidden;
+} */
 
 p{
   font-size: 14px;
