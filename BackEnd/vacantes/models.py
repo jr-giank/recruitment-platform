@@ -56,8 +56,8 @@ class Vacante(models.Model):
     salario_max = models.IntegerField(blank=False, null=False)
     beneficios = models.TextField(blank=True, null=True)
     horario_trabajo = models.CharField(max_length=25, blank=True, null=True)
-    fecha = models.DateField(auto_now_add=True)
-    hora = models.TimeField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True, blank=True, null=True)
+    hora = models.TimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.nombre_puesto} - {self.empresa}"
@@ -75,7 +75,7 @@ class Solicitude(models.Model):
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
     mensaje = models.TextField(blank=False, null=False)
-    fecha = models.DateField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
         return f"{self.candidato} - {self.vacante}"
