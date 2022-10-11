@@ -1,5 +1,7 @@
 from django.db import models
 
+from .functions import file_upload_location
+
 #Choices
 tipo_trabajo_opciones = [
     ('TEMPORAL', 'Temporal'),
@@ -34,7 +36,7 @@ class Empresa(models.Model):
     url_facebook = models.URLField(max_length=100, blank=True, null=True)
     url_instagram = models.URLField(max_length=100, blank=True, null=True)
     url_twitter = models.URLField(max_length=100, blank=True, null=True)
-    foto = models.ImageField(upload_to='vacantes/imagenes/empresas', blank=True, null=True)
+    foto = models.ImageField(upload_to='imagenes/empresas', blank=True, null=True)
 
     def __str__(self):
         return self.nombre
@@ -54,7 +56,8 @@ class Vacante(models.Model):
     salario_max = models.IntegerField(blank=False, null=False)
     beneficios = models.TextField(blank=True, null=True)
     horario_trabajo = models.CharField(max_length=25, blank=True, null=True)
-    fecha_hora = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateField(auto_now_add=True)
+    hora = models.TimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.nombre_puesto} - {self.empresa}"
@@ -75,5 +78,5 @@ class Solicitude(models.Model):
     fecha = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.candidato} - {self.vacante} "
+        return f"{self.candidato} - {self.vacante}"
 
