@@ -1,5 +1,3 @@
-from email.policy import default
-from pyexpat import model
 from django.db import models
 
 #Choices
@@ -49,12 +47,12 @@ class Vacante(models.Model):
     tipo_trabajo = models.CharField(max_length=10, choices=tipo_trabajo_opciones, default='TEMPORAL')
     forma_trabajo = models.CharField(max_length=10, choices=forma_trabajo_opciones, default='PRESENCIAL')
     experiencia = models.BooleanField(blank=False, null=False)
-    responsabilidades_puesto = models.CharField(max_length=100, blank=True, null=True)
-    requisitos_obligatorios = models.CharField(max_length=200, blank=False, null=False)
-    requisitos_opcionales = models.CharField(max_length=200, blank=False, null=False)
+    responsabilidades_puesto = models.TextField(blank=True, null=True)
+    requisitos_obligatorios = models.TextField(blank=False, null=False)
+    requisitos_opcionales = models.TextField(blank=False, null=False)
     salario_min = models.IntegerField(blank=False, null=False)
     salario_max = models.IntegerField(blank=False, null=False)
-    beneficios = models.CharField(max_length=100, blank=True, null=True)
+    beneficios = models.TextField(blank=True, null=True)
     horario_trabajo = models.CharField(max_length=25, blank=True, null=True)
     fecha_hora = models.DateTimeField(auto_now_add=True)
 
@@ -73,7 +71,7 @@ class Solicitude(models.Model):
 
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
-    mensaje = models.CharField(max_length=100, blank=False, null=False)
+    mensaje = models.TextField(blank=False, null=False)
     fecha = models.DateField(auto_now_add=True)
 
     def __str__(self):
