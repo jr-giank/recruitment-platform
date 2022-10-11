@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 
-from .serializers import Candidato_Serializer, Vacante_Serializer, Empresa_Serializer, Solicitude_Serializer
+from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer
 
 from vacantes.models import Vacante, Solicitude
 
@@ -30,7 +30,7 @@ class VacantesView(APIView):
     
     def get(self, request, *args, **kwargs):
         vacantes = Vacante.objects.all()
-        serializer = self.serializer_class(vacantes, many=True)
+        serializer = Obtener_Vacantes_Serializer(vacantes, many=True)
 
         return Response(serializer.data)
     
@@ -88,7 +88,7 @@ class CandidatoView(APIView):
 
 class SolicitudesVacanteView(ApiView):
 
-    serializer_class = Solicitude_Serializer
+    serializer_class = Solicitude_Vacante_Serializer
 
     def get(self, request, *args, **kwargs):
 
