@@ -102,13 +102,13 @@ class SolicitudesVacanteView(ApiView):
 
 class VacantesEmpresaView(ApiView):
 
-    serializer_class = Vacante_Serializer
+    serializer_class = Obtener_Vacantes_Serializer
 
     def get(self, request, *args, **kwargs):
 
         pk_empresa = self.kwargs['pk']
 
-        vacantes = Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha_hora')
+        vacantes = Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha', '-hora')
         serializer = self.serializer_class(vacantes, many=True)
 
         return Response(serializer.data)
