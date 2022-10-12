@@ -108,7 +108,7 @@ class VacantesEmpresaView(ApiView):
 
         pk_empresa = self.kwargs['pk']
 
-        vacantes = Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha_hora')
+        vacantes = Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha', '-hora')
         serializer = self.serializer_class(vacantes, many=True)
 
         return Response(serializer.data)
