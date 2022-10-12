@@ -102,7 +102,7 @@ class SolicitudesVacanteView(ApiView):
 
 class VacantesEmpresaView(ApiView):
 
-    serializer_class = Vacante_Serializer
+    serializer_class = Obtener_Vacantes_Serializer
 
     def get(self, request, *args, **kwargs):
 
