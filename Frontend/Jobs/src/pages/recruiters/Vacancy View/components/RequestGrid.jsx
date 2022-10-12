@@ -1,6 +1,6 @@
 import React from 'react'
 
-const RequestGrid = () => {
+const RequestGrid = ({request}) => {
     return (
     <div className='flex justify-between items-center border-b border-b-fifth py-2'>
         <span className='flex items-center'>
