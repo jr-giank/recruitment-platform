@@ -4,13 +4,12 @@ import check from '../../../../assets/icons/garrapata.png'
 import xSymbol from '../../../../assets/icons/simbolo-x.png'
 import sitOnPc from '../../../../assets/icons/lanza-libre.png'
 import Modal from './Modal'
+import {uid} from 'uid'
 
 const VacancyDescriptionSingle = ({vacancy}) => {
 
   const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState([])
-
-  console.log(vacancy)
-
+  
   const handleModalRequests = (e) => {
     e.preventDefault()
     setIsVacancyReqOpen(true)
@@ -48,7 +47,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='list-disc pl-6 text-[14px]'>
               {
                 vacancy?.responsabilidades_puesto?.split("\n").map(text => (
-                  <li key={text}>{text}</li>
+                  <li key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -60,7 +59,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='flex flex-col list-disc pl-6'>
               {
                 vacancy?.requisitos_obligatorios?.split("\n").map(text => (
-                  <li key={text}>{text}</li>
+                  <li key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -72,7 +71,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='flex flex-col list-disc pl-6'>
               {
                 vacancy?.requisitos_opcionales?.split("\n").map(text => (
-                  <li key={text}>{text}</li>
+                  <li key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -83,7 +82,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='flex flex-col list-disc pl-6'>
               {
                 vacancy?.beneficios?.split("\n").map(text => (
-                  <li key={text}>{text}</li>
+                  <li key={uid()}>{text}</li>
                 ))
               }
             </ul>

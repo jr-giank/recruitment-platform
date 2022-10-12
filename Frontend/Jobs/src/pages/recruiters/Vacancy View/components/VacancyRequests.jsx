@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {Link} from 'react-router-dom'
 import {Portal} from 'react-portal'
 import RequestGrid from './RequestGrid'
+import { get } from '../../../../services/services'
 
-const VacancyRequests = ({setIsVacancyReqOpen}) => {
+const VacancyRequests = ({setIsVacancyReqOpen, id}) => {
+
+    const [ request, setRequests] = useState([])
+
+    useEffect(() => {
+        get(`solicitudes/vacante/${id}/`)
+        .then(data => {
+            setRequests(data)
+            console.log(data)
+        })
+    }, [])
 
     const onCloseModal = () => {
         setIsVacancyReqOpen(false);
@@ -18,18 +29,13 @@ const VacancyRequests = ({setIsVacancyReqOpen}) => {
                     <button className='text-xl py-1 px-3 hover:bg-fourth hover:text-white' onClick={onCloseModal}>X</button> 
                 </div>
                 <div className='overflow-y-auto px-2'>
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
-                    <RequestGrid />                
+                    <ul>
+                        {
+                            request.map(req => (
+                                <RequestGrid key={req.id}  request={req} />
+                            ))
+                        }    
+                    </ul>            
                 </div>
             </div>
                 {/* <Link to='/recruiters/createVacancy'>Navegar</Link> */}
