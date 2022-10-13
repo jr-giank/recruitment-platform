@@ -32,14 +32,17 @@ class VacantesView(APIView):
         vacantes = Vacante.objects.all()
         serializer = Obtener_Vacantes_Serializer(vacantes, many=True)
 
-        return Response(serializer.data)
+        return Response({'data':serializer.data, 'status':200, 'exito':True})
     
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':200, 'exito': True})
+        else:
+            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
 
 class EmpresaView(APIView):
 
@@ -47,10 +50,13 @@ class EmpresaView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':200, 'exito': True})
+        else:
+            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
 
 class ObtenerVacanteView(APIView):
 
@@ -62,7 +68,7 @@ class ObtenerVacanteView(APIView):
         vacante = Vacante.objects.filter(id=pk)
         serializer = Vacante_Serializer(vacante, many=True)
 
-        return Response(serializer.data)
+        return Response({'data':serializer.data, 'status':200, 'exito':True})
 
 class SolicitudesView(APIView):
 
@@ -70,10 +76,13 @@ class SolicitudesView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':200, 'exito': True})
+        else:
+            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
 
 class CandidatoView(APIView):
 
@@ -81,10 +90,13 @@ class CandidatoView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        return Response(serializer.data)
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':200, 'exito': True})
+        else:
+            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
 
 class SolicitudesVacanteView(ApiView):
 
@@ -97,18 +109,18 @@ class SolicitudesVacanteView(ApiView):
         solicitudes = Solicitude.objects.filter(vacante=pk_vacante).order_by('-fecha')
         serializer = self.serializer_class(solicitudes, many=True)
 
-        return Response(serializer.data)
+        return Response({'data':serializer.data, 'status':200, 'exito':True})
 
 
 class VacantesEmpresaView(ApiView):
 
-    serializer_class = Vacante_Serializer
+    serializer_class = Obtener_Vacantes_Serializer
 
     def get(self, request, *args, **kwargs):
 
         pk_empresa = self.kwargs['pk']
 
-        vacantes = Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha_hora')
+        vacantes = Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha', '-hora')
         serializer = self.serializer_class(vacantes, many=True)
 
-        return Response(serializer.data)
+        return Response({'data':serializer.data, 'status':200, 'exito':True})
