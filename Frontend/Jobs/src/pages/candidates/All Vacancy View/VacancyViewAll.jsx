@@ -11,7 +11,7 @@ const VacancyViewAll = () => {
     useEffect(() => {
       setIsLoading(true)
       get('vacantes/')
-      .then(data=> {
+      .then(({data})=> {
         setVacancies(data)
         setIsLoading(false)
       })

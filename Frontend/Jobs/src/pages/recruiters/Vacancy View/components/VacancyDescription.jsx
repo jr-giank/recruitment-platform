@@ -41,51 +41,59 @@ const VacancyDescription = ({vacancy}) => {
           </p>
         </div>
 
-        <div className='mt-4'>
+        <div className='mt-4 w-full'>
           <h4 className='font-semibold pb-2'>Responsabilidades del Puesto</h4>
-          <pre className='font-inter'>
-            <ul className='list-disc pl-6 text-[14px]'>
-              {
-                vacancy?.responsabilidades_puesto?.split("\n").map(text => (
-                  <li key={uid()}>{text}</li>
-                ))
-              }
-            </ul>
-          </pre>
+          
+            <pre className='font-inter'>
+              <ul className='list-disc pl-6 text-[14px] w-full'>
+                {
+                  vacancy?.responsabilidades_puesto?.split("\n").map(text => (
+                    <li className='whitespace-normal' key={uid()}><p>{text}</p></li>
+                  ))
+                }
+              </ul>
+            </pre>
+          
         </div>
 
         <div className='mt-4'>
           <h4 className='font-semibold pb-2'>Requisitos del Puesto</h4>
-          <ul className='list-disc pl-6 text-[14px]'>
+          <ul className='list-disc pl-6 text-[14px] word-wrap'>
             {
               vacancy?.requisitos_obligatorios?.split("\n").map(text => (
-                <li key={uid()}>{text}</li>
+                <li className='whitespace-normal' key={uid()}>{text}</li>
               ))
             }
           </ul>
         </div>
 
-        <div className='mt-4'>
-          <h4 className='font-semibold pb-2'>Requisitos opcionales</h4>
-          <ul className='list-disc pl-6 text-[14px]'>
-            {
-              vacancy?.requisitos_opcionales?.split("\n").map(text => (
-                <li key={uid()}>{text}</li>
-              ))
-            }
-          </ul>
-        </div>
+        {
+          vacancy.requisitos_opcionales && 
+            <div className='mt-4'>
+              <h4 className='font-semibold pb-2'>Requisitos opcionales</h4>
+              <ul className='list-disc pl-6 text-[14px]'>
+                {
+                  vacancy?.requisitos_opcionales?.split("\n").map(text => (
+                    <li className='whitespace-normal' key={uid()}>{text}</li>
+                    ))
+                }
+              </ul>
+            </div>
+        }
 
-        <div className='mt-4'>
-          <h4 className='font-semibold pb-2'>Beneficios del Puesto</h4>
-          <ul className='list-disc pl-6 text-[14px]'>
-            {
-              vacancy?.beneficios?.split("\n").map(text => (
-                <li key={uid()}>{text}</li>
-              ))
-            }
-          </ul>
-        </div>
+        {
+          vacancy.beneficios && 
+            <div className='mt-4'>
+              <h4 className='font-semibold pb-2'>Beneficios del Puesto</h4>
+              <ul className='list-disc pl-6 text-[14px]'>
+                {
+                  vacancy?.beneficios?.split("\n").map(text => (
+                    <li className='whitespace-normal' key={uid()}>{text}</li>
+                  ))
+                }
+              </ul>
+            </div>
+        }
 
         <div className='mt-4'>
           <h4 className='font-semibold pb-2'>Rango Salarial</h4>

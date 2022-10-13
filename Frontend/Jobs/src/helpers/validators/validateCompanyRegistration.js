@@ -40,6 +40,12 @@ export const validateCompanyRegistrationForm = (name, value) => {
             }
             break;
 
+        case "pais":
+            if(value === ""){
+                return "Se requiere seleccionar el país"
+            }
+            break;
+
         case "address":
             if(value === ""){
                 return "Agregue la dirección de la empresa"

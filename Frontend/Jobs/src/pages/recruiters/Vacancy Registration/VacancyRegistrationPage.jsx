@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 import { validateVacancyForm } from '../../../helpers/validators/ValidateVacancyRegistration'
 import { useForm } from '../../../hooks/useForm'
 import { post } from '../../../services/services'
@@ -16,8 +17,8 @@ const VacancyRegistrationPage = () => {
     requisitos_obligatorios: "5 años de experiencia en Java.\nPor lo menos un año de experiencia en HTML, CSS y JS.\nConocimiento de algún framework como React o Angular\nGit\nMetodología Scrum",
     requisitos_opcionales: "Manejo de Docker\nConocimientos de AWS",
     beneficios: "Plan de seguro médico familiar. \n1 mes de vacaciones al año.",
-    beginTime: "08:00",
-    endTime: "16:00",
+    hora_entrada: "08:00",
+    hora_salida: "16:00",
     empresa: 1,
     horario_trabajo:"8:00 a.m - 5:00 p.m",
     salario_min:75000,
@@ -32,6 +33,8 @@ const VacancyRegistrationPage = () => {
       {name:"forma_trabajo",message: null, touched: false},
       {name:"responsabilidades_puesto",message: null, touched: false},
       {name:"requisitos_obligatorios",message: null, touched: false},
+      {name: "salary", message:null},
+      {name: "horario_trabajo", message:null, touched: false},
   ]) 
 
   const [ isDisabled, setIsDisabled ] = useState(true)
@@ -51,16 +54,35 @@ const VacancyRegistrationPage = () => {
   const handleOnSubmit = (e) => {
     e.preventDefault()
 
-    formValues.experiencia = formValues.experiencia === 'true' ? true: false 
+    formValues.experiencia = formValues.experiencia === 'true' ? true: false
+    formValues.horario_trabajo = `${formValues.hora_entrada}-${formValues.hora_salida}`
     
     post('vacantes/',{'Content-Type': 'application/json'}, formValues)
-        .then(() => history('/recruiter/viewVacancies'))   
+        .then(() => {
+            Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", 'success')
+            history('/recruiter/viewVacancies')
+      })   
   }
 
   const handleOnBlur = (e) =>{
-    const error = validateVacancyForm(e.target.name, e.target.value)
 
-    setErrors([...errors.map(errorObject => (errorObject.name === e.target.name)
+    let error;
+    let errorName;
+
+    if(e.target.name === 'salario_max' || e.target.name === 'salario_min'){
+      error = validateVacancyForm(e.target.name,  parseFloat(formValues.salario_min), parseFloat(formValues.salario_max))
+      errorName = "salary"
+    }
+    else if(e.target.name === 'hora_entrada' || e.target.name === 'hora_salida'){
+      error = validateVacancyForm(e.target.name,  formValues.hora_entrada, formValues.hora_salida)
+      errorName = "horario_trabajo"
+    }
+    else{
+      error = validateVacancyForm(e.target.name, e.target.value)
+      errorName = e.target.name
+    }
+
+    setErrors([...errors.map(errorObject => (errorObject.name === errorName)
                                             ? {...errorObject, message: error, touched: true}
                                             : errorObject
                                         )])
@@ -195,20 +217,23 @@ const VacancyRegistrationPage = () => {
               <input 
                 type="time" 
                 className='p-1' 
-                name="beginTime" 
-                value={formValues.beginTime}
-                onChange={handleInputChanges} 
+                name="hora_entrada" 
+                value={formValues.hora_entrada}
+                onChange={handleInputChanges}
+                onBlur={handleOnBlur}
               />
 
               <input 
                 type="time" 
                 className='p-1 ml-2' 
-                name="endTime" 
+                name="hora_salida" 
                 id="Hora de Salida" 
-                value={formValues.endTime}
-                onChange={handleInputChanges} 
+                value={formValues.hora_salida}
+                onChange={handleInputChanges}
+                onBlur={handleOnBlur}
               />
             </fieldset>
+            {errors[7].message !== null && <small className='text-fourth'>{errors[7].message}</small>}
 
             <fieldset className='mt-2'>
               <legend className='font-semibold'>Rango Salarial a Ofrecer</legend>
@@ -219,7 +244,8 @@ const VacancyRegistrationPage = () => {
                 type="number"
                 placeholder='Desde' 
                 value={formValues.salario_min}
-                onChange={handleInputChanges} 
+                onChange={handleInputChanges}
+                onBlur={handleOnBlur} 
               />
               
               <input 
@@ -228,10 +254,12 @@ const VacancyRegistrationPage = () => {
                 type="number" 
                 placeholder='Hasta'
                 value={formValues.salario_max}
-                onChange={handleInputChanges} 
+                onChange={handleInputChanges}
+                onBlur={handleOnBlur} 
               />
 
             </fieldset>
+            {errors[6].message !== null && <small className='text-fourth'>{errors[6].message}</small>}
 
             <fieldset className='mt-4'>
               <input 

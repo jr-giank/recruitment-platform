@@ -25,3 +25,10 @@ export const get = async (endpoint, headers) =>  {
 
     return await res.json()
 }
+
+export const getCountries = async () => {
+
+    const res = await fetch('https://restcountries.com/v2/all')
+    const data = await res.json()
+    return data
+}
