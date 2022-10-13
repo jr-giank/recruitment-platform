@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { validateCompanyRegistrationForm } from '../../../helpers/validators/validateCompanyRegistration'
 import { useForm } from '../../../hooks/useForm'
+import { get, getCountries } from '../../../services/services'
 
 const CompanyRegistrationPage = () => {
 
@@ -11,7 +12,7 @@ const CompanyRegistrationPage = () => {
     emailVacancies: "",
     description: "",
     phoneNumber: "",
-    // country: "",
+    pais: "",
     address: "",
     webUrl: "",
     facebookUrl: "",
@@ -25,18 +26,19 @@ const CompanyRegistrationPage = () => {
       {name:"password",message: null, touched: false},
       {name:"emailVacancies", message: null, touched: false},
       {name:"description",message: null, touched: false},
-      // {name:"country",message: null, touched: false},
       {name:"address",message: null, touched: false},
       {name:"phoneNumber",message: null},
       {name:"webUrl",message: null},
       {name:"facebookUrl",message: null},
       {name:"instagramUrl",message: null,},
       {name:"twitterUrl",message: null,},
+      {name:"pais",message: null, touched: false},
   ]) 
 
   const [ image, setImage ] = useState(null)
   const [ readedImage, setReadedImage ] = useState(null)
   const [ isDisabled, setIsDisabled ] = useState(true)
+  const [countries, setCountries ] = useState([])
   const [ currentSection, setCurrentSection ] = useState(1)
 
   /* currentSection es la sección del formulario que se muestra: 
@@ -45,7 +47,13 @@ const CompanyRegistrationPage = () => {
     2: Información de la compañía
     3: Foto de perfil de la compañía
 
-  */ 
+  */
+
+  
+  useEffect(() => {
+    // Peticion al servidor para traer los países
+    getCountries().then(data => setCountries(data))
+  }, [])
 
   useEffect(()=> {
     
@@ -162,31 +170,44 @@ const CompanyRegistrationPage = () => {
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
-                  {errors[4].message !== null && <small className='text-fourth'>{errors[3].message}</small>}
+                  {errors[4].message !== null && <small className='text-fourth'>{errors[4].message}</small>}
+
+                  <select name="pais" 
+                    className={`${errors[11].message !== null && 'border-fourth shadow-md'}`} 
+                    onChange={handleInputChanges} value={formValues.pais} onBlur={handleOnBlur}
+                  >
+                      <option value="">País</option>
+                      {
+                        countries.map(country => (
+                          <option key={country.name} value={country.name}>{country.name}</option>
+                        ))
+                      }
+                  </select>
+                  {errors[11].message !== null && <small className='text-fourth'>{errors[11].message}</small>}
 
                   <input 
                     type="text" 
                     name="address" 
                     id="address" 
                     placeholder='Ubicación de la Empresa'
-                    className={`${errors[6].message !== null && 'border-fourth shadow-md'}`}
+                    className={`${errors[5].message !== null && 'border-fourth shadow-md'}`}
                     value={formValues.address}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
-                  {errors[6].message !== null && <small className='text-fourth'>{errors[6].message}</small>}
+                  {errors[5].message !== null && <small className='text-fourth'>{errors[5].message}</small>}
                   
                   <input 
                     type="text" 
                     name="phoneNumber" 
                     id="phoneNumber" 
                     placeholder='Número de Teléfono'
-                    className={`${errors[5].message !== null && 'border-fourth shadow-md'}`}
+                    className={`${errors[6].message !== null && 'border-fourth shadow-md'}`}
                     value={formValues.phoneNumber}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
-                  {errors[7].message !== null && <small className='text-fourth'>{errors[7].message}</small>}
+                  {errors[6].message !== null && <small className='text-fourth'>{errors[6].message}</small>}
                   
                   <input 
                     type="text" 
@@ -210,7 +231,7 @@ const CompanyRegistrationPage = () => {
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
-                  {errors[8].message !== null && <small className='text-fourth'>{errors[9].message}</small>}
+                  {errors[8].message !== null && <small className='text-fourth'>{errors[8].message}</small>}
 
                   <input 
                     type="text" 
@@ -264,7 +285,10 @@ const CompanyRegistrationPage = () => {
             <div className='mt-8'>
             {
               currentSection > 1 && (
-                <button className='text-seventh float-left ml-auto cursor-pointer hover:underline' onClick={(e)=>handleChangeSection(e, false)}>
+                <button 
+                  className='text-seventh float-left ml-auto cursor-pointer hover:underline' 
+                    onClick={(e)=>handleChangeSection(e, false)}
+                >
                   Atrás
                 </button>
               )
@@ -272,7 +296,10 @@ const CompanyRegistrationPage = () => {
 
             {
               currentSection < 3 && (
-                <button className='text-seventh float-right text-right cursor-pointer hover:underline' onClick={(e)=>handleChangeSection(e, true)}>
+                <button 
+                  className='text-seventh float-right text-right cursor-pointer hover:underline' 
+                  onClick={(e)=>handleChangeSection(e, true)}
+                >
                   Siguiente
                 </button>
               )

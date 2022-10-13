@@ -47,7 +47,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='list-disc pl-6 text-[14px]'>
               {
                 vacancy?.responsabilidades_puesto?.split("\n").map(text => (
-                  <li key={uid()}>{text}</li>
+                  <li className='whitespace-normal' key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -59,7 +59,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='flex flex-col list-disc pl-6'>
               {
                 vacancy?.requisitos_obligatorios?.split("\n").map(text => (
-                  <li key={uid()}>{text}</li>
+                  <li className='whitespace-normal' key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -71,7 +71,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='flex flex-col list-disc pl-6'>
               {
                 vacancy?.requisitos_opcionales?.split("\n").map(text => (
-                  <li key={uid()}>{text}</li>
+                  <li className='whitespace-normal' key={uid()}>{text}</li>
                 ))
               }
             </ul>
@@ -82,7 +82,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
             <ul className='flex flex-col list-disc pl-6'>
               {
                 vacancy?.beneficios?.split("\n").map(text => (
-                  <li key={uid()}>{text}</li>
+                  <li className='whitespace-normal' key={uid()}>{text}</li>
                 ))
               }
             </ul>

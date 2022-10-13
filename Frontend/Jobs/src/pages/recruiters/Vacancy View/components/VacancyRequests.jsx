@@ -12,9 +12,8 @@ const VacancyRequests = ({setIsVacancyReqOpen, id}) => {
 
     useEffect(() => {
         setIsLoading(true) 
-
         get(`solicitudes/vacante/${id}/`)
-        .then(data => {
+        .then(({data}) => {
             setRequests(data)
             setIsLoading(false)
         })
@@ -38,13 +37,18 @@ const VacancyRequests = ({setIsVacancyReqOpen, id}) => {
                     ? <Loading /> 
                     :(
                         <div className='overflow-y-auto px-2'>
-                            <ul>
-                                {
-                                    request.map(req => (
-                                        <RequestGrid key={req.id}  request={req} />
-                                        ))
-                                    }    
-                            </ul>            
+                            {
+                                request.length > 0 ?
+                                (<ul>
+                                    {
+                                        request.map(req => (
+                                            <RequestGrid key={req.id}  request={req} />
+                                            ))
+                                     }    
+                                </ul>
+                                )
+                                : <p className='text-sixth text-center mt-4'>No hay solicitudes en esta vacante</p>            
+                            }
                         </div>
                     )
                 }

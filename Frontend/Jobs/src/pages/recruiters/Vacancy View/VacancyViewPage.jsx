@@ -15,12 +15,12 @@ const VacancyViewPage = () => {
     setIsLoading(true)
 
     get('vacantes/')
-    .then(data=> {
+    .then(({data}) => {
       setVacancies(data)
       if(data.length > 0){
         setCurrentVacancy(data[0])
-        setIsLoading(false)
       }
+      setIsLoading(false)
     })
   }, [])
 
