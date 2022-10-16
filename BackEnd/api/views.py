@@ -1,13 +1,15 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-
-from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer
 from users.serializers import UserSerializer
 
 from vacantes.models import Vacante, Solicitude
+from vacantes.functions import get_tokens_for_user
+from users.models import CustomUser
 
 # Create your views here.
 class ApiView(APIView):
@@ -35,17 +37,18 @@ class SignUpView(APIView):
     def post(self, request, *args, **kwargs):
 
         serializer = self.serializer_class(data=request.data)
-        print(request.data)
 
         if serializer.is_valid():
             serializer.save()
-
-            return Response({'data':serializer.data, 'status':200, 'exito':True})
+            user = CustomUser.objects.get(email=serializer.data['email'])
+            token = get_tokens_for_user(user=user)
+            
+            return Response({'data':serializer.data, 'token':token, 'status':200, 'exito':True})
         else:
             return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer.errors})
 
 class VacantesView(APIView):
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Vacante_Serializer
     
     def get(self, request, *args, **kwargs):
