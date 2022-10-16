@@ -1,8 +1,11 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from users.serializers import UserSerializer
 
 from vacantes.models import Vacante, Solicitude
 
@@ -25,7 +28,24 @@ class ApiView(APIView):
 
         return Response(api_urls)
 
+class SignUpView(APIView):
+
+    serializer_class = UserSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.serializer_class(data=request.data)
+        print(request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':200, 'exito':True})
+        else:
+            return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer.errors})
+
 class VacantesView(APIView):
+    # permission_classes = [ IsAuthenticated ]
     serializer_class = Vacante_Serializer
     
     def get(self, request, *args, **kwargs):
@@ -124,3 +144,19 @@ class VacantesEmpresaView(ApiView):
         serializer = self.serializer_class(vacantes, many=True)
 
         return Response({'data':serializer.data, 'status':200, 'exito':True})
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token['first_name'] = user.first_name
+        token['last_name'] = user.last_name
+        token['is_staff'] = user.is_staff
+
+        return token
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
