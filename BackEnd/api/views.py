@@ -32,9 +32,9 @@ class ApiView(APIView):
             'obtener-vacantes-empresa': 'api/vacantes/empresa/id',
             'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id',
             
-            'eliminar-vacante-guardada': 'api/eliminar/vacante/guardada/id',
+            'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_candidato/id_vacante',
 
-            'guardar-vacante': 'api/vacantes/guardas',
+            'guardar-vacante': 'api/vacante/guardar',
         }
 
         return Response(api_urls)
@@ -76,7 +76,8 @@ class RegisterView(APIView):
 
 #Vacantes
 class VacantesView(APIView):
-    permission_classes = [ IsAuthenticated ]
+    
+    # permission_classes = [ IsAuthenticated ]
     serializer_class = Vacante_Serializer
     
     def get(self, request, *args, **kwargs):
@@ -194,12 +195,17 @@ class VacantesGuardadasView(ApiView):
             return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
 
     def delete(self, request, *args, **kwargs):
-        pk_vacante = self.kwargs['pk']
+        id_candidato = self.kwargs['id_candidato']
+        id_vacante = self.kwargs['id_vacante']
 
-        vacante = VacantesGuardadas.objects.filter(vacante=pk_vacante)
-        vacante.delete()
+        vacante = VacantesGuardadas.objects.filter(usuario=id_candidato, vacante=id_vacante)
+        
+        if vacante:
+            vacante.delete()
 
-        return Response({'message':'La vacante a sido eliminada', 'status':200, 'exito':True})
+            return Response({'message':'La vacante a sido eliminada', 'status':200, 'exito':True})
+        else:
+            return Response({'message':'La vacante especificada no a sido guardada por dicho usuario', 'status':400, 'exito':False})
 
 class ObtenerVacantesGuardadasView(ApiView):
 
