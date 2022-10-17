@@ -13,22 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path, include
-from .views import ApiView, VacantesView, EmpresaView, ObtenerVacanteView, SolicitudesView, CandidatoView, SolicitudesVacanteView, VacantesEmpresaView
+from django.urls import path
+from . import views as v 
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 
 urlpatterns = [
-    path('', ApiView.as_view(), name='api_urls'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('', v.ApiView.as_view(), name='api_urls'),
+    path('token/', v.MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('vacantes/', VacantesView.as_view(), name='crear-vacante'),
-    path('crear/empresa/', EmpresaView.as_view(), name='crear-empresa'),
-    path('obtener/vacante/<int:pk>',ObtenerVacanteView.as_view(), name='obtener-vacante'),
-    path('crear/solicitud/', SolicitudesView.as_view(), name='crear-solicitud'),
-    path('crear/candidato/', CandidatoView.as_view(), name='crear-candidato'),
-    path('solicitudes/vacante/<int:pk>/', SolicitudesVacanteView.as_view(), name='solicitudes-vacante'),
-    path('vacantes/empresa/<int:pk>/', VacantesEmpresaView.as_view(), name='vacantes-empresa'),
+    path('register/', v.RegisterView.as_view(), name='signup'),
+    path('vacantes/', v.VacantesView.as_view(), name='crear-vacante'),
+    path('vacante/guardar/', v.VacantesGuardadasView.as_view(), name='guardar-vacante'),
+    path('vacantes/empresa/<int:pk>/', v.VacantesEmpresaView.as_view(), name='vacantes-empresa'),
+    path('vacante/eliminar/guardada/<int:id_candidato>/<int:id_vacante>/', v.VacantesGuardadasView.as_view(), name='eliminar-vacante'),
+    path('crear/empresa/', v.EmpresaView.as_view(), name='crear-empresa'),
+    path('crear/solicitud/', v.SolicitudesView.as_view(), name='crear-solicitud'),
+    path('crear/candidato/', v.CandidatoView.as_view(), name='crear-candidato'),
+    path('obtener/vacante/<int:pk>/', v.ObtenerVacanteView.as_view(), name='obtener-vacante'),
+    path('obtener/vacantes/candidato/<int:pk>/', v.ObtenerVacantesGuardadasView.as_view(), name='vacantes-guardadas-candidato'),
+    path('solicitudes/vacante/<int:pk>/', v.SolicitudesVacanteView.as_view(), name='solicitudes-vacante'),
 ]
