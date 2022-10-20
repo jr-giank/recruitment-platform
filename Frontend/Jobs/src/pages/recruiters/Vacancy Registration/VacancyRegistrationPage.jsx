@@ -111,15 +111,15 @@ const VacancyRegistrationPage = () => {
               className={`${errors[1].message !== null && 'border-fourth shadow-md'}`}>
 
                 <option value="">  Categoría</option>
-                <option value={1}> Desarrollo Web</option>
-                <option value={2}> Inteligencia Artificial</option>
-                <option value={3}> Desarrollo Móvil</option>
-                <option value={4}> Desarrollo Frontend</option>
-                <option value={5}> Desarrollo Backend</option>
-                <option value={6}> Desarrollo de VideoJuegos</option>
-                <option value={7}> Aseguramiento de la Calidad (QA)</option>
-                <option value={8}> Ciencia de Datos </option>
-                <option value={9}> Desarrollo Blockchain </option>
+                <option value={4}> Desarrollo Web</option>
+                <option value={5}> Inteligencia Artificial</option>
+                <option value={6}> Desarrollo Móvil</option>
+                <option value={7}> Desarrollo Frontend</option>
+                <option value={8}> Desarrollo Backend</option>
+                <option value={9}> Desarrollo de VideoJuegos</option>
+                <option value={10}> Aseguramiento de la Calidad (QA)</option>
+                <option value={11}> Ciencia de Datos </option>
+                <option value={12}> Desarrollo Blockchain </option>
               
               </select>
               {errors[1].message !== null && <small className='text-fourth'>{errors[1].message}</small>}

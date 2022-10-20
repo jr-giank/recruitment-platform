@@ -44,7 +44,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
           <div className='mt-4'>
             <h4 className='font-semibold pb-2'>Responsabilidades del Puesto</h4>
             <pre className='font-inter'>
-            <ul className='list-disc pl-6 text-[14px]'>
+            <ul className='list-disc pl-6 text-[14px] '>
               {
                 vacancy?.responsabilidades_puesto?.split("\n").map(text => (
                   <li className='whitespace-normal' key={uid()}>{text}</li>
@@ -56,7 +56,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
     
           <div className='mt-4'>
             <h4 className='font-semibold pb-2'>Requisitos del Puesto</h4>
-            <ul className='flex flex-col list-disc pl-6'>
+            <ul className='flex flex-col list-disc pl-6 text-[14px]'>
               {
                 vacancy?.requisitos_obligatorios?.split("\n").map(text => (
                   <li className='whitespace-normal' key={uid()}>{text}</li>
@@ -68,7 +68,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
     
           <div className='mt-4'>
             <h4 className='font-semibold pb-2'>Requisitos opcionales</h4>
-            <ul className='flex flex-col list-disc pl-6'>
+            <ul className='flex flex-col list-disc pl-6 text-[14px]'>
               {
                 vacancy?.requisitos_opcionales?.split("\n").map(text => (
                   <li className='whitespace-normal' key={uid()}>{text}</li>
@@ -79,7 +79,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
     
           <div className='mt-4'>
             <h4 className='font-semibold pb-2'>Beneficios del Puesto</h4>
-            <ul className='flex flex-col list-disc pl-6'>
+            <ul className='flex flex-col list-disc pl-6 text-[14px]'>
               {
                 vacancy?.beneficios?.split("\n").map(text => (
                   <li className='whitespace-normal' key={uid()}>{text}</li>
