@@ -11,6 +11,8 @@ export const post = async (endpoint, headers, body) =>  {
     const res = await fetch(`${BASE_URL}${endpoint}`, request);    
     const data = await res.json()
     
+    console.log(data)
+
     return data
 }
 

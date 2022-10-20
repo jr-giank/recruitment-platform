@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import persona from '../../../../assets/icons/pruebapersona.jpg'
 import Presentation from './Presentation'
 import pdf from '../../../../assets/icons/pdf.png'

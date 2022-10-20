@@ -12,7 +12,7 @@ const VacancyViewSingle = () => {
 
     useEffect(() => {
       setIsLoading(true)
-        get(`obtener/vacante/${location.id}`)
+        get(`obtener/vacante/${location.id}/`)
         .then(({data})=> {
           setVacancy({...data[0]})
           setIsLoading(false)
@@ -20,7 +20,6 @@ const VacancyViewSingle = () => {
       }, [])
 
     return(
-
         <div className='flex justify-center mt-20 '>
           { isLoading ? <Loading /> :( 
             <div className=' w-2/3'>
