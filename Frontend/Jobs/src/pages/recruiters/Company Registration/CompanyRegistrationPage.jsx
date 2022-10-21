@@ -48,7 +48,6 @@ const CompanyRegistrationPage = () => {
     3: Foto de perfil de la compañía
 
   */
-
   
   useEffect(() => {
     // Peticion al servidor para traer los países

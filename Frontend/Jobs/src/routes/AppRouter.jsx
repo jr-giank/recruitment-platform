@@ -1,30 +1,49 @@
-import React from 'react'
-import { Route, Routes, BrowserRouter as Router } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom'
 
-import CompanyRegistrationPage from '../pages/recruiters/Company Registration/CompanyRegistrationPage'
-import VacancyRegistrationPage from '../pages/recruiters/Vacancy Registration/VacancyRegistrationPage'
-import VacancyViewPage from '../pages/recruiters/Vacancy View/VacancyViewPage'
-import VacancyViewAll from '../pages/candidates/All Vacancy View/VacancyViewAll'
-import VacancyViewSingle from '../pages/candidates/Single Vacancy View/VacancyViewSingle'
+import { authContext } from '../context/context'
+
 import Navigation from '../sharedComponents/navigation/Navigation'
-import VacancyRequestsPage from '../pages/recruiters/Request Info/VacancyRequests'
+import AuthRouter from './AuthRouter'
+import Loading from '../sharedComponents/ui/Loading'
+import NoAccess from '../pages/security/NoAccess'
+import PrivateRouter from './PrivateRouter'
+import { types } from '../reducers/types'
 
 const AppRouter = () => {
+
+  const [ isAuthChecked, setIsAuthChecked ] = useState(false)
+  const { auth, dispatch } = useContext(authContext)
+
+  useEffect(() => {
+
+    let activeUser = JSON.parse(window.localStorage.getItem("itJobToken"))
+
+    if(activeUser){
+      dispatch({type: types.login, payload: activeUser})
+    }
+
+    setIsAuthChecked(true)
+  }, [auth.logged])
 
   return (
     <>
       <Navigation />
-        <Router>
-            <Routes>
-                <Route path='/'  element={<VacancyViewPage /> } />
-                <Route path='/recruiter/signUp' element={<CompanyRegistrationPage />} />
-                <Route path='/recruiter/createVacancy' element={<VacancyRegistrationPage />} />
-                <Route path='/recruiter/viewVacancies' element={<VacancyViewPage />} />
-                <Route path='/recruiter/viewVacancyRequests/:id' element={<VacancyRequestsPage />} />
-                <Route path='/candidates/viewAllVacancies' element={<VacancyViewAll />} />
-                <Route path='/candidates/viewSingleVacancy/:id' element={<VacancyViewSingle />} />
-            </Routes>
-        </Router>
+      {
+        isAuthChecked ? (
+            <Router>
+                <Routes>
+                    {/* <Route path='/'  element={<SignInPage /> } /> */}
+                    <Route 
+                      exact path='/auth/*' 
+                      element={!auth.logged ? <AuthRouter /> :  <Navigate to='/app'/> } 
+                    />
+                    <Route exact path='/app/*'  element={auth.logged ? <PrivateRouter /> : <Navigate to='/auth/login' />  } />
+                    <Route exact path='/NoAccess' element={<NoAccess />} />
+                </Routes>
+            </Router>
+        ):<Loading />
+      }
     </>
   )
 }
