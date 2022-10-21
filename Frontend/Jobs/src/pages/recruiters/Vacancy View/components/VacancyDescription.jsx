@@ -116,7 +116,7 @@ const VacancyDescription = ({vacancy}) => {
 
         <div className='flex justify-center items-center w-full'>
           
-          <Link to={`/recruiter/viewVacancyRequests/${vacancy.id}`} className='bg-secondary text-white rounded-md px-6 py-2'>
+          <Link to={`/app/recruiter/viewVacancyRequests/${vacancy.id}`} className='bg-secondary text-white rounded-md px-6 py-2'>
             Ver Solicitudes
           </Link>
           
