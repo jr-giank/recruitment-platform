@@ -32,7 +32,7 @@ const SignInPage = () => {
         .then(data =>{
             
             if(data.access){
-                const rol = 1
+                const rol = 0
                 
                 const payload= {
                     token: data.access,

@@ -17,6 +17,7 @@ p {
   min-width: 320px;
   height: 100vh;
   font-family: inter;
+  background-color: #FBFBFB;
 }
 
 #root{

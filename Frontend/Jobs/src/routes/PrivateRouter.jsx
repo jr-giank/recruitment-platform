@@ -13,7 +13,7 @@ const PrivateRouter = () => {
     <Routes>
         <Route 
           path='/' 
-          element={auth.rol === 0 ? <Navigate to='/app/candidate/viewAllVacacies' /> : <Navigate to='/app/recruiter/viewVacancies' />} 
+          element={auth.rol === 0 ? <Navigate to='/app/candidate/viewAllVacancies' /> : <Navigate to='/app/recruiter/viewVacancies' />} 
         />
         <Route path='/candidate/*' element={auth.rol === 0 ? <CandidatesRouter /> : <NoAccess />} />
         <Route path='/recruiter/*' element={auth.rol === 1 ? <RecruitersRouter /> : <NoAccess />}/>
