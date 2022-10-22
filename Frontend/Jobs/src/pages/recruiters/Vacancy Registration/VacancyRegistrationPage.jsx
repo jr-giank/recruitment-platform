@@ -92,7 +92,7 @@ const VacancyRegistrationPage = () => {
     <>
       <div action="" className='w-full flex items-center justify-center pt-8 mt-16'>
           
-          <form className='flex flex-col w-1/2 border  border-fifth shadow-lg py-4 px-12 rounded-lg min-w-[350px] mb-12'>
+          <form className='flex flex-col w-1/2 border bg-white  border-fifth shadow-lg py-4 px-12 rounded-lg min-w-[350px] mb-12'>
             <h1 className='text-center font-bold'>Nueva Vacante</h1>
 
               <input 

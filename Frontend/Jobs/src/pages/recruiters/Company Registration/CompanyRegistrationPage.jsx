@@ -96,7 +96,7 @@ const CompanyRegistrationPage = () => {
   return (
     <form action="" className='w-full flex items-center justify-center pt-8 overflow-auto mt-20'>
 
-        <div className='flex flex-col w-1/2 border border-fifth shadow-lg py-4 px-12 rounded-lg mb-12 min-w-[350px]'>
+        <div className='flex flex-col w-1/2 border bg-white border-fifth shadow-lg py-4 px-12 rounded-lg mb-12 min-w-[350px]'>
             <h1 className='text-center font-bold'>Nueva Cuenta</h1>
 
             {

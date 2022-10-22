@@ -26,8 +26,7 @@ const VacancyViewPage = () => {
 
   return (
     
-    <div className='flex w-full mt-16 h-[89%]'>
-
+    <div className='flex w-full mt-14 h-[91%]'>
       {
         isLoading 
         ? <Loading isLoading={isLoading} /> 

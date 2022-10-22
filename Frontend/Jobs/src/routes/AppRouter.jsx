@@ -28,10 +28,10 @@ const AppRouter = () => {
 
   return (
     <>
-      <Navigation />
       {
         isAuthChecked ? (
-            <Router>
+          <Router>
+              <Navigation />
                 <Routes>
                     {/* <Route path='/'  element={<SignInPage /> } /> */}
                     <Route 

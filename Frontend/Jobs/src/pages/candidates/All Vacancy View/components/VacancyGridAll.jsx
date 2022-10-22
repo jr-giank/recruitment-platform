@@ -27,7 +27,7 @@ const VacancyGridAll = ({vacancy}) => {
             </div>
         </div>
 
-        <Link className='flex justify-center cursor-pointer w-full mt-5 p-2 hover:bg-secondary border-solid border-2 border-eighth rounded' to= {`/candidates/viewSingleVacancy/${vacancy.id}`} >Ver vacante</Link>  
+        <Link className='flex justify-center cursor-pointer w-full mt-5 p-2 hover:bg-secondary border-solid border-2 border-eighth rounded' to= {`/app/candidate/viewSingleVacancy/${vacancy.id}`} >Ver vacante</Link>  
     </div>
 
     
