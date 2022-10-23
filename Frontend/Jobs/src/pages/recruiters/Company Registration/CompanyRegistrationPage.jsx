@@ -19,7 +19,6 @@ const CompanyRegistrationPage = () => {
     instagramUrl: "",
     twitterUrl: ""
   })
-
   const [ errors, setErrors ] = useState([
       {name:"companyName", message: null, touched: false},
       {name:"email", message: null, touched: false},
@@ -74,6 +73,7 @@ const CompanyRegistrationPage = () => {
     reader.readAsDataURL(e.target.files[0]);
     setReadedImage(e.target.files[0])
   }
+
 
   const handleChangeSection = (e, forward) => {
     e.preventDefault()

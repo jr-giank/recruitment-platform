@@ -8,6 +8,8 @@ import VacancyViewAll from '../pages/candidates/All Vacancy View/VacancyViewAll'
 import VacancyViewSingle from '../pages/candidates/Single Vacancy View/VacancyViewSingle'
 import Navigation from '../sharedComponents/navigation/Navigation'
 import VacancyRequestsPage from '../pages/recruiters/Request Info/VacancyRequests'
+import CandidatesRegistrationPage from '../pages/candidates/Candidates Registration/CandidatesRegistrationPage'
+import VacanciesSavePage from '../pages/candidates/Vancancies Save/VacanciesSavePage'
 
 const AppRouter = () => {
 
@@ -17,6 +19,8 @@ const AppRouter = () => {
         <Router>
             <Routes>
                 <Route path='/'  element={<VacancyViewPage /> } />
+                <Route path='/candidates/signUp' element={<CandidatesRegistrationPage />} />
+                <Route path='/candidates/viewSaveVacancies' element={<VacanciesSavePage />} />
                 <Route path='/recruiter/signUp' element={<CompanyRegistrationPage />} />
                 <Route path='/recruiter/createVacancy' element={<VacancyRegistrationPage />} />
                 <Route path='/recruiter/viewVacancies' element={<VacancyViewPage />} />
