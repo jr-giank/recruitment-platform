@@ -33,7 +33,7 @@ const AppRouter = () => {
           <Router>
               <Navigation />
                 <Routes>
-                    {/* <Route path='/'  element={<SignInPage /> } /> */}
+                     <Route path='/'  element={<Navigate to='/auth/login' /> } /> 
                     <Route 
                       exact path='/auth/*' 
                       element={!auth.logged ? <AuthRouter /> :  <Navigate to='/app'/> } 

@@ -8,6 +8,18 @@
 p {
     font-size:14px;
   }
+
+.checkbox_filter {
+  height: 21px;
+  width: 21px;
+}
+
+.radio_filter {
+  height: 16px;
+  width: 16px;
+}
+
+
 }
 
  body {

@@ -18,7 +18,7 @@ const VacancyViewAll = () => {
     }, [])
 
     return(
-        <div className='flex flex-col items-center justify-center w-full pt-2 mt-20 px-8'>
+        <div className='flex flex-col items-center justify-center w-full pt-2 mt-24 px-8'>
           {
             isLoading ? <Loading /> :
             (

@@ -20,7 +20,7 @@ const VacancyViewSingle = () => {
       }, [])
 
     return(
-        <div className='flex justify-center mt-20 '>
+        <div className='flex justify-center mt-36 '>
           { isLoading ? <Loading /> :( 
             <div className=' w-2/3'>
               <VacancyDescriptionSingle vacancy={vacancy} />
