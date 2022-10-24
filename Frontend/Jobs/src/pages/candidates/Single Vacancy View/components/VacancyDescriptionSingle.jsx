@@ -16,6 +16,10 @@ const VacancyDescriptionSingle = ({vacancy}) => {
     document.getElementById("portal").classList.add("modal_show-modal")
   }
 
+   // const handleSaveRequests = (e) => {
+
+  // }
+
     return (
       <>
         <div className='flex flex-col px-4  w-full mb-20  border-solid border-2 border-tertiary rounded-md bg-eighth'>
@@ -94,7 +98,9 @@ const VacancyDescriptionSingle = ({vacancy}) => {
           </div>
     
           <div className='flex justify-center items-center w-full'>
-             <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6' onClick={handleModalRequests}>Solicitar Vacante</button>
+          <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6 mx-4' onClick={handleModalRequests}>Solicitar Vacante</button>
+             {/* habilitar el metodo handleSaveRequests */}
+             <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6' >Guardar Vacante</button>
           </div>
         </div>
 
