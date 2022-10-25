@@ -29,10 +29,9 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     direccion = models.CharField(max_length=90, blank=False, null=False)
     pais = models.CharField(max_length=30, blank=False, null=False)
-    correo = models.EmailField(max_length=60, blank=False, null=False)
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
     correo_vacantes = models.EmailField(max_length=60, blank=False, null=False)
     descripcion_empresa = models.CharField(max_length=100, blank=False, null=False)
-    contrasena = models.CharField(max_length=25, blank=False, null=False)
     telefono = models.CharField(max_length=13, blank=False, null=False) 
     url_web = models.URLField(max_length=100, blank=True, null=True)
     url_facebook = models.URLField(max_length=100, blank=True, null=True)
@@ -70,7 +69,7 @@ class Candidato(models.Model):
     apellido = models.CharField(max_length=50, blank=True, null=True)
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
     pais = models.CharField(max_length=56, blank=True, null=True)
-    ruta_foto = models.URLField(default='http://127.0.0.1:8000/media/imagenes/b51e0317-4e30-11ed-8d20-c80c0051d672.jpg', blank=True, null=True)
+    ruta_foto = models.URLField(default='http://127.0.0.1:8000/media/imagenes/b51e0317-4e30-11ed-8d20-c80c0051d672.jpg', blank=False, null=False)
     sexo = models.CharField(max_length=1, blank=True, null=True)
     nacimiento = models.DateField(blank=True, null=True)
     titulo_personal = models.CharField(max_length=60, blank=True, null=True)
@@ -84,7 +83,7 @@ class Solicitude(models.Model):
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
     mensaje = models.TextField(blank=False, null=False)
-    cv_url = models.URLField(default='http://127.0.0.1:8000/media/cv/f37aca8b-4b2b-11ed-8a6f-c80c0051d672-Nita_Ditch.pdf', blank=True, null=True)
+    cv_url = models.URLField(default='http://127.0.0.1:8000/media/cv/f37aca8b-4b2b-11ed-8a6f-c80c0051d672-Nita_Ditch.pdf', blank=False, null=False)
     status = models.CharField(max_length=1, blank=True, null=True)
     fecha = models.DateField(auto_now_add=True, blank=True, null=True)
 
