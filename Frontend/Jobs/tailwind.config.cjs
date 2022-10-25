@@ -15,7 +15,9 @@ module.exports = {
       seventh: '#0A66CE',
       eighth: '#f4f4f5',
       nineth: '#e0f2fe',
-      white : '#fff'
+      tenth: 'rgba(0, 0, 0, 0.71)',
+      eleventh: '#F5F5F5',
+      white : '#fff',
     },
 
     fontFamily: {

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+
 import { getCountries } from '../../services/services'
 import FiltersWithCheckBox from './FiltersWithCheckBox'
 import FilterWithRButton from './FilterWithRButton'
@@ -11,7 +12,7 @@ const filtersInitialState = {
     countries:[]
 }
 
-const Filters = () => {
+const Filters = ({setFiltersVisible}) => {
 
     const [ countries, setCountries ] = useState([])
     const [ openFilter, setOpenFilter ] = useState(null)
@@ -20,6 +21,17 @@ const Filters = () => {
 
     const [ filters, setFilters ] = useState({...filtersInitialState})
 
+    const filterOutsideClick = useCallback((e)=>{
+        if(displayedFilter.current && !document.getElementById(`${openFilter}`).contains(e.target)){
+            document.getElementById(`${openFilter}`).classList.add("hidden")
+            displayedFilter.current = false
+            setOpenFilter(null)
+            window.removeEventListener("click", filterOutsideClick) // Remover listener
+            return
+        }
+        displayedFilter.current = true
+    }, [openFilter])
+
     useEffect(() => {
         // Peticion al servidor para traer los países
         getCountries().then(data =>{
@@ -27,10 +39,6 @@ const Filters = () => {
             setCountries([...countries])
         })
       }, [])
-
-    useEffect(()=>{
-        console.log(filters)
-    },[filters])
 
     // AGREGAR UN LISTENER PARA ESCUCHAR CUANDO SE LE DA UN CLICK A UN ELEMENTO FUERA DEL FILTRO QUE ESTA ABIERTO
     useEffect(()=> {
@@ -42,17 +50,6 @@ const Filters = () => {
 
         if(openFilter === null){
             return
-        }
-
-        const filterOutsideClick = (e) => {
-            if(displayedFilter.current && !document.getElementById(`${openFilter}`).contains(e.target)){
-                document.getElementById(`${openFilter}`).classList.add("hidden")
-                displayedFilter.current = false
-                setOpenFilter(null)
-                window.removeEventListener("click", filterOutsideClick) // Remover listener
-                return
-            }
-            displayedFilter.current = true
         }
         window.addEventListener("click", filterOutsideClick)
     }, [openFilter])
@@ -76,14 +73,14 @@ const Filters = () => {
     return (
         <>
                 <button 
-                    className='rounded-lg px-4 py-1 border border-fifth hover:bg-secondary hover:text-white'
+                    className='rounded-xl px-4 py-1 border border-fifth font-semibold text-[17px] hover:bg-secondary  hover:text-white'
                     onClick={()=>handleShowFilter("category_filter")}
                 >
                     Categorias
                 </button>
 
                 <span 
-                    className='hidden absolute bg-white top-32 left-48 rounded-lg shadow-md text-[15px] py-2 h-80 overflow-auto' 
+                    className='hidden absolute bg-white top-16 left-48 rounded-lg shadow-md text-[15px] py-2 h-80 overflow-auto' 
                     id='category_filter'
                 >
                     <FiltersWithCheckBox 
@@ -94,13 +91,16 @@ const Filters = () => {
                 </span>
 
                 <button
-                    className='rounded-lg px-3 py-1 border border-fifth  hover:bg-secondary hover:text-white'
+                    className='rounded-xl px-3 py-1 border border-fifth font-semibold text-[17px]  hover:bg-secondary hover:text-white'
                     onClick={()=>handleShowFilter("modalidad_filter")}
                 >
                     Modalidad
                 </button>
 
-                <span className='hidden absolute bg-white top-32 left-96 rounded-lg shadow-md text-[15px] py-2' id='modalidad_filter'>
+                <span 
+                    className='hidden absolute bg-white top-16 left-96 rounded-lg shadow-md text-[15px] py-2' 
+                    id='modalidad_filter'
+                >
                     <FiltersWithCheckBox    
                         itemsList={["Presencial", "Híbrido", "Remoto"]} 
                         setFilters={setFilters} 
@@ -110,13 +110,16 @@ const Filters = () => {
                 </span>
 
                 <button
-                    className='rounded-lg px-3 py-1 border border-fifth hover:bg-secondary hover:text-white'
+                    className='rounded-xl px-3 py-1 border border-fifth font-semibold text-[17px] hover:bg-secondary hover:text-white'
                     onClick={()=>handleShowFilter("exp_filter")}
                 >
                     Requiere Experiencia
                 </button>
 
-                <span className='hidden absolute bg-white top-32 left-[545px] rounded-lg shadow-md py-2' id='exp_filter'>
+                <span 
+                    className='hidden absolute bg-white top-16 left-[545px] rounded-lg shadow-md py-2' 
+                    id='exp_filter'
+                >
                     <FilterWithRButton 
                         itemsList={["Si", "No"]} 
                         setFilters={setFilters} 
@@ -126,13 +129,15 @@ const Filters = () => {
                 </span>
 
                 <button
-                    className='rounded-lg px-3 py-1 border border-fifth hover:bg-secondary hover:text-white'
+                    className='rounded-xl px-3 py-1 border border-fifth font-semibold text-[17px] hover:bg-secondary hover:text-white'
                     onClick={()=>handleShowFilter("jobType_filter")}
                 >
                     Tipo de Contrato
                 </button>
 
-                <span className='hidden absolute bg-white top-32 left-[630px] rounded-lg shadow-md text-[15px] py-2' id='jobType_filter'>
+                <span 
+                    className='hidden absolute bg-white top-16 left-[630px] rounded-lg shadow-md text-[15px] py-2' id='jobType_filter'
+                >
                     <FiltersWithCheckBox 
                         itemsList={["Contrato por tiempo Indefinido", "Contrato Temporal", "Contrato a Medio Tiempo"]} 
                         setFilters={setFilters} 
@@ -142,13 +147,16 @@ const Filters = () => {
                 </span>
 
                 <button
-                    className='rounded-lg px-3 py-1 border border-fifth hover:bg-secondary hover:text-white'
+                    className='rounded-xl px-3 py-1 border border-fifth font-semibold text-[17px] hover:bg-secondary hover:text-white'
                     onClick={()=>handleShowFilter("country_filter")}
                 >
                     País
                 </button>
 
-                <span className='hidden absolute bg-white top-32 left-[700px] rounded-lg shadow-md text-[14px] h-80 overflow-auto py-2' id='country_filter'>
+                <span 
+                    className='hidden absolute bg-white top-16 left-[700px] rounded-lg shadow-md text-[14px] h-80 overflow-auto py-2' 
+                    id='country_filter'
+                >
                     <FiltersWithCheckBox 
                         itemsList={countries} 
                         setFilters={setFilters} 
@@ -159,17 +167,22 @@ const Filters = () => {
 
                 <span className='border-l border-sixth px-2'>
                     <button 
-                        className='px-3 py-1 bg-seventh text-white rounded-md ml-2'
+                        className='px-3 py-1 text-seventh rounded-md ml-2 hover:underline'
                     >
-                        Aplicar Filtros
+                        Aplicar
                     </button>
                     <button 
-                        className='px-3 py-1 bg-fourth text-white rounded-md ml-2' 
+                        className='px-3 py-1  text-seventh rounded-md ml-2 hover:underline' 
                         onClick={handleOnCleanFilters}
                     >
-                        Limpiar
+                        Reestablecer
                     </button>
-                </span>
+        
+                <button className='ml-8 hover:underline' onClick={()=>setFiltersVisible(false)}>
+                    <small>Cerrar</small>
+                </button>
+
+            </span>
         </>
   )
 }
