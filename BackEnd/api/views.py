@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer
 from users.serializers import UserSerializer
 
-from vacantes.models import Vacante, Solicitude, VacantesGuardadas
+from vacantes.models import Vacante, Solicitude, VacantesGuardadas, Candidato, Empresa
 from vacantes.functions import get_tokens_for_user
 from users.models import CustomUser
 
@@ -21,8 +21,8 @@ class ApiView(APIView):
             'token-refresh': 'api/token/refresh',
             
             'crear-usuario': 'api/register',
+            'crear-empresa': 'api/register/empresa',
             'crear-vacante': 'api/vacantes',
-            'crear-empresa': 'api/crear/empresa',
             'crear-candidato': 'api/crear/candidato',
             'crear-solicitud': 'api/crear/solicitud/',
             
@@ -45,11 +45,22 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # Add custom claims
-        token['username'] = user.username
-        token['first_name'] = user.first_name
-        token['last_name'] = user.last_name
-        token['is_staff'] = user.is_staff
+        user_instance = CustomUser.objects.get(email=user)
+
+        if user.is_staff == False:
+            candidato = Candidato.objects.get(usuario=user_instance.id)
+            token['first_name'] = candidato.nombre
+            token['last_name'] = candidato.apellido
+            token['email'] = user.email
+            token['is_staff'] = user.is_staff
+            token['ruta_foto'] = candidato.ruta_foto
+        elif user.is_staff == True:
+            empresa = Empresa.objects.get(usuario=user_instance.id)
+            token["nombre_empresa"] = empresa.nombre
+            token["correo"] = user.email
+            token["correo_vacantes"] = empresa.correo_vacantes
+            token['is_staff'] = user.is_staff
+            token["foto"] = empresa.foto.url
 
         return token
 
@@ -59,20 +70,84 @@ class MyTokenObtainPairView(TokenObtainPairView):
 #Registro
 class RegisterView(APIView):
 
-    serializer_class = UserSerializer
+    def post(self, request, *args, **kwargs):
+
+        user = {"email": request.data['email'], "password": request.data['password']}
+
+        serializer_user = UserSerializer(data=user)
+
+        if serializer_user.is_valid():            
+            candidato = {
+                "nombre": request.data['nombre'],
+                "apellido": request.data['apellido'],
+                "pais": request.data['pais'],
+                "sexo": request.data['sexo'],
+                "nacimiento": request.data['nacimiento'],
+                "titulo_personal": request.data['titulo_personal']
+            }
+
+            serializer_candidato = Candidato_Serializer(data=candidato)
+            
+            if serializer_candidato.is_valid():
+                serializer_user.save()
+                user_instance = CustomUser.objects.get(email=request.data['email'])
+                candidato.update({'usuario': user_instance.id})
+                serializer_candidato = Candidato_Serializer(data=candidato)
+                
+                if serializer_candidato.is_valid():
+                    serializer_candidato.save()
+                    candidato_instance = Candidato.objects.get(usuario=user_instance.id)
+                    token = get_tokens_for_user(user=user_instance, candidato=candidato_instance)
+                        
+                    return Response({'data': serializer_user.data, 'token':token, 'status':200, 'exito':True})
+            else:
+                return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_candidato.errors})
+        else:
+            return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_user.errors})
+
+class RegisterEmpresaView(APIView):
 
     def post(self, request, *args, **kwargs):
 
-        serializer = self.serializer_class(data=request.data)
+        user = {"email": request.data['email'], "password": request.data['password'], "is_staff": True}
 
-        if serializer.is_valid():
-            serializer.save()
-            user = CustomUser.objects.get(email=serializer.data['email'])
-            token = get_tokens_for_user(user=user)
+        serializer_user_empresa = UserSerializer(data=user)
+
+        if serializer_user_empresa.is_valid():            
+            empresa = {
+                "nombre": request.data['nombre'],
+                "direccion": request.data['direccion'],
+                "pais": request.data['pais'],
+                "correo_vacantes": request.data['correo_vacantes'],
+                "descripcion_empresa": request.data['descripcion_empresa'],
+                "telefono": request.data['telefono'],
+                "url_web": request.data['url_web'],
+                "url_facebook": request.data['url_facebook'],
+                "url_instagram": request.data['url_instagram'],
+                "url_twitter": request.data['url_twitter'],
+                "foto": request.data['foto']
+            }
+
+            serializer_empresa = Empresa_Serializer(data=empresa)
             
-            return Response({'data':serializer.data, 'token':token, 'status':200, 'exito':True})
+            if serializer_empresa.is_valid():
+                serializer_user_empresa.save()
+                user_empresa_instance = CustomUser.objects.get(email=request.data['email'])
+                # print(user_empresa_instance + " and " + user_empresa_instance.id)
+                empresa.update({'usuario': user_empresa_instance.id})
+                serializer_empresa = Empresa_Serializer(data=empresa)
+                
+                if serializer_empresa.is_valid():
+                    serializer_empresa.save()
+                    empresa_instance = Empresa.objects.get(usuario=user_empresa_instance.id)
+                    token = get_tokens_for_user(user=user_empresa_instance, empresa=empresa_instance)
+                        
+                    return Response({'data': serializer_user_empresa.data, 'token':token, 'status':200, 'exito':True})
+            else:
+                return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_empresa.errors})
         else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer.errors})
+            return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_user_empresa.errors})
+
 
 #Vacantes
 class VacantesView(APIView):

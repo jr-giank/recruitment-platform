@@ -10,14 +10,22 @@ def file_upload_location(instance, filename):
 
     return f'cv/{uuid.uuid1()}.pdf'
 
-def get_tokens_for_user(user):
+def get_tokens_for_user(user, candidato = None, empresa = None):
     refresh = RefreshToken.for_user(user)
     
     # Add custom claims
-    refresh['username'] = user.username
-    refresh['first_name'] = user.first_name
-    refresh['last_name'] = user.last_name
-    refresh['is_staff'] = user.is_staff
+    if candidato != None:
+        refresh['first_name'] = candidato.nombre
+        refresh['last_name'] = candidato.apellido
+        refresh['email'] = user.email
+        refresh['is_staff'] = user.is_staff
+        refresh['ruta_foto'] = candidato.ruta_foto
+    elif empresa != None:
+        refresh["nombre_empresa"] = empresa.nombre
+        refresh["correo"] = user.email
+        refresh["correo_vacantes"] = empresa.correo_vacantes
+        refresh['is_staff'] = user.is_staff
+        refresh["foto"] = empresa.foto.url
 
     return {
         'refresh': str(refresh),
