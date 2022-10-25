@@ -29,10 +29,9 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     direccion = models.CharField(max_length=90, blank=False, null=False)
     pais = models.CharField(max_length=30, blank=False, null=False)
-    correo = models.EmailField(max_length=60, blank=False, null=False)
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
     correo_vacantes = models.EmailField(max_length=60, blank=False, null=False)
     descripcion_empresa = models.CharField(max_length=100, blank=False, null=False)
-    contrasena = models.CharField(max_length=25, blank=False, null=False)
     telefono = models.CharField(max_length=13, blank=False, null=False) 
     url_web = models.URLField(max_length=100, blank=True, null=True)
     url_facebook = models.URLField(max_length=100, blank=True, null=True)
