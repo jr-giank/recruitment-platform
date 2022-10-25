@@ -60,7 +60,7 @@ const VacancyRegistrationPage = () => {
     post('vacantes/',{'Content-Type': 'application/json'}, formValues)
         .then(() => {
             Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", 'success')
-            history('/recruiter/viewVacancies')
+            history('app/recruiter/viewVacancies')
       })   
   }
 

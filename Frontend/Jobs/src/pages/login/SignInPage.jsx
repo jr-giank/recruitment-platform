@@ -6,6 +6,8 @@ import { useForm } from '../../hooks/useForm'
 import { types } from '../../reducers/types'
 import { post } from '../../services/services'
 
+import jwt_decode from 'jwt-decode'
+
 const SignInPage = () => {
 
     const {dispatch} = useContext(authContext)
@@ -32,8 +34,10 @@ const SignInPage = () => {
         .then(data =>{
             
             if(data.access){
-                const rol = 0
-                
+                const rol = 1
+                // const decodeToken = jwt_decode(data.access)
+                // console.log(decodeToken)
+
                 const payload= {
                     token: data.access,
                     email: "ReclutadoraBryan@outlook.com",
@@ -86,8 +90,8 @@ const SignInPage = () => {
 
                 <div className='flex flex-col mt-6'>
                     <small className='mb-1'>¿Aun no tienes cuenta?</small>
-                    <small><Link to='/recruiter/signUp'className='text-seventh'> Registrate como reclutador </Link></small>
-                    <small><Link to='/recruiter/signUp'className='text-seventh'> Regístrate como empresa    </Link></small>
+                    <small><Link to='/auth/candidates/signUp'className='text-seventh'> Registrate como reclutador </Link></small>
+                    <small><Link to='/auth/recruiter/signUp'className='text-seventh'> Regístrate como empresa    </Link></small>
                 </div>
 
             </div>
