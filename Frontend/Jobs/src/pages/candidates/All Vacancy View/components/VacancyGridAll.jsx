@@ -18,10 +18,10 @@ const VacancyGridAll = ({vacancy}) => {
                     <span className='border-solid border-2 border-nineth rounded bg-nineth m-2 text-sm'>{vacancy.tipo_trabajo}</span>
                     <span className='border-solid border-2 border-nineth rounded bg-nineth m-2 text-sm'>{vacancy.forma_trabajo}</span>
                 </h4>
-                <p className='text-base'>Scopic Software</p>
+                <p className='text-base'>{vacancy.empresa}</p>
                 <ul className='flex space-x-4'>
                     <li><h5 className='font-bold'>Ubicación</h5> Spain</li>
-                    <li><h5 className='font-bold'>Publicado</h5>29 septiembre de 2022</li>
+                    <li><h5 className='font-bold'>Publicado</h5>{vacancy.fecha}</li>
                     <li><h5 className='font-bold'>Categoria</h5>Backend Developer</li>
                 </ul>
             </div>

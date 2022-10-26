@@ -16,6 +16,7 @@ const VacancyViewAll = () => {
       .then(({data})=> {
         setVacancies(data)
         setIsLoading(false)
+        console.log(data)
       })
     }, [])
 
@@ -41,7 +42,7 @@ const VacancyViewAll = () => {
                     vacancies.map(vacancy => (
                       <VacancyGridAll key={vacancy.id} vacancy={vacancy} />
                       ))
-                    })
+                    }
                 </>
                 )
               }

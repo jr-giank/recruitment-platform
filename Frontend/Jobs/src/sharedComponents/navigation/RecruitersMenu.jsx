@@ -35,7 +35,7 @@ const RecruitersMenu = ({onAccount}) => {
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>
           <img 
-            src="https://i.pinimg.com/originals/82/48/3b/82483b829d1a39580360a6fef506072d.png" 
+            src={`http://127.0.0.1:8000${auth.foto}`} 
             alt=""
             className='w-7 h-7 rounded-full ml-2' 
             />
@@ -45,11 +45,11 @@ const RecruitersMenu = ({onAccount}) => {
         <div id='account' className="hidden absolute text-black bg-white top-14 right-2 w-48 shadow-lg pb-2">
           
           <div className='flex flex-col w-full items-center justify-center mt-2'>
-            <img src="https://i.pinimg.com/originals/82/48/3b/82483b829d1a39580360a6fef506072d.png" 
+            <img src={`http://127.0.0.1:8000${auth.foto}`} 
               alt=""
               className='w-14 h-14 rounded-full ml-2' 
             />
-            <p>Cervecería Nacional</p>
+            <p>{auth.nombre_empresa}</p>
 
             <div className='w-full flex flex-col mt-4'>
               <button className='flex justify-between px-2 py-1 text-left hover:bg-fifth' onClick={handleLogout}>

@@ -2,13 +2,13 @@ import validator from "validator";
 
 export const validateCandidatesRegistrationForm = (name, value) => {
     switch(name){
-        case "name":
+        case "nombre":
             if(value === ""){
                 return  "El nombre es requerido"
             }
             break;
 
-        case "lastName":
+        case "apellido":
             if(value === ""){
                 return  "El apellido es requerido"
             }
@@ -41,13 +41,13 @@ export const validateCandidatesRegistrationForm = (name, value) => {
             }
             break;
 
-        case "birthday":
+        case "nacimiento":
             if(value === ""){
                 return "Agregue una su fecha de nacimiento"
             }
             break;
 
-        case "ocupation":
+        case "titulo_personal":
             if(value === ""){
                 return "Agregue su ocupacion"
             }
