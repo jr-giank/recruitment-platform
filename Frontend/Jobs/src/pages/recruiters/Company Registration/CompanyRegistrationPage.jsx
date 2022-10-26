@@ -1,37 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { authContext } from '../../../context/context'
 import { validateCompanyRegistrationForm } from '../../../helpers/validators/validateCompanyRegistration'
 import { useForm } from '../../../hooks/useForm'
-import { get, getCountries } from '../../../services/services'
+import {  getCountries, post } from '../../../services/services'
+
+import jwt_Decode from 'jwt-decode'
+import { types } from '../../../reducers/types'
 
 const CompanyRegistrationPage = () => {
 
+  const {dispatch} = useContext(authContext)
+
   const [ formValues, handleInputChanges ] = useForm({
-    companyName:"",
+    nombre:"",
     email: "",
     password: "",
-    emailVacancies: "",
-    description: "",
-    phoneNumber: "",
+    correo_vacantes: "",
+    descripcion_empresa: "",
+    telefono: "",
     pais: "",
-    address: "",
-    webUrl: "",
-    facebookUrl: "",
-    instagramUrl: "",
-    twitterUrl: ""
+    direccion: "",
+    url_web: "",
+    url_facebook: "",
+    url_instagram: "",
+    url_twitter: ""
   })
 
   const [ errors, setErrors ] = useState([
-      {name:"companyName", message: null, touched: false},
+      {name:"nombre", message: null, touched: false},
       {name:"email", message: null, touched: false},
       {name:"password",message: null, touched: false},
-      {name:"emailVacancies", message: null, touched: false},
-      {name:"description",message: null, touched: false},
-      {name:"address",message: null, touched: false},
-      {name:"phoneNumber",message: null},
-      {name:"webUrl",message: null},
-      {name:"facebookUrl",message: null},
-      {name:"instagramUrl",message: null,},
-      {name:"twitterUrl",message: null,},
+      {name:"correo_vacantes", message: null, touched: false},
+      {name:"descripcion_empresa",message: null, touched: false},
+      {name:"direccion",message: null, touched: false},
+      {name:"telefono",message: null},
+      {name:"url_web",message: null},
+      {name:"url_facebook",message: null},
+      {name:"url_instagram",message: null,},
+      {name:"url_twitter",message: null,},
       {name:"pais",message: null, touched: false},
   ]) 
 
@@ -42,11 +48,9 @@ const CompanyRegistrationPage = () => {
   const [ currentSection, setCurrentSection ] = useState(1)
 
   /* currentSection es la sección del formulario que se muestra: 
-
     1: Información de la cuenta
     2: Información de la compañía
     3: Foto de perfil de la compañía
-
   */
   
   useEffect(() => {
@@ -90,7 +94,43 @@ const CompanyRegistrationPage = () => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    formValues.image = readedImage
+    formValues.foto = readedImage
+
+    const dataToSend = new FormData()
+
+    dataToSend.append("nombre", formValues.nombre)
+    dataToSend.append("email", formValues.email)
+    dataToSend.append("password", formValues.password)
+    dataToSend.append("correo_vacantes", formValues.correo_vacantes)
+    dataToSend.append("direccion", formValues.direccion)
+    dataToSend.append("pais", formValues.pais)
+    dataToSend.append("descripcion_empresa", formValues.descripcion_empresa)
+    dataToSend.append("telefono", formValues.telefono)
+    dataToSend.append("url_web", formValues.url_web)
+    dataToSend.append("url_instagram", formValues.url_instagram)
+    dataToSend.append("url_facebook", formValues.url_facebook)
+    dataToSend.append("url_twitter", formValues.url_twitter)
+    dataToSend.append("foto", formValues.foto)
+
+    post('register/empresa/', {}, dataToSend, true)
+    .then(data => {
+
+      if(data.exito){
+
+        // 0 --> Candidato
+        // 1 --> Reclutador
+        const rol = data.data.is_staff ? 1 : 0
+
+        const decodedToken = jwt_Decode(data.token.access)
+
+        dispatch({type: types.login, 
+          payload: {...decodedToken, rol}
+        })
+
+        window.localStorage.setItem("itJobToken", JSON.stringify({...decodedToken, rol}))
+      }
+    })
+
   }
 
   return (
@@ -137,11 +177,11 @@ const CompanyRegistrationPage = () => {
                 <h4 className='font-semibold'>Datos de la empresa</h4>
                 <input 
                     type="text" 
-                    name="companyName" 
-                    id="companyName" 
+                    name="nombre" 
+                    id="nombre" 
                     placeholder='Escriba el nombre de la empresa'
                     className={`${errors[0].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.companyName}
+                    value={formValues.nombre}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -149,23 +189,23 @@ const CompanyRegistrationPage = () => {
 
                 <input 
                     type="text" 
-                    name="emailVacancies" 
-                    id="emailVacancies" 
+                    name="correo_vacantes" 
+                    id="correo_vacantes" 
                     placeholder='Correo Electrónico para Vacantes'
                     className={`${errors[3].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.emailVacancies}
+                    value={formValues.correo_vacantes}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
                   {errors[3].message !== null && <small className='text-fourth'>{errors[3].message}</small>}
                 
                 <textarea  
-                    name="description" 
-                    id="description" 
+                    name="descripcion_empresa" 
+                    id="descripcion_empresa" 
                     placeholder='Descripción de la Empresa'
                     rows = '8'
                     className={`${errors[4].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.description}
+                    value={formValues.descripcion_empresa}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -186,11 +226,11 @@ const CompanyRegistrationPage = () => {
 
                   <input 
                     type="text" 
-                    name="address" 
-                    id="address" 
+                    name="direccion" 
+                    id="direccion" 
                     placeholder='Ubicación de la Empresa'
                     className={`${errors[5].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.address}
+                    value={formValues.direccion}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -198,11 +238,11 @@ const CompanyRegistrationPage = () => {
                   
                   <input 
                     type="text" 
-                    name="phoneNumber" 
-                    id="phoneNumber" 
+                    name="telefono" 
+                    id="telefono" 
                     placeholder='Número de Teléfono'
                     className={`${errors[6].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.phoneNumber}
+                    value={formValues.telefono}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -210,11 +250,11 @@ const CompanyRegistrationPage = () => {
                   
                   <input 
                     type="text" 
-                    name="webUrl" 
-                    id="webUrl" 
+                    name="url_web" 
+                    id="url_web" 
                     placeholder='URL de tu página Web'
                     className={`${errors[7].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.webUrl}
+                    value={formValues.url_web}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -222,11 +262,11 @@ const CompanyRegistrationPage = () => {
                   
                   <input 
                     type="text" 
-                    name="facebookUrl" 
-                    id="facebookUrl" 
+                    name="url_facebook" 
+                    id="url_facebook" 
                     placeholder='URL de Facebook'
                     className={`${errors[8].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.facebookUrl}
+                    value={formValues.url_facebook}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -234,11 +274,11 @@ const CompanyRegistrationPage = () => {
 
                   <input 
                     type="text" 
-                    name="instagramUrl" 
-                    id="instagramUrl" 
+                    name="url_instagram" 
+                    id="url_instagram" 
                     placeholder='URL de Instagram'
                     className={`${errors[9].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.instagramUrl}
+                    value={formValues.url_instagram}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -246,11 +286,11 @@ const CompanyRegistrationPage = () => {
 
                   <input 
                     type="text" 
-                    name="twitterUrl" 
-                    id="twitterUrl" 
+                    name="url_twitter" 
+                    id="url_twitter" 
                     placeholder='URL de Twitter'
                     className={`${errors[10].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.twitterUrl}
+                    value={formValues.url_twitter}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />

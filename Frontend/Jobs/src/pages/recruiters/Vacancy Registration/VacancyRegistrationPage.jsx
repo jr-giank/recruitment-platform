@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { authContext } from '../../../context/context'
 import { validateVacancyForm } from '../../../helpers/validators/ValidateVacancyRegistration'
 import { useForm } from '../../../hooks/useForm'
-import { post } from '../../../services/services'
+import { get, post } from '../../../services/services'
 
 const VacancyRegistrationPage = () => {
+
+  const {auth} = useContext(authContext)
 
   const [ formValues, handleInputChanges, handleCheckChanges ] = useForm({
     nombre_puesto:"Desarrollador Backend Java",
@@ -38,8 +41,16 @@ const VacancyRegistrationPage = () => {
   ]) 
 
   const [ isDisabled, setIsDisabled ] = useState(true)
+  const [ categories, setCategories  ] = useState([])
 
   const history = useNavigate()
+
+  useEffect(()=> {
+    get('obtener/categorias/')
+    .then(({data}) => {
+      setCategories([...data])
+    })
+  }, [])
 
   useEffect(()=> {
     
@@ -56,11 +67,16 @@ const VacancyRegistrationPage = () => {
 
     formValues.experiencia = formValues.experiencia === 'true' ? true: false
     formValues.horario_trabajo = `${formValues.hora_entrada}-${formValues.hora_salida}`
-    
+    formValues.empresa = 3
+
     post('vacantes/',{'Content-Type': 'application/json'}, formValues)
-        .then(() => {
+        .then((data) => {
+          if(data.status === 200){
             Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", 'success')
-            history('app/recruiter/viewVacancies')
+            history('/app/recruiter/viewVacancies')
+          }else{
+            Swal.fire("Error al guardar vacante", "La vacante no se ha podido guardar correctamente", "error")
+          }
       })   
   }
 
@@ -107,20 +123,16 @@ const VacancyRegistrationPage = () => {
               />
               {errors[0].message !== null && <small className='text-fourth'>{errors[0]?.message}</small>}
               
-              <select name="categoria" id="" value={formValues.categoria} onChange={handleInputChanges} onBlur={handleOnBlur}  
-              className={`${errors[1].message !== null && 'border-fourth shadow-md'}`}>
-
+              <select name="categoria" id="" value={formValues.categoria} 
+                      onChange={handleInputChanges} onBlur={handleOnBlur}  
+                      className={`${errors[1].message !== null && 'border-fourth shadow-md'}`}
+              >
                 <option value="">  Categoría</option>
-                <option value={4}> Desarrollo Web</option>
-                <option value={5}> Inteligencia Artificial</option>
-                <option value={6}> Desarrollo Móvil</option>
-                <option value={7}> Desarrollo Frontend</option>
-                <option value={8}> Desarrollo Backend</option>
-                <option value={9}> Desarrollo de VideoJuegos</option>
-                <option value={10}> Aseguramiento de la Calidad (QA)</option>
-                <option value={11}> Ciencia de Datos </option>
-                <option value={12}> Desarrollo Blockchain </option>
-              
+                {
+                  categories.map(cat => (
+                    <option key={cat.nombre} value={cat.id}>{cat.nombre}</option>
+                  ))
+                }
               </select>
               {errors[1].message !== null && <small className='text-fourth'>{errors[1].message}</small>}
 

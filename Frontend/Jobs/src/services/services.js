@@ -1,11 +1,11 @@
 import { BASE_URL } from "../constants/baseURL"
 
-export const post = async (endpoint, headers, body) =>  {
+export const post = async (endpoint, headers, body, isFormData) =>  {
 
     const request = {
         method: 'POST',
         headers,
-        body: JSON.stringify(body)
+        body: isFormData ? body : JSON.stringify(body)
     }
 
     const res = await fetch(`${BASE_URL}${endpoint}`, request);    

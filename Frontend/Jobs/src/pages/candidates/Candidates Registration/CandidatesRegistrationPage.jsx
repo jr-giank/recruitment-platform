@@ -1,31 +1,37 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import {validateCandidatesRegistrationForm} from '../../../helpers/validators/validateCandidatesRegistration'
-import { get, getCountries } from '../../../services/services'
+import { getCountries, post } from '../../../services/services'
+
+import jwt_Decode from 'jwt-decode'
+import { authContext } from '../../../context/context'
+import { types } from '../../../reducers/types'
 
 const CandidatesRegistrationPage = () => {
 
+   const {dispatch } = useContext(authContext)
+
     const [ formValues, handleInputChanges ] = useForm({
         name:"",
-        lastName:"",
-        sex: "",
+        apellido:"",
+        sexo: "",
         email: "",
         password: "",
-        birthday: "",
+        nacimiento: "",
         phoneNumber: "",
         pais: "",
-        ocupation:""
+        titulo_personal:""
       })
 
       const [ errors, setErrors ] = useState([
-        {name:"name", message: null, touched: false},
-        {name:"lastName", message: null, touched: false},
+        {name:"nombre", message: null, touched: false},
+        {name:"apellido", message: null, touched: false},
         {name:"email", message: null, touched: false},
         {name:"password",message: null, touched: false},
-        {name:"sex",message: null, touched: false},
-        {name:"ocupation",message: null, touched: false},
+        {name:"sexo",message: null, touched: false},
+        {name:"titulo_personal",message: null, touched: false},
         {name:"phoneNumber",message: null},
-        {name:"birthday",message: null},
+        {name:"nacimiento",message: null},
         {name:"pais",message: null, touched: false},
     ]) 
   
@@ -51,6 +57,8 @@ const CandidatesRegistrationPage = () => {
       
       const remainingErrors = errors.filter(error => error.message !== null || error.touched === false)
   
+      console.log(remainingErrors)
+
       if(remainingErrors.length === 0 && image !== null){
         setIsDisabled(false)
       }
@@ -84,7 +92,39 @@ const CandidatesRegistrationPage = () => {
       const handleOnSubmit = (e) => {
         //Implementar el radio button
         e.preventDefault()
-        formValues.image = readedImage
+        formValues.foto = readedImage
+
+        const dataToSend = new FormData()
+
+        dataToSend.append("email", formValues.email)
+        dataToSend.append("password", formValues.password)
+        dataToSend.append("nombre", formValues.nombre)
+        dataToSend.append("apellido", formValues.apellido)
+        dataToSend.append("pais", formValues.pais)
+        dataToSend.append("titulo_personal", formValues.titulo_personal)
+        dataToSend.append("sexo", formValues.sexo)
+        dataToSend.append("nacimiento", formValues.nacimiento)
+        dataToSend.append("foto", formValues.foto)
+    
+        post('register/', {}, dataToSend, true)
+        .then(data => {
+    
+          if(data.exito){
+    
+            // 0 --> Candidato
+            // 1 --> Reclutador
+            const rol = data.data.is_staff ? 1 : 0
+            const decodedToken = jwt_Decode(data.token.access)
+    
+            console.log(decodedToken)
+
+            dispatch({type: types.login, 
+              payload: {...decodedToken, rol}
+            })
+    
+            window.localStorage.setItem("itJobToken", JSON.stringify({...decodedToken, rol}))
+          }
+        })
       }
 
     return(
@@ -95,7 +135,7 @@ const CandidatesRegistrationPage = () => {
 
             {
               currentSection === 1 && 
-           
+                    
               (<fieldset className='flex flex-col mt-4'>
                 <h4 className='font-semibold'>Datos de la cuenta</h4>
                 <input 
@@ -131,11 +171,11 @@ const CandidatesRegistrationPage = () => {
                 <h4 className='font-semibold'>Datos Personales</h4>
                 <input 
                     type="text" 
-                    name="name" 
+                    name="nombre" 
                     id="name" 
                     placeholder='Escriba su nombre'
                     className={`${errors[0].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.name}
+                    value={formValues.nombre}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -143,8 +183,8 @@ const CandidatesRegistrationPage = () => {
 
                 <input 
                     type="text" 
-                    name="lastName" 
-                    id="lastName" 
+                    name="apellido" 
+                    id="apellido" 
                     placeholder='Escriba su apellido'
                     className={`${errors[1].message !== null && 'border-fourth shadow-md'}`}
                     value={formValues.apellido}
@@ -154,15 +194,16 @@ const CandidatesRegistrationPage = () => {
                   {errors[1].message !== null && <small className='text-fourth'>{errors[1].message}</small>}
                 
                 <fieldset className='mt-2'>
-                    <legend className='font-semibold'>Sexo</legend>
+                    <legend className='font-semibold'>sexo</legend>
                     <span className=''>
                         <input 
                         type="radio"
-                        name="sex" 
+                        name="sexo" 
                         id="Fem"
                         value={'F'}
-                        checked={formValues.sex === 'F'} 
+                        checked={formValues.sexo === 'F'} 
                         onChange={handleInputChanges}
+                        onBlur={handleOnBlur}
                         />
                         <label className={`${errors[4].message !== null && 'border-fourth shadow-md'}`} htmlFor="F">F</label>
                     </span>
@@ -170,10 +211,10 @@ const CandidatesRegistrationPage = () => {
                     <span className='ml-4'>
                         <input
                         type="radio" 
-                        name="sex"
+                        name="sexo"
                         id="Male" 
                         value={'M'}
-                        checked={formValues.sex === 'M'} 
+                        checked={formValues.sexo === 'M'} 
                         onChange={handleInputChanges} 
                         />
                         <label className={`${errors[4].message !== null && 'border-fourth shadow-md'}`} htmlFor="M">M</label>
@@ -196,11 +237,11 @@ const CandidatesRegistrationPage = () => {
 
                   <input 
                     type="text" 
-                    name="ocupation" 
-                    id="ocupation" 
+                    name="titulo_personal" 
+                    id="titulo_personal" 
                     placeholder='ocupacion'
                     className={`${errors[5].message !== null && 'border-fourth shadow-md'}`}
-                    value={formValues.ocupation}
+                    value={formValues.titulo_personal}
                     onChange={handleInputChanges}
                     onBlur={handleOnBlur}
                   />
@@ -218,7 +259,18 @@ const CandidatesRegistrationPage = () => {
                   />
                   {errors[6].message !== null && <small className='text-fourth'>{errors[6].message}</small>}
                   
-                  
+                  <label className='font-bold mt-4'>Fecha de Nacimiento</label>
+
+                  <input 
+                    type="date" 
+                    name="nacimiento" 
+                    id="birthady" 
+                    className={`${errors[6].message !== null && 'border-fourth shadow-md'}`}
+                    value={formValues.nacimiento}
+                    onChange={handleInputChanges}
+                    onBlur={handleOnBlur}
+                  />
+                  {errors[6].message !== null && <small className='text-fourth'>{errors[6].message}</small>}
                   
             </fieldset>
             )}

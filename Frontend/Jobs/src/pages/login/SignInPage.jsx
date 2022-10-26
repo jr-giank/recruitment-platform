@@ -34,23 +34,17 @@ const SignInPage = () => {
         .then(data =>{
             
             if(data.access){
-                const rol = 1
-                // const decodeToken = jwt_decode(data.access)
-                // console.log(decodeToken)
+                
+                const decodedToken = jwt_decode(data.access)
+                
+                const rol = decodedToken.is_staff ? 1 : 0
 
-                const payload= {
-                    token: data.access,
-                    email: "ReclutadoraBryan@outlook.com",
-                    name: "Bryan",
-                    lastName:"Florentino",
-                    rol
-                }
-    
                 dispatch({
                     type: types.login,
-                    payload
+                    payload : {...decodedToken, rol}
                 })
-                window.localStorage.setItem("itJobToken", JSON.stringify(payload))
+
+                window.localStorage.setItem("itJobToken", JSON.stringify({...decodedToken, rol}))
             }else{
                 Swal.fire("Credenciales inválidas", "Su contraseña o correo son incorrectos", "error")
             }

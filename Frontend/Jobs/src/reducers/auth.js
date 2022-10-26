@@ -15,6 +15,7 @@ const initialState = {logged: false}
 export const authReducer = (state = initialState, action) => {
 
     if(action.type === types.login){
+        console.log(action.payload)
         state = {...action.payload, logged: true}
     }
 

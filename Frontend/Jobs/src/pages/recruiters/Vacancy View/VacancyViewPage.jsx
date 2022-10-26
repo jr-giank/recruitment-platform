@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
+import { authContext } from '../../../context/context'
 import { get } from '../../../services/services'
 import Loading from '../../../sharedComponents/ui/Loading'
 import VacancyDescription from '../Vacancy View/components/VacancyDescription'
 import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 
+
 const VacancyViewPage = () => {
 
+  const {auth} = useContext(authContext)
+ 
   const [ vacancies, setVacancies ] = useState([])
   const [ currentVacancy, setCurrentVacancy ] = useState({})
   const [ isLoading, setIsLoading ] = useState(false)
 
+
   useEffect(() => {
     setIsLoading(true)
 
-    get('vacantes/')
+    get(`vacantes/empresa/3/`)
     .then(({data}) => {
       setVacancies(data)
       if(data.length > 0){
