@@ -1,13 +1,14 @@
+import re
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer
+from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer, Categoria_Serializer
 from users.serializers import UserSerializer
 
-from vacantes.models import Vacante, Solicitude, VacantesGuardadas, Candidato, Empresa
+from vacantes.models import Vacante, Solicitude, VacantesGuardadas, Candidato, Empresa, Categoria
 from vacantes.functions import get_tokens_for_user
 from users.models import CustomUser
 
@@ -20,21 +21,21 @@ class ApiView(APIView):
             'token': 'api/token',
             'token-refresh': 'api/token/refresh',
             
-            'crear-usuario': 'api/register',
-            'crear-empresa': 'api/register/empresa',
-            'crear-vacante': 'api/vacantes',
-            'crear-candidato': 'api/crear/candidato',
+            'crear-usuario-candidato': 'api/register',
+            'crear-usuario-empresa': 'api/register/empresa',
+            'crear-vacante': 'api/vacantes/',
             'crear-solicitud': 'api/crear/solicitud/',
             
-            'obtener-vacantes': 'api/vacantes',
-            'obtener-vacante': 'api/obtener/vacante/id',
-            'obtener-solicitudes-vacante': 'api/solicitudes/vacante/id',
-            'obtener-vacantes-empresa': 'api/vacantes/empresa/id',
-            'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id',
+            'obtener-categorias': 'api/obtener/categorias/',
+            'obtener-vacantes': 'api/vacantes/',
+            'obtener-vacante': 'api/obtener/vacante/id/',
+            'obtener-solicitudes-vacante': 'api/solicitudes/vacante/id/',
+            'obtener-vacantes-empresa': 'api/vacantes/empresa/id/',
+            'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id/',
             
-            'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_candidato/id_vacante',
+            'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_candidato/id_vacante/',
 
-            'guardar-vacante': 'api/vacante/guardar',
+            'guardar-vacante': 'api/vacante/guardar/',
         }
 
         return Response(api_urls)
@@ -53,7 +54,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             token['last_name'] = candidato.apellido
             token['email'] = user.email
             token['is_staff'] = user.is_staff
-            token['ruta_foto'] = candidato.ruta_foto
+            token['foto'] = candidato.foto.url
         elif user.is_staff == True:
             empresa = Empresa.objects.get(usuario=user_instance.id)
             token["nombre_empresa"] = empresa.nombre
@@ -81,6 +82,7 @@ class RegisterView(APIView):
                 "nombre": request.data['nombre'],
                 "apellido": request.data['apellido'],
                 "pais": request.data['pais'],
+                "foto": request.data['foto'],
                 "sexo": request.data['sexo'],
                 "nacimiento": request.data['nacimiento'],
                 "titulo_personal": request.data['titulo_personal']
@@ -91,6 +93,7 @@ class RegisterView(APIView):
             if serializer_candidato.is_valid():
                 serializer_user.save()
                 user_instance = CustomUser.objects.get(email=request.data['email'])
+                
                 candidato.update({'usuario': user_instance.id})
                 serializer_candidato = Candidato_Serializer(data=candidato)
                 
@@ -133,7 +136,7 @@ class RegisterEmpresaView(APIView):
             if serializer_empresa.is_valid():
                 serializer_user_empresa.save()
                 user_empresa_instance = CustomUser.objects.get(email=request.data['email'])
-                # print(user_empresa_instance + " and " + user_empresa_instance.id)
+                
                 empresa.update({'usuario': user_empresa_instance.id})
                 serializer_empresa = Empresa_Serializer(data=empresa)
                 
@@ -147,7 +150,6 @@ class RegisterEmpresaView(APIView):
                 return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_empresa.errors})
         else:
             return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_user_empresa.errors})
-
 
 #Vacantes
 class VacantesView(APIView):
@@ -292,5 +294,17 @@ class ObtenerVacantesGuardadasView(ApiView):
 
         user = VacantesGuardadas.objects.filter(usuario=pk_candidato)
         serializer = self.serializer_class(user, many=True)
+
+        return Response({'data':serializer.data, 'status':200, 'exito':True})
+
+class ObtenerCategoriasView(APIView):
+
+    serializer_class = Categoria_Serializer
+
+    def get(self, request, *args, **kwargs):
+
+        categorias = Categoria.objects.all()
+
+        serializer = self.serializer_class(categorias, many=True)
 
         return Response({'data':serializer.data, 'status':200, 'exito':True})

@@ -31,12 +31,12 @@ class Empresa(models.Model):
     pais = models.CharField(max_length=30, blank=False, null=False)
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
     correo_vacantes = models.EmailField(max_length=60, blank=False, null=False)
-    descripcion_empresa = models.CharField(max_length=100, blank=False, null=False)
+    descripcion_empresa = models.TextField(blank=True, null=True)
     telefono = models.CharField(max_length=13, blank=False, null=False) 
-    url_web = models.URLField(max_length=100, blank=True, null=True)
-    url_facebook = models.URLField(max_length=100, blank=True, null=True)
-    url_instagram = models.URLField(max_length=100, blank=True, null=True)
-    url_twitter = models.URLField(max_length=100, blank=True, null=True)
+    url_web = models.URLField(blank=True, null=True)
+    url_facebook = models.URLField(blank=True, null=True)
+    url_instagram = models.URLField(blank=True, null=True)
+    url_twitter = models.URLField(blank=True, null=True)
     foto = models.ImageField(upload_to=image_upload_location, blank=True, null=True)
 
     def __str__(self):
@@ -69,7 +69,7 @@ class Candidato(models.Model):
     apellido = models.CharField(max_length=50, blank=True, null=True)
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
     pais = models.CharField(max_length=56, blank=True, null=True)
-    ruta_foto = models.URLField(default='http://127.0.0.1:8000/media/imagenes/b51e0317-4e30-11ed-8d20-c80c0051d672.jpg', blank=False, null=False)
+    foto = models.ImageField(upload_to=image_upload_location, blank=True, null=True)
     sexo = models.CharField(max_length=1, blank=True, null=True)
     nacimiento = models.DateField(blank=True, null=True)
     titulo_personal = models.CharField(max_length=60, blank=True, null=True)
