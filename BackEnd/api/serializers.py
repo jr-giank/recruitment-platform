@@ -4,6 +4,8 @@ from vacantes.models import Categoria, Empresa, Vacante, Candidato, Solicitude, 
 
 #Categorias
 class Categoria_Serializer(serializers.ModelSerializer):
+    
+    nombre = serializers.StringRelatedField()
 
     class Meta:
         model = Categoria
