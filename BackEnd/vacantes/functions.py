@@ -19,7 +19,7 @@ def get_tokens_for_user(user, candidato = None, empresa = None):
         refresh['last_name'] = candidato.apellido
         refresh['email'] = user.email
         refresh['is_staff'] = user.is_staff
-        refresh['ruta_foto'] = candidato.ruta_foto
+        refresh["foto"] = candidato.foto.url
     elif empresa != None:
         refresh["nombre_empresa"] = empresa.nombre
         refresh["correo"] = user.email
