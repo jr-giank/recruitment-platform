@@ -50,6 +50,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         if user.is_staff == False:
             candidato = Candidato.objects.get(usuario=user_instance.id)
+            token['candidato_id'] = candidato.id
             token['first_name'] = candidato.nombre
             token['last_name'] = candidato.apellido
             token['email'] = user.email
@@ -57,6 +58,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             token['foto'] = candidato.foto.url
         elif user.is_staff == True:
             empresa = Empresa.objects.get(usuario=user_instance.id)
+            token['empresa_id'] = empresa.id
             token["nombre_empresa"] = empresa.nombre
             token["correo"] = user.email
             token["correo_vacantes"] = empresa.correo_vacantes

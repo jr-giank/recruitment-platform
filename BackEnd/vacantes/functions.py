@@ -15,12 +15,14 @@ def get_tokens_for_user(user, candidato = None, empresa = None):
     
     # Add custom claims
     if candidato != None:
+        refresh['candidato_id'] = candidato.id
         refresh['first_name'] = candidato.nombre
         refresh['last_name'] = candidato.apellido
         refresh['email'] = user.email
         refresh['is_staff'] = user.is_staff
         refresh["foto"] = candidato.foto.url
     elif empresa != None:
+        refresh['empresa_id'] = empresa.id
         refresh["nombre_empresa"] = empresa.nombre
         refresh["correo"] = user.email
         refresh["correo_vacantes"] = empresa.correo_vacantes
