@@ -1,3 +1,6 @@
 BackEnd/venv
 BackEnd/db.sqlite3
 BackEnd/vacantes/.env
+BackEnd/vacantes/__pycache__/
+BackEnd/users/__pycache__/
+BackEnd/api/__pycache__/
