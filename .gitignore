@@ -2,5 +2,8 @@ BackEnd/venv
 BackEnd/db.sqlite3
 BackEnd/vacantes/.env
 BackEnd/vacantes/__pycache__/
+BackEnd/vacantes/migrations/
 BackEnd/users/__pycache__/
+BackEnd/users/migrations/
 BackEnd/api/__pycache__/
+BackEnd/api/migrations/

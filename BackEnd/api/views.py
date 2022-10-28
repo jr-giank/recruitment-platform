@@ -1,9 +1,11 @@
-import re
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer, Categoria_Serializer
 from users.serializers import UserSerializer
@@ -18,11 +20,11 @@ class ApiView(APIView):
     def get(self, request, *args, **kwargs):
             
         api_urls = {
-            'token': 'api/token',
-            'token-refresh': 'api/token/refresh',
+            'token': 'api/token/',
+            'token-refresh': 'api/token/refresh/',
             
-            'crear-usuario-candidato': 'api/register',
-            'crear-usuario-empresa': 'api/register/empresa',
+            'crear-usuario-candidato': 'api/register/',
+            'crear-usuario-empresa': 'api/register/empresa/',
             'crear-vacante': 'api/vacantes/',
             'crear-solicitud': 'api/crear/solicitud/',
             
@@ -36,6 +38,8 @@ class ApiView(APIView):
             'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_candidato/id_vacante/',
 
             'guardar-vacante': 'api/vacante/guardar/',
+
+            'filtrar-vacantes': 'api/filtrar/vacantes/',
         }
 
         return Response(api_urls)
@@ -186,6 +190,19 @@ class ObtenerVacanteView(APIView):
         serializer = Vacante_Serializer(vacante, many=True)
 
         return Response({'data':serializer.data, 'status':200, 'exito':True})
+
+class FiltrarVacantes(ListAPIView):
+
+    queryset = Vacante.objects.all()
+    serializer_class = Obtener_Vacantes_Serializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = {
+        'categoria': ['in'],
+        'forma_trabajo': ['in'], 
+        'experiencia': ['exact'], 
+        'tipo_trabajo': ['in'], 
+        'empresa__pais': ['in']
+    }
 
 #Empresa
 class EmpresaView(APIView):

@@ -34,4 +34,5 @@ urlpatterns = [
     path('obtener/vacante/<int:pk>/', v.ObtenerVacanteView.as_view(), name='obtener-vacante'),
     path('obtener/vacantes/candidato/<int:pk>/', v.ObtenerVacantesGuardadasView.as_view(), name='vacantes-guardadas-candidato'),
     path('solicitudes/vacante/<int:pk>/', v.SolicitudesVacanteView.as_view(), name='solicitudes-vacante'),
+    path('filtrar/vacantes/', v.FiltrarVacantes.as_view(), name='filtrar-vacantes'),
 ]
