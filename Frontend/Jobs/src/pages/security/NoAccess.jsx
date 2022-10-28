@@ -11,9 +11,9 @@ const NoAccess = () => {
     }
 
     return (
-    <div className='mt-16'>
+    <div className='mt-20 ml-16 m-auto'>
         <h4>Su perfil no tiene permisos para acceder a esta ruta</h4>
-        <button onClick={handleOnClick}>Volver</button>
+        <button className='bg-seventh text-white px-4 py-2 rounded-md' onClick={handleOnClick}>Volver</button>
     </div>
   )
 }

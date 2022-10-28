@@ -9,13 +9,14 @@ import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 const VacancyViewPage = () => {
 
   const {auth} = useContext(authContext)
- 
+
   const [ vacancies, setVacancies ] = useState([])
   const [ currentVacancy, setCurrentVacancy ] = useState({})
   const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
     setIsLoading(true)
+    console.log(`Authorization: Bearer ${auth.token} `)
 
     get(`vacantes/empresa/${auth.empresa_id}/`)
     .then(({data}) => {

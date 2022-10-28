@@ -140,8 +140,8 @@ const VacancyRegistrationPage = () => {
              className={`${errors[2].message !== null && 'border-fourth shadow-md'}`}>
                 
                 <option value="">Tipo de Trabajo</option>
-                <option value="TEMPORAL">A Tiempo Completo</option>
-                <option value="INDEFINIDO">Medio tiempo</option>
+                <option value="TEMPORAL">Contrato Temporal</option>
+                <option value="INDEFINIDO">Contrato Indefinido</option>
                 <option value="Por Contrato">Por Contrato</option>
             
             </select>

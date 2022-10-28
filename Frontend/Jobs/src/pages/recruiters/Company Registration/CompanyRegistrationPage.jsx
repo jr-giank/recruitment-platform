@@ -122,12 +122,13 @@ const CompanyRegistrationPage = () => {
         const rol = data.data.is_staff ? 1 : 0
 
         const decodedToken = jwt_Decode(data.token.access)
+        const payload  = {...decodedToken, rol, token:data.access, tokenRefresh:data.refresh}
 
         dispatch({type: types.login, 
-          payload: {...decodedToken, rol}
+          payload
         })
 
-        window.localStorage.setItem("itJobToken", JSON.stringify({...decodedToken, rol}))
+        window.localStorage.setItem("itJobToken", JSON.stringify({...payload}))
       }
     })
 

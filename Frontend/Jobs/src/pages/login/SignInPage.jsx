@@ -39,12 +39,14 @@ const SignInPage = () => {
                 
                 const rol = decodedToken.is_staff ? 1 : 0
 
+                const payload  = {...decodedToken, rol, token:data.access, tokenRefresh:data.refresh}
+
                 dispatch({
                     type: types.login,
-                    payload : {...decodedToken, rol}
+                    payload
                 })
 
-                window.localStorage.setItem("itJobToken", JSON.stringify({...decodedToken, rol}))
+                window.localStorage.setItem("itJobToken", JSON.stringify({...payload}))
             }else{
                 Swal.fire("Credenciales inválidas", "Su contraseña o correo son incorrectos", "error")
             }

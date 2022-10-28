@@ -20,7 +20,7 @@ const AppRouter = () => {
     let activeUser = JSON.parse(window.localStorage.getItem("itJobToken"))
 
     if(activeUser){
-      dispatch({type: types.login, payload: activeUser})
+      dispatch({type: types.login, payload: {...activeUser} })
     }
 
     setIsAuthChecked(true)

@@ -23,7 +23,7 @@ const SaveGrid = ({vacancy}) => {
                 </h4>
                 <div>
                     <Link className='justify-center text-[12px] border border-sixth rounded-lg cursor-pointer mr-3 mt-5 py-2 px-4 hover:bg-secondary ' to= {`/app/candidate/viewSingleVacancy/1`} >Ver vacante</Link> 
-                    <button className='justify-center cursor-pointer text-[12px] mt-5 py-1.5 rounded-lg px-4 hover:bg-tertiary borderborder-sixth' onClick={onHandleRemove}>Eliminar vacante</button>  
+                    <button className='justify-center cursor-pointer text-[12px] mt-5 py-1.5 rounded-lg px-4 hover:bg-tertiary border border-sixth' onClick={onHandleRemove}>Dejar de guardar</button>  
 
                 </div>
 

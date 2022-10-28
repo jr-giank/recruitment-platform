@@ -19,13 +19,13 @@ const BoardGrid = ({request}) => {
         
         <div className='flex'>
             <img 
-                src={persona} 
+                src={`http://127.0.0.1:8000${request.candidato.foto}`} 
                 alt=""
                 className='w-12 h-12 rounded-full ml-2' 
             />
             <span className='ml-2 flex flex-col'>
-                <small className='font-bold mb-0'>{request.candidato}</small>
-                <small className='text-sixth font-medium'>Ingeniero en Software</small>   
+                <small className='font-bold mb-0'>{request.candidato.nombre} {request.candidato.apellido} </small>
+                <small className='text-sixth font-medium'>{request.candidato.titulo_personal}</small>   
             </span>
         </div>
 

@@ -101,6 +101,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"modalidad"} 
+                        valuesItems={["PRESENCIAL", "HIBRIDO", "REMOTO"]}
                     />
                 </span>
 
@@ -134,10 +135,11 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                     className='hidden absolute bg-white top-16 left-[630px] rounded-lg shadow-md text-[15px] py-2' id='jobType_filter'
                 >
                     <FiltersWithCheckBox 
-                        itemsList={["Contrato por tiempo Indefinido", "Contrato Temporal", "Contrato a Medio Tiempo"]} 
+                        itemsList={["Contrato por tiempo Indefinido", "Contrato Temporal"]} 
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"job_type"} 
+                        valuesItems={["INDEFINIDO", "TEMPORAL"]}
                     />
                 </span>
 
@@ -156,7 +158,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                         itemsList={countries} 
                         setFilters={setFilters} 
                         filters={filters} 
-                        target={"countries"} 
+                        target={"countries"}
                     />
                 </span>
 
