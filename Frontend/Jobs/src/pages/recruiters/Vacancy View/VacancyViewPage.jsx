@@ -9,7 +9,7 @@ import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 const VacancyViewPage = () => {
 
   const {auth} = useContext(authContext)
- 
+
   const [ vacancies, setVacancies ] = useState([])
   const [ currentVacancy, setCurrentVacancy ] = useState({})
   const [ isLoading, setIsLoading ] = useState(false)
@@ -17,7 +17,7 @@ const VacancyViewPage = () => {
   useEffect(() => {
     setIsLoading(true)
 
-    get(`vacantes/empresa/${auth.empresa_id}/`)
+    get(`vacantes/empresa/${auth.empresa_id}/`, { "Authorization":`Bearer ${auth.token}` })
     .then(({data}) => {
       setVacancies(data)
       if(data.length > 0){
@@ -35,20 +35,31 @@ const VacancyViewPage = () => {
         ? <Loading isLoading={isLoading} /> 
         : (
             <>
-              <div className='w-1/3 border-r-fifth border-r pt-2 overflow-y-auto'>
-                <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
-                {
-                  vacancies.map(vacancy => (
-                    <VacancyGrid key={vacancy.id} vacancy={vacancy} setCurrentVacancy={setCurrentVacancy} />
-                    ))
-                  }
-              </div>
+               { vacancies.length > 0
+                ?
+                  (
+                    <>
+                      <div className='w-1/3 border-r-fifth border-r pt-2 overflow-y-auto'>
+                      <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
+                      {
+                        vacancies.map(vacancy => (
+                          <VacancyGrid key={vacancy.id} vacancy={vacancy} setCurrentVacancy={setCurrentVacancy} />
+                          ))
+                        }
+                    </div>
 
-              <div className='w-2/3 overflow-y-auto'>
-                <VacancyDescription vacancy={currentVacancy} />
-              </div>
+                    <div className='w-2/3 overflow-y-auto'>
+                      <VacancyDescription vacancy={currentVacancy} />
+                    </div>
+                  </>
+               )
+               : 
+                <h4 className='text-center m-auto w-full text-tenth font-bold'>
+                  No tienes vacantes anunciadas. ¡Empieza a anunciar vacantes!
+                </h4> 
+               }
             </>
-          )
+            )
         }
       </div>
   )

@@ -9,7 +9,6 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
     const { auth } = useContext(authContext);
     const [selectedFile, setSelectedFile] = useState();
 
-
     const [ formValues, handleInputChanges ] = useForm({
         mensaje:"",
     })
@@ -26,7 +25,7 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
         formValues.candidato = auth.candidato_id
         formValues.status = 'A'
 
-        post('crear/solicitud/', {'Content-Type': 'application/json'}, formValues)
+        post('crear/solicitud/', {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, formValues)
         .then((data)=> {
             if(data.exito){
                 Swal.fire("Solicitud Enviada","Se ha enviado la solicitud correctamente", "success")

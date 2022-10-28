@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { authContext } from '../../context/context'
 import { types } from '../../reducers/types'
 import logout from '../../assets/icons/desconectar.png'
+import guardado from '../../assets/icons/guardadas.png'
 
 import vacante from '../../assets/icons/vacante.png'
-
 
 const CandidatesMenu = ({onAccount}) => {
 
@@ -29,7 +29,7 @@ const CandidatesMenu = ({onAccount}) => {
         <Link className={`flex flex-col items-center px-2 ` } 
               to='/app/candidate/panel-saved-jobs' 
         >
-            <img src={vacante} alt="" className='w-7 h-7' />
+            <img src={guardado} alt="" className='w-7 h-7' />
             <small>Vacantes Guardadas</small>
         </Link>
 

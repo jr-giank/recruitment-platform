@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { authContext } from '../../context/context'
 
 import { get, getCountries } from '../../services/services'
 
@@ -14,6 +15,8 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
 
     const [ categoriesName, setCategoriesName ] = useState([])
     const [ categoriesId, setCategoriesId ] = useState([])
+    
+    const { auth } = useContext(authContext)
 
     const filterOutsideClick = useCallback((e)=>{
         if(displayedFilter.current && !document.getElementById(`${openFilter}`).contains(e.target)){
@@ -35,7 +38,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
       }, [])
 
     useEffect(()=>{
-        get('obtener/categorias/')
+        get('obtener/categorias/', {"Authorization":`Bearer ${auth.token}`} )
         .then(({data}) => {
             let categoriesId = data.map(cat => cat.id)
             let categoriesName = data.map(cat => cat.nombre)
@@ -101,6 +104,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"modalidad"} 
+                        valuesItems={["PRESENCIAL", "HIBRIDO", "REMOTO"]}
                     />
                 </span>
 
@@ -134,10 +138,11 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                     className='hidden absolute bg-white top-16 left-[630px] rounded-lg shadow-md text-[15px] py-2' id='jobType_filter'
                 >
                     <FiltersWithCheckBox 
-                        itemsList={["Contrato por tiempo Indefinido", "Contrato Temporal", "Contrato a Medio Tiempo"]} 
+                        itemsList={["Contrato por tiempo Indefinido", "Contrato Temporal"]} 
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"job_type"} 
+                        valuesItems={["INDEFINIDO", "TEMPORAL"]}
                     />
                 </span>
 
@@ -156,7 +161,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                         itemsList={countries} 
                         setFilters={setFilters} 
                         filters={filters} 
-                        target={"countries"} 
+                        target={"countries"}
                     />
                 </span>
 

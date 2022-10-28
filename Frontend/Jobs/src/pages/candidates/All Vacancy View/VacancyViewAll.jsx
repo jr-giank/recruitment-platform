@@ -1,5 +1,6 @@
-import React, {useEffect, useState }from 'react'
+import React, {useEffect, useState, useContext }from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
+import { authContext } from '../../../context/context'
 import { get } from '../../../services/services'
 import Filters from '../../../sharedComponents/filters/Filters'
 import Loading from '../../../sharedComponents/ui/Loading'
@@ -21,20 +22,22 @@ const VacancyViewAll = () => {
     const [ filters, setFilters ] = useState({...filtersInitialState})
     const [ params, setParams ] = useSearchParams()
     const location = useLocation()
-    
+
+    const { auth } = useContext(authContext)
+
     useEffect(()=>{
 
       setIsLoading(true)
-      
+   
       if(location.search){
-        get(`filtrar/vacantes/${location.search}`)
+        get(`filtrar/vacantes/${location.search}`, {"Authorization":`Bearer ${auth.token}`})
         .then(data => {
           setVacancies(data)
           setIsLoading(false)
         })
       }
       else{
-        get('vacantes/')
+        get ('vacantes/', {"Authorization":`Bearer ${auth.token}`},)
         .then(({data})=> {
           setVacancies(data)
           setIsLoading(false)

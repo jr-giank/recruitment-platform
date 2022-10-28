@@ -46,7 +46,7 @@ const VacancyRegistrationPage = () => {
   const history = useNavigate()
 
   useEffect(()=> {
-    get('obtener/categorias/')
+    get('obtener/categorias/', {"Authorization":`Bearer ${auth.token}`})
     .then(({data}) => {
       setCategories([...data])
     })
@@ -69,7 +69,7 @@ const VacancyRegistrationPage = () => {
     formValues.horario_trabajo = `${formValues.hora_entrada}-${formValues.hora_salida}`
     formValues.empresa = auth.empresa_id
 
-    post('vacantes/',{'Content-Type': 'application/json'}, formValues)
+    post('vacantes/',{'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},  formValues)
         .then((data) => {
           if(data.status === 200){
             Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", 'success')
@@ -140,8 +140,8 @@ const VacancyRegistrationPage = () => {
              className={`${errors[2].message !== null && 'border-fourth shadow-md'}`}>
                 
                 <option value="">Tipo de Trabajo</option>
-                <option value="TEMPORAL">A Tiempo Completo</option>
-                <option value="INDEFINIDO">Medio tiempo</option>
+                <option value="TEMPORAL">Contrato Temporal</option>
+                <option value="INDEFINIDO">Contrato Indefinido</option>
                 <option value="Por Contrato">Por Contrato</option>
             
             </select>
