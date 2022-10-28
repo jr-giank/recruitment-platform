@@ -53,6 +53,14 @@ class Obtener_Vacantes_Serializer(serializers.ModelSerializer):
             "hora"
         ]
 
+class Obtener_Vacante_Serializer(serializers.ModelSerializer):
+
+    empresa = Empresa_Serializer()
+
+    class Meta:
+        model = Vacante
+        fields = '__all__'
+
 #Candidatos
 class Candidato_Serializer(serializers.ModelSerializer):
     

@@ -29,7 +29,7 @@ class Empresa(models.Model):
     nombre = models.CharField(max_length=50, blank=False, null=False)
     direccion = models.CharField(max_length=90, blank=False, null=False)
     pais = models.CharField(max_length=30, blank=False, null=False)
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     correo_vacantes = models.EmailField(max_length=60, blank=False, null=False)
     descripcion_empresa = models.TextField(blank=True, null=True)
     telefono = models.CharField(max_length=13, blank=False, null=False) 
@@ -67,7 +67,7 @@ class Candidato(models.Model):
 
     nombre = models.CharField(max_length=50, blank=False, null=False)
     apellido = models.CharField(max_length=50, blank=True, null=True)
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True) #esto es correo
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     pais = models.CharField(max_length=56, blank=True, null=True)
     foto = models.ImageField(upload_to=image_upload_location, blank=True, null=True)
     sexo = models.CharField(max_length=1, blank=True, null=True)
@@ -93,7 +93,7 @@ class Solicitude(models.Model):
 class VacantesGuardadas(models.Model):
 
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE) #esto es correo
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE) 
     fecha_guardado = models.DateField(auto_now_add=True, blank=False, null=False)
 
     def __str__(self):
