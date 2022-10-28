@@ -1,5 +1,6 @@
 import React from 'react'
 import BoardGrid from './BoardGrid'
+import { uid } from 'uid'
 
 const Board = ({requests, title}) => {
   return (
@@ -8,10 +9,7 @@ const Board = ({requests, title}) => {
         <div className='overflow-auto'>
             {
                 requests.map(req => (
-                    <>
-                        <BoardGrid key={req} request={req} />
-                        <BoardGrid key={req} request={req} />
-                    </>
+                    <BoardGrid key={uid()}  request={req} />
                 ))
             }
         </div>

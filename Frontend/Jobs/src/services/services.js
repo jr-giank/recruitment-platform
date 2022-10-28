@@ -28,6 +28,19 @@ export const get = async (endpoint, headers) =>  {
     return await res.json()
 }
 
+export const f_delete = async (endpoint, headers) => {
+
+    const request = {
+        method: 'DELETE',
+        headers
+    }
+    
+    const res = await fetch(`${BASE_URL}${endpoint}`, request)
+
+    return await res.json()
+}
+
+
 export const getCountries = async () => {
 
     const res = await fetch('https://restcountries.com/v2/all')

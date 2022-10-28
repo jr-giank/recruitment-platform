@@ -6,7 +6,6 @@ import Loading from '../../../sharedComponents/ui/Loading'
 import VacancyDescription from '../Vacancy View/components/VacancyDescription'
 import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 
-
 const VacancyViewPage = () => {
 
   const {auth} = useContext(authContext)
@@ -15,11 +14,10 @@ const VacancyViewPage = () => {
   const [ currentVacancy, setCurrentVacancy ] = useState({})
   const [ isLoading, setIsLoading ] = useState(false)
 
-
   useEffect(() => {
     setIsLoading(true)
 
-    get(`vacantes/empresa/3/`)
+    get(`vacantes/empresa/${auth.empresa_id}/`)
     .then(({data}) => {
       setVacancies(data)
       if(data.length > 0){

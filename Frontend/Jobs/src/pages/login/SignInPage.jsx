@@ -84,8 +84,8 @@ const SignInPage = () => {
 
                 <div className='flex flex-col mt-6'>
                     <small className='mb-1'>¿Aun no tienes cuenta?</small>
-                    <small><Link to='/auth/candidates/signUp'className='text-seventh'> Registrate como reclutador </Link></small>
-                    <small><Link to='/auth/recruiter/signUp'className='text-seventh'> Regístrate como empresa    </Link></small>
+                    <small><Link to='/auth/candidates/signUp'className='text-seventh hover:underline'> Registrate para ver vacantes </Link></small>
+                    <small><Link to='/auth/recruiter/signUp'className='text-seventh hover:underline'> Regístrate como empresa    </Link></small>
                 </div>
 
             </div>

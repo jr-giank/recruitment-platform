@@ -6,7 +6,7 @@ import RequestsBoardView from './components/RequestsBoardView'
 
 const VacancyRequestsPage = () => {
 
-    const {id} = useParams()
+    const {id, vacancyName} = useParams()
     const [ request, setRequests] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
     const history = useNavigate()
@@ -32,9 +32,10 @@ const VacancyRequestsPage = () => {
                     :(
                       <>
                         <button className='ml-8 hover:underline' onClick={goBack} >
-                            <small>  Volver atrás</small>
+                            <small className='text-seventh'>  Volver atrás</small>
                         </button>
-                        <h3 className='font-bold ml-8 w-full'>Panel de Administración de Solicitudes</h3> 
+                        <h3 className='font-bold ml-8 w-full'>Panel de Administración de Solicitudes</h3>
+                        <h4 className='ml-8 w-full'><strong>Puesto: </strong> {vacancyName}</h4>
 
                         <div className='border-b flex justify-between border-sixth w-full mx-8 mt-4'>
                         

@@ -67,7 +67,7 @@ const VacancyRegistrationPage = () => {
 
     formValues.experiencia = formValues.experiencia === 'true' ? true: false
     formValues.horario_trabajo = `${formValues.hora_entrada}-${formValues.hora_salida}`
-    formValues.empresa = 3
+    formValues.empresa = auth.empresa_id
 
     post('vacantes/',{'Content-Type': 'application/json'}, formValues)
         .then((data) => {

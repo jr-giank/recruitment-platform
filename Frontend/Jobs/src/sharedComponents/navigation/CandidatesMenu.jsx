@@ -25,6 +25,13 @@ const CandidatesMenu = ({onAccount}) => {
             <img src={vacante} alt="" className='w-7 h-7' />
             <small>Vacantes</small>
         </Link>
+        
+        <Link className={`flex flex-col items-center px-2 ` } 
+              to='/app/candidate/panel-saved-jobs' 
+        >
+            <img src={vacante} alt="" className='w-7 h-7' />
+            <small>Vacantes Guardadas</small>
+        </Link>
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>
           <img 
