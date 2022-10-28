@@ -1,4 +1,3 @@
-from pickle import FALSE
 from django.db import models
 
 from .functions import image_upload_location, file_upload_location

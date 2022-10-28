@@ -20,6 +20,12 @@ class Empresa_Serializer(serializers.ModelSerializer):
         model = Empresa
         fields = '__all__'
 
+class Empresa_Save_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Empresa
+        fields = '__all__'
+
 #Vacantes
 class Vacante_Serializer(serializers.ModelSerializer):
 
@@ -66,6 +72,12 @@ class Candidato_Serializer(serializers.ModelSerializer):
     
     usuario = serializers.StringRelatedField()
 
+    class Meta:
+        model = Candidato
+        fields = '__all__'
+
+class Candidato_Save_Serializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Candidato
         fields = '__all__'
