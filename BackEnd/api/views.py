@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer, Categoria_Serializer
+from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Obtener_Vacante_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer, Categoria_Serializer
 from users.serializers import UserSerializer
 
 from vacantes.models import Vacante, Solicitude, VacantesGuardadas, Candidato, Empresa, Categoria
@@ -35,7 +35,7 @@ class ApiView(APIView):
             'obtener-vacantes-empresa': 'api/vacantes/empresa/id_empresa/',
             'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id_candidato/',
             
-            'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_candidato/id_vacante/',
+            'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_usuario/id_vacante/',
 
             'guardar-vacante': 'api/vacante/guardar/',
 
@@ -160,7 +160,7 @@ class RegisterEmpresaView(APIView):
 #Vacantes
 class VacantesView(APIView):
     
-    permission_classes = [ IsAuthenticated ]
+    # permission_classes = [ IsAuthenticated ]
     serializer_class = Vacante_Serializer
     
     def get(self, request, *args, **kwargs):
@@ -182,13 +182,13 @@ class VacantesView(APIView):
 class ObtenerVacanteView(APIView):
 
     permission_classes = [ IsAuthenticated ]
-    serializer_class = Vacante_Serializer
+    serializer_class = Obtener_Vacante_Serializer
 
     def get(self, request, *args, **kwargs):
         pk = self.kwargs["pk"]
 
         vacante = Vacante.objects.filter(id=pk)
-        serializer = Vacante_Serializer(vacante, many=True)
+        serializer = self.serializer_class(vacante, many=True)
 
         return Response({'data':serializer.data, 'status':200, 'exito':True})
 
@@ -299,10 +299,10 @@ class VacantesGuardadasView(ApiView):
             return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
 
     def delete(self, request, *args, **kwargs):
-        id_candidato = self.kwargs['id_candidato']
+        id_usuario = self.kwargs['id_usuario']
         id_vacante = self.kwargs['id_vacante']
 
-        vacante = VacantesGuardadas.objects.filter(usuario=id_candidato, vacante=id_vacante)
+        vacante = VacantesGuardadas.objects.filter(usuario=id_usuario, vacante=id_vacante)
         
         if vacante:
             vacante.delete()
@@ -318,13 +318,14 @@ class ObtenerVacantesGuardadasView(ApiView):
 
     def get(self, request, *args, **kwargs):
 
-        pk_candidato = self.kwargs['pk']
+        id_usuario = self.kwargs['pk']
 
-        user = VacantesGuardadas.objects.filter(usuario=pk_candidato)
+        user = VacantesGuardadas.objects.filter(usuario=id_usuario)
         serializer = self.serializer_class(user, many=True)
 
         return Response({'data':serializer.data, 'status':200, 'exito':True})
 
+#Categoria
 class ObtenerCategoriasView(APIView):
 
     permission_classes = [ IsAuthenticated ]
