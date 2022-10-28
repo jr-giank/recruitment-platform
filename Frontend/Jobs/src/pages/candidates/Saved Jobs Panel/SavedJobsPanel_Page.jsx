@@ -7,7 +7,6 @@ import SavedJobs from './components/SavedJobs'
 const SavedJobsPanel_Page = () => {
 
     const { auth  } = useContext(authContext)
-
     const [ vacancies, setVacancies ] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
     const [ cardType, setCardType ] = useState(1)

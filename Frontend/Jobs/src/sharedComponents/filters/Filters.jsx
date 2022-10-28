@@ -5,23 +5,15 @@ import { get, getCountries } from '../../services/services'
 import FiltersWithCheckBox from './FiltersWithCheckBox'
 import FilterWithRButton from './FilterWithRButton'
 
-const filtersInitialState = {
-    category: [], 
-    modalidad: [], 
-    exp: "No", 
-    job_type:[], 
-    countries:[]
-}
-
-const Filters = ({setFiltersVisible}) => {
+const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, handleOnApplyFilters}) => {
 
     const [ countries, setCountries ] = useState([])
     const [ openFilter, setOpenFilter ] = useState(null)
     const firstRendered = useRef(false)
     const displayedFilter = useRef(false)
 
-    const [ filters, setFilters ] = useState({...filtersInitialState})
-    const [ categories, setCategories ] = useState([])
+    const [ categoriesName, setCategoriesName ] = useState([])
+    const [ categoriesId, setCategoriesId ] = useState([])
 
     const filterOutsideClick = useCallback((e)=>{
         if(displayedFilter.current && !document.getElementById(`${openFilter}`).contains(e.target)){
@@ -45,7 +37,10 @@ const Filters = ({setFiltersVisible}) => {
     useEffect(()=>{
         get('obtener/categorias/')
         .then(({data}) => {
-            setCategories([...data.map(cat => cat.nombre)])
+            let categoriesId = data.map(cat => cat.id)
+            let categoriesName = data.map(cat => cat.nombre)
+            setCategoriesName([...categoriesName])
+            setCategoriesId([...categoriesId])
         })
     }, [])
 
@@ -65,18 +60,8 @@ const Filters = ({setFiltersVisible}) => {
 
     const handleShowFilter = (id) => {
         document.getElementById(`${id}`).classList.toggle("hidden")
+        console.log(id)
         setOpenFilter(id)
-    }
-
-    // Limpiar filtros y limpiar elementos checks
-    const handleOnCleanFilters = () => {
-
-        setFilters({...filtersInitialState})
-        const checks = document.querySelectorAll(".checkbox_filter, .radio_filter")
-
-        Array.prototype.map.call(checks, element => {
-            element.checked = false    
-        });
     }
 
     return (
@@ -93,10 +78,11 @@ const Filters = ({setFiltersVisible}) => {
                     id='category_filter'
                 >
                     <FiltersWithCheckBox 
-                        itemsList={categories} 
+                        itemsList={categoriesName} 
                         setFilters={setFilters} 
                         filters={filters} 
-                        target={"category"} />
+                        target={"category"}
+                        valuesItems={categoriesId} />
                 </span>
 
                 <button
@@ -177,6 +163,7 @@ const Filters = ({setFiltersVisible}) => {
                 <span className='border-l border-sixth px-2'>
                     <button 
                         className='px-3 py-1 text-seventh rounded-md ml-2 hover:underline'
+                        onClick={handleOnApplyFilters}
                     >
                         Aplicar
                     </button>
