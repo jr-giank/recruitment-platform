@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Obtener_Vacante_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer, Categoria_Serializer
+from .serializers import Candidato_Serializer, Vacante_Serializer, Obtener_Vacantes_Serializer, Obtener_Vacante_Serializer, Empresa_Serializer, Solicitude_Serializer, Solicitude_Vacante_Serializer, Vacantes_Guardadas_Serializer, Obtener_Vacantes_Guardadas_Serializer, Categoria_Serializer, Candidato_Save_Serializer, Empresa_Save_Serializer
 from users.serializers import UserSerializer
 
 from vacantes.models import Vacante, Solicitude, VacantesGuardadas, Candidato, Empresa, Categoria
@@ -94,15 +94,15 @@ class RegisterView(APIView):
                 "titulo_personal": request.data['titulo_personal']
             }
 
-            serializer_candidato = Candidato_Serializer(data=candidato)
+            serializer_candidato = Candidato_Save_Serializer(data=candidato)
             
             if serializer_candidato.is_valid():
                 serializer_user.save()
                 user_instance = CustomUser.objects.get(email=request.data['email'])
                 
                 candidato.update({'usuario': user_instance.id})
-                serializer_candidato = Candidato_Serializer(data=candidato)
-                
+                serializer_candidato = Candidato_Save_Serializer(data=candidato)
+
                 if serializer_candidato.is_valid():
                     serializer_candidato.save()
                     candidato_instance = Candidato.objects.get(usuario=user_instance.id)
@@ -137,14 +137,14 @@ class RegisterEmpresaView(APIView):
                 "foto": request.data['foto']
             }
 
-            serializer_empresa = Empresa_Serializer(data=empresa)
+            serializer_empresa = Empresa_Save_Serializer(data=empresa)
             
             if serializer_empresa.is_valid():
                 serializer_user_empresa.save()
                 user_empresa_instance = CustomUser.objects.get(email=request.data['email'])
                 
                 empresa.update({'usuario': user_empresa_instance.id})
-                serializer_empresa = Empresa_Serializer(data=empresa)
+                serializer_empresa = Empresa_Save_Serializer(data=empresa)
                 
                 if serializer_empresa.is_valid():
                     serializer_empresa.save()
