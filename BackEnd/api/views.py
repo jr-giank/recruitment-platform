@@ -201,8 +201,7 @@ class FiltrarVacantes(ListAPIView):
         'forma_trabajo': ['in'], 
         'experiencia': ['exact'], 
         'tipo_trabajo': ['in'], 
-        # 'pais': ['in'], 
-        # 'salario_max': ['in']
+        'empresa__pais': ['in']
     }
 
 #Empresa
