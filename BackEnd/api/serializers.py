@@ -14,6 +14,8 @@ class Categoria_Serializer(serializers.ModelSerializer):
 #Empresas
 class Empresa_Serializer(serializers.ModelSerializer):
 
+    usuario = serializers.StringRelatedField()
+
     class Meta:
         model = Empresa
         fields = '__all__'
