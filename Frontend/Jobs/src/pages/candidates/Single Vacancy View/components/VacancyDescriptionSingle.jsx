@@ -24,13 +24,11 @@ const VacancyDescriptionSingle = ({vacancy}) => {
      
       const values = {
           vacante: vacancy.id,
-          usuario: auth.candidato_id
+          usuario: auth.user_id
       }
       
-      console.log(values)
-      post('vacante/guardar/', {'Content-Type': 'application/json'}, values)
+      post('vacante/guardar/', {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, values)
         .then(data => {
-          console.log(data)
           if(data.exito){
             Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", "success")
           }else{
@@ -60,7 +58,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
           <div className='mt-4'>
             <h4 className='font-semibold pb-2'>Descripción de la Vacante</h4>
             <p>
-              Lorem isum lorem ipsum lorem ipsum lorem ipsum lorem ipsum llorem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem  orem 
+               { vacancy?.empresa?.descripcion_empresa }
             </p>
           </div>
     

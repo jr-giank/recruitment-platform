@@ -15,7 +15,7 @@ const SavedJobsPanel_Page = () => {
 
       if(cardType === 1){
         setIsLoading(true)
-        get(`obtener/vacantes/candidato/${auth.candidato_id}/`)
+        get(`obtener/vacantes/candidato/${auth.user_id}/`,{ "Authorization":`Bearer ${auth.token}` })
         .then(data => {
           console.log(data)
             if(data.exito){
@@ -55,7 +55,7 @@ const SavedJobsPanel_Page = () => {
                 ? <div className='w-full flex justify-center mt-4 mb-4'> <Loading /> </div> 
                 : (
                     cardType === 1 &&
-                      <SavedJobs vacancies={vacancies} />
+                      <SavedJobs vacancies={vacancies} setVacancies={setVacancies} />
                 )
               }
           

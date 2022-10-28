@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
+import { authContext } from '../../../context/context'
 import { get } from '../../../services/services'
 import Loading from '../../../sharedComponents/ui/Loading'
 import RequestsBoardView from './components/RequestsBoardView'
@@ -11,9 +12,11 @@ const VacancyRequestsPage = () => {
     const [ isLoading, setIsLoading ] = useState(false)
     const history = useNavigate()
 
+    const {auth} = useContext(authContext)
+
     useEffect(() => {
         setIsLoading(true)
-        get(`solicitudes/vacante/${id}/`)
+        get(`solicitudes/vacante/${id}/`, {"Authorization":`Bearer ${auth.token}`})
         .then(({data}) => {
             setRequests(data)
             setIsLoading(false)

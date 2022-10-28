@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { authContext } from '../../context/context'
 
 import { get, getCountries } from '../../services/services'
 
@@ -14,6 +15,8 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
 
     const [ categoriesName, setCategoriesName ] = useState([])
     const [ categoriesId, setCategoriesId ] = useState([])
+    
+    const { auth } = useContext(authContext)
 
     const filterOutsideClick = useCallback((e)=>{
         if(displayedFilter.current && !document.getElementById(`${openFilter}`).contains(e.target)){
@@ -35,7 +38,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
       }, [])
 
     useEffect(()=>{
-        get('obtener/categorias/')
+        get('obtener/categorias/', {"Authorization":`Bearer ${auth.token}`} )
         .then(({data}) => {
             let categoriesId = data.map(cat => cat.id)
             let categoriesName = data.map(cat => cat.nombre)

@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom'
 
 const VacancyDescription = ({vacancy}) => {
   
+  console.log
+
   let salary;
 
   if(vacancy.salario_max && vacancy.salario_min){
@@ -44,7 +46,7 @@ const VacancyDescription = ({vacancy}) => {
         <div className='mt-4'>
           <h4 className='font-semibold pb-2'>Descripción de la Vacante</h4>
           <p>
-            Lorem isum lorem ipsum lorem ipsum lorem ipsum lorem ipsum llorem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem orem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem  orem 
+           { vacancy?.empresa?.descripcion_empresa }
           </p>
         </div>
 
