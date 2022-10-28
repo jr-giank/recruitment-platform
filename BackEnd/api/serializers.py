@@ -28,7 +28,7 @@ class Vacante_Serializer(serializers.ModelSerializer):
 class Obtener_Vacantes_Serializer(serializers.ModelSerializer):
 
     categoria = serializers.StringRelatedField()
-    empresa = serializers.StringRelatedField()
+    empresa = Empresa_Serializer()
 
     class Meta:
         model = Vacante
@@ -53,6 +53,8 @@ class Obtener_Vacantes_Serializer(serializers.ModelSerializer):
 
 #Candidatos
 class Candidato_Serializer(serializers.ModelSerializer):
+    
+    usuario = serializers.StringRelatedField()
 
     class Meta:
         model = Candidato
@@ -76,7 +78,7 @@ class Solicitude_Serializer(serializers.ModelSerializer):
 class Solicitude_Vacante_Serializer(serializers.ModelSerializer):
 
     vacante = serializers.StringRelatedField()
-    candidato = serializers.StringRelatedField()
+    candidato = Candidato_Serializer()
 
     class Meta:
         model = Solicitude
