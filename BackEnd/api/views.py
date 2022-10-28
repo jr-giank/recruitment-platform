@@ -30,10 +30,10 @@ class ApiView(APIView):
             
             'obtener-categorias': 'api/obtener/categorias/',
             'obtener-vacantes': 'api/vacantes/',
-            'obtener-vacante': 'api/obtener/vacante/id/',
-            'obtener-solicitudes-vacante': 'api/solicitudes/vacante/id/',
-            'obtener-vacantes-empresa': 'api/vacantes/empresa/id/',
-            'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id/',
+            'obtener-vacante': 'api/obtener/vacante/id_vacante/',
+            'obtener-solicitudes-vacante': 'api/solicitudes/vacante/id_vacante/',
+            'obtener-vacantes-empresa': 'api/vacantes/empresa/id_empresa/',
+            'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id_candidato/',
             
             'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_candidato/id_vacante/',
 
@@ -160,7 +160,7 @@ class RegisterEmpresaView(APIView):
 #Vacantes
 class VacantesView(APIView):
     
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Vacante_Serializer
     
     def get(self, request, *args, **kwargs):
@@ -181,6 +181,7 @@ class VacantesView(APIView):
 
 class ObtenerVacanteView(APIView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Vacante_Serializer
 
     def get(self, request, *args, **kwargs):
@@ -193,9 +194,10 @@ class ObtenerVacanteView(APIView):
 
 class FiltrarVacantes(ListAPIView):
 
-    queryset = Vacante.objects.all()
+    permission_classes = [ IsAuthenticated ]
+    filter_backends = [ DjangoFilterBackend ]
     serializer_class = Obtener_Vacantes_Serializer
-    filter_backends = [DjangoFilterBackend]
+    queryset = Vacante.objects.all()
     filterset_fields = {
         'categoria': ['in'],
         'forma_trabajo': ['in'], 
@@ -207,6 +209,7 @@ class FiltrarVacantes(ListAPIView):
 #Empresa
 class EmpresaView(APIView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Empresa_Serializer
 
     def post(self, request, *args, **kwargs):
@@ -221,6 +224,7 @@ class EmpresaView(APIView):
 
 class VacantesEmpresaView(ApiView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Obtener_Vacantes_Serializer
 
     def get(self, request, *args, **kwargs):
@@ -235,6 +239,7 @@ class VacantesEmpresaView(ApiView):
 #Candidato
 class CandidatoView(APIView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Candidato_Serializer
 
     def post(self, request, *args, **kwargs):
@@ -250,6 +255,7 @@ class CandidatoView(APIView):
 #Solicitudes
 class SolicitudesView(APIView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Solicitude_Serializer
 
     def post(self, request, *args, **kwargs):
@@ -264,6 +270,7 @@ class SolicitudesView(APIView):
 
 class SolicitudesVacanteView(ApiView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Solicitude_Vacante_Serializer
 
     def get(self, request, *args, **kwargs):
@@ -278,6 +285,7 @@ class SolicitudesVacanteView(ApiView):
 #Vacantes Guardadas
 class VacantesGuardadasView(ApiView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Vacantes_Guardadas_Serializer
 
     def post(self, request, *args, **kwargs):
@@ -305,6 +313,7 @@ class VacantesGuardadasView(ApiView):
 
 class ObtenerVacantesGuardadasView(ApiView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Obtener_Vacantes_Guardadas_Serializer
 
     def get(self, request, *args, **kwargs):
@@ -318,6 +327,7 @@ class ObtenerVacantesGuardadasView(ApiView):
 
 class ObtenerCategoriasView(APIView):
 
+    permission_classes = [ IsAuthenticated ]
     serializer_class = Categoria_Serializer
 
     def get(self, request, *args, **kwargs):
