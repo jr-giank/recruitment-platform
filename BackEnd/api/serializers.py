@@ -95,9 +95,9 @@ class Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
 
 class Obtener_Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
 
-    vacante = serializers.StringRelatedField()
+    vacante = Obtener_Vacantes_Serializer()
     usuario = serializers.StringRelatedField()
-    fecha_guardado = serializers.StringRelatedField()
+    # fecha_guardado = serializers.StringRelatedField()
 
     class Meta:
         model = VacantesGuardadas
