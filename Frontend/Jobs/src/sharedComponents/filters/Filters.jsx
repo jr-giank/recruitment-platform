@@ -92,19 +92,19 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                     className='rounded-xl px-3 py-1 border border-fifth font-semibold text-[17px]  hover:bg-secondary hover:text-white'
                     onClick={()=>handleShowFilter("modalidad_filter")}
                 >
-                    Modalidad
+                    Tipo de Contrato
                 </button>
 
                 <span 
-                    className='hidden absolute bg-white top-16 left-96 rounded-lg shadow-md text-[15px] py-2' 
+                    className='hidden absolute bg-white top-16 left-80 rounded-lg shadow-md text-[15px] py-2' 
                     id='modalidad_filter'
                 >
                     <FiltersWithCheckBox    
-                        itemsList={["Presencial", "Híbrido", "Remoto"]} 
+                        itemsList={["Contrato Por Tiempo Indefinido", "Contrato Temporal"]}
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"modalidad"} 
-                        valuesItems={["PRESENCIAL", "HIBRIDO", "REMOTO"]}
+                        valuesItems={["INDEFINIDO", "TEMPORAL"]}
                     />
                 </span>
 
@@ -131,18 +131,18 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
                     className='rounded-xl px-3 py-1 border border-fifth font-semibold text-[17px] hover:bg-secondary hover:text-white'
                     onClick={()=>handleShowFilter("jobType_filter")}
                 >
-                    Tipo de Contrato
+                    Modalidad
                 </button>
 
                 <span 
-                    className='hidden absolute bg-white top-16 left-[630px] rounded-lg shadow-md text-[15px] py-2' id='jobType_filter'
+                    className='hidden absolute bg-white top-16 left-[730px] rounded-lg shadow-md text-[15px] py-2' id='jobType_filter'
                 >
                     <FiltersWithCheckBox 
-                        itemsList={["Contrato por tiempo Indefinido", "Contrato Temporal"]} 
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"job_type"} 
-                        valuesItems={["INDEFINIDO", "TEMPORAL"]}
+                        itemsList={["Presencial", "Híbrido", "Remoto"]} 
+                        valuesItems={["PRESENCIAL", "HIBRIDO", "REMOTO"]}
                     />
                 </span>
 
