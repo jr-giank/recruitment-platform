@@ -10,6 +10,8 @@ import VacancyGrid from '../Vacancy View/components/VacancyGrid'
 const VacancyViewPage = () => {
 
   const {auth} = useContext(authContext)
+
+  console.log(auth)
  
   const [ vacancies, setVacancies ] = useState([])
   const [ currentVacancy, setCurrentVacancy ] = useState({})
@@ -19,7 +21,7 @@ const VacancyViewPage = () => {
   useEffect(() => {
     setIsLoading(true)
 
-    get(`vacantes/empresa/3/`)
+    get(`vacantes/empresa/${auth.empresa_id}/`)
     .then(({data}) => {
       setVacancies(data)
       if(data.length > 0){

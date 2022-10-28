@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import { getCountries } from '../../services/services'
+import { get, getCountries } from '../../services/services'
+
 import FiltersWithCheckBox from './FiltersWithCheckBox'
 import FilterWithRButton from './FilterWithRButton'
 
@@ -20,6 +21,7 @@ const Filters = ({setFiltersVisible}) => {
     const displayedFilter = useRef(false)
 
     const [ filters, setFilters ] = useState({...filtersInitialState})
+    const [ categories, setCategories ] = useState([])
 
     const filterOutsideClick = useCallback((e)=>{
         if(displayedFilter.current && !document.getElementById(`${openFilter}`).contains(e.target)){
@@ -39,6 +41,13 @@ const Filters = ({setFiltersVisible}) => {
             setCountries([...countries])
         })
       }, [])
+
+    useEffect(()=>{
+        get('obtener/categorias/')
+        .then(({data}) => {
+            setCategories([...data.map(cat => cat.nombre)])
+        })
+    }, [])
 
     // AGREGAR UN LISTENER PARA ESCUCHAR CUANDO SE LE DA UN CLICK A UN ELEMENTO FUERA DEL FILTRO QUE ESTA ABIERTO
     useEffect(()=> {
@@ -84,7 +93,7 @@ const Filters = ({setFiltersVisible}) => {
                     id='category_filter'
                 >
                     <FiltersWithCheckBox 
-                        itemsList={["Desarrollo Web", "Desarrollo Móvil", "Inteligencia Artificial", "QA", "Desarrollo Frontend", "Desarrollo Backend", "Desarrollo Blockchain", "Desarrollo de VideoJuegos", "Ciencia de Datos"]} 
+                        itemsList={categories} 
                         setFilters={setFilters} 
                         filters={filters} 
                         target={"category"} />

@@ -116,15 +116,13 @@ const VacancyDescription = ({vacancy}) => {
 
         <div className='flex justify-center items-center w-full'>
           
-          <Link to={`/app/recruiter/viewVacancyRequests/${vacancy.id}`} className='bg-secondary text-white rounded-md px-6 py-2'>
+          <Link to={`/app/recruiter/viewVacancyRequests/${vacancy.id}/${vacancy.nombre_puesto}`} className='bg-secondary text-white rounded-md px-6 py-2'>
             Ver Solicitudes
           </Link>
           
           <button className='bg-fourth text-white rounded-md px-6 ml-4 py-2'>Cerrar Vacante</button>
         </div>
       </div>
-
-
     </>
   )
 }

@@ -9,7 +9,7 @@ const RecruitersRouter = () => {
     <Routes>
           <Route path='/createVacancy' element={<VacancyRegistrationPage />} />
           <Route path='/viewVacancies' element={<VacancyViewPage />} />
-          <Route path='/viewVacancyRequests/:id' element={<VacancyRequestsPage />} />
+          <Route path='/viewVacancyRequests/:id/:vacancyName' element={<VacancyRequestsPage />} />
     </Routes>
   )
 }

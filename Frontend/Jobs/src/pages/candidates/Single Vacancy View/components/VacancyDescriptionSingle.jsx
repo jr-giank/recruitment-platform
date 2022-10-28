@@ -1,24 +1,43 @@
-import React , { useState } from 'react'
+import React , { useContext, useState } from 'react'
 import bag from '../../../../assets/icons/maleta.png'
 import check from '../../../../assets/icons/garrapata.png'
 import xSymbol from '../../../../assets/icons/simbolo-x.png'
 import sitOnPc from '../../../../assets/icons/lanza-libre.png'
 import Modal from './Modal'
 import {uid} from 'uid'
+import { post } from '../../../../services/services'
+import { authContext } from '../../../../context/context'
+import Swal from 'sweetalert2'
 
 const VacancyDescriptionSingle = ({vacancy}) => {
 
   const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState([])
-  
+  const { auth } = useContext(authContext)
+
   const handleModalRequests = (e) => {
     e.preventDefault()
     setIsVacancyReqOpen(true)
     document.getElementById("portal").classList.add("modal_show-modal")
   }
 
-   // const handleSaveRequests = (e) => {
-
-  // }
+   const handleSaveRequests = (e) => {
+     
+      const values = {
+          vacante: vacancy.id,
+          usuario: auth.candidato_id
+      }
+      
+      console.log(values)
+      post('vacante/guardar/', {'Content-Type': 'application/json'}, values)
+        .then(data => {
+          console.log(data)
+          if(data.exito){
+            Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", "success")
+          }else{
+            Swal.fire("Error al guardar", "La vacante no pudo ser guardada. Intente nuevamente", "error")
+          }
+        })
+  }
 
     return (
       <>
@@ -100,13 +119,13 @@ const VacancyDescriptionSingle = ({vacancy}) => {
           <div className='flex justify-center items-center w-full'>
           <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6 mx-4' onClick={handleModalRequests}>Solicitar Vacante</button>
              {/* habilitar el metodo handleSaveRequests */}
-             <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6' >Guardar Vacante</button>
+             <button className='bg-secondary text-white rounded-md px-20 py-2 mb-6 mt-6' onClick={handleSaveRequests} >Guardar Vacante</button>
           </div>
         </div>
 
           {
             isVacancyReqOpen && (
-            <Modal setIsVacancyReqOpen={setIsVacancyReqOpen} />
+            <Modal setIsVacancyReqOpen={setIsVacancyReqOpen} vacancyId={vacancy.id} />
             )
           }
         </>
