@@ -25,6 +25,8 @@ const VacancyViewAll = () => {
 
     const { auth } = useContext(authContext)
 
+    console.log(auth)
+
     useEffect(()=>{
 
       setIsLoading(true)

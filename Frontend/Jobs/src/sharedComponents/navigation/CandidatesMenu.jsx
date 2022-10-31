@@ -2,8 +2,11 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { authContext } from '../../context/context'
 import { types } from '../../reducers/types'
+
 import logout from '../../assets/icons/desconectar.png'
 import guardado from '../../assets/icons/guardadas.png'
+import perfil from '../../assets/icons/perfil.png'
+import mensaje from '../../assets/icons/mensaje.png'
 
 import vacante from '../../assets/icons/vacante.png'
 
@@ -19,7 +22,21 @@ const CandidatesMenu = ({onAccount}) => {
   return (
     <div className='flex justify-around'>
         
-        <Link className={`flex flex-col items-center px-2 ` } 
+        <Link className={`flex flex-col items-center px-3 ` } 
+              to='/app/candidate/Profile' 
+        >
+            <img src={perfil} alt="" className='w-7 h-7' />
+            <small>Perfil</small>
+        </Link>
+        
+        <Link className={`flex flex-col items-center px-3 ` } 
+              to='/app/candidate/Profile' 
+        >
+            <img src={mensaje} alt="" className='w-7 h-7' />
+            <small>Mensajes</small>
+        </Link>
+        
+        <Link className={`flex flex-col items-center px-3  ml-1` } 
               to='/app/candidate/viewAllVacancies' 
         >
             <img src={vacante} alt="" className='w-7 h-7' />
@@ -30,7 +47,7 @@ const CandidatesMenu = ({onAccount}) => {
               to='/app/candidate/panel-saved-jobs' 
         >
             <img src={guardado} alt="" className='w-7 h-7' />
-            <small>Vacantes Guardadas</small>
+            <small>Aplicaciones</small>
         </Link>
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>
