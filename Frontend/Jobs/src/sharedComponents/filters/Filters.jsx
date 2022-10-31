@@ -12,7 +12,6 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
     const [ openFilter, setOpenFilter ] = useState(null)
     const firstRendered = useRef(false)
     const displayedFilter = useRef(false)
-
     const [ categoriesName, setCategoriesName ] = useState([])
     const [ categoriesId, setCategoriesId ] = useState([])
     

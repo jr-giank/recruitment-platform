@@ -7,7 +7,7 @@ import { post } from '../../../../services/services';
 const AplicationGrid = ({vacancyId, onCloseModal}) => {
 
     const { auth } = useContext(authContext);
-    const [selectedFile, setSelectedFile] = useState();
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const [ formValues, handleInputChanges ] = useForm({
         mensaje:"",
@@ -15,7 +15,6 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
 
 	const changeHandler = (event) => {
 		setSelectedFile(event.target.files[0]);
-		setIsSelected(true);
 	};
 
 	const handleSubmission = (e) => {

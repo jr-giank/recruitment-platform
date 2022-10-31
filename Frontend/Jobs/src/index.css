@@ -107,8 +107,12 @@ textarea{
   padding-bottom: 25px;
   flex-direction: column;
   background-color: #fff;
-  width: 35%;
+  width: 40%;
   border-radius: 8px;
+}
+
+.expanded{
+  width: 50%;
 }
 
 /* @media (prefers-color-scheme: light) {
