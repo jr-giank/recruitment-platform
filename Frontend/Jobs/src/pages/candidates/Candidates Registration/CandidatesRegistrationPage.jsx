@@ -1,20 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { useForm } from '../../../hooks/useForm'
 import {validateCandidatesRegistrationForm} from '../../../helpers/validators/validateCandidatesRegistration'
 import { getCountries, post } from '../../../services/services'
 
-import jwt_Decode from 'jwt-decode'
-import { authContext } from '../../../context/context'
-import { types } from '../../../reducers/types'
+import { useLogin } from '../../../hooks/useLogin'
+import Swal from 'sweetalert2'
 
 const CandidatesRegistrationPage = () => {
-
-   const {dispatch } = useContext(authContext)
 
     const [ formValues, handleInputChanges ] = useForm({
         name:"",
         apellido:"",
-        sexo: "",
+        sexo: "F",
         email: "",
         password: "",
         nacimiento: "",
@@ -28,7 +25,7 @@ const CandidatesRegistrationPage = () => {
         {name:"apellido", message: null, touched: false},
         {name:"email", message: null, touched: false},
         {name:"password",message: null, touched: false},
-        {name:"sexo",message: null, touched: false},
+        {name:"sexo",message: null},
         {name:"titulo_personal",message: null, touched: false},
         {name:"phoneNumber",message: null},
         {name:"nacimiento",message: null},
@@ -40,6 +37,8 @@ const CandidatesRegistrationPage = () => {
     const [ isDisabled, setIsDisabled ] = useState(true)
     const [countries, setCountries ] = useState([])
     const [ currentSection, setCurrentSection ] = useState(1)
+
+    const setLogged = useLogin();
   
     /* currentSection es la sección del formulario que se muestra: 
   
@@ -57,8 +56,6 @@ const CandidatesRegistrationPage = () => {
       
       const remainingErrors = errors.filter(error => error.message !== null || error.touched === false)
   
-      console.log(remainingErrors)
-
       if(remainingErrors.length === 0 && image !== null){
         setIsDisabled(false)
       }
@@ -108,21 +105,12 @@ const CandidatesRegistrationPage = () => {
     
         post('register/', {}, dataToSend, true)
         .then(data => {
-    
+         
           if(data.exito){
-    
-            // 0 --> Candidato
-            // 1 --> Reclutador
-            const rol = data.data.is_staff ? 1 : 0
-            const decodedToken = jwt_Decode(data.token.access)
-  
-            const payload  = {...decodedToken, rol, token:data.access, tokenRefresh:data.refresh}
-
-            dispatch({type: types.login, 
-              payload
-            })
-    
-            window.localStorage.setItem("itJobToken", JSON.stringify({...payload}))
+            setLogged({...data.token})
+          }
+          else{
+            Swal.fire("Error al registrarse", "Ha ocurrido un error en el registro", "error")
           }
         })
       }
