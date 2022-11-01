@@ -1,15 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { authContext } from '../../../context/context'
+import React, { useEffect, useState } from 'react'
 import { validateCompanyRegistrationForm } from '../../../helpers/validators/validateCompanyRegistration'
 import { useForm } from '../../../hooks/useForm'
 import {  getCountries, post } from '../../../services/services'
 
-import jwt_Decode from 'jwt-decode'
-import { types } from '../../../reducers/types'
+import { useLogin } from '../../../hooks/useLogin'
 
 const CompanyRegistrationPage = () => {
-
-  const {dispatch} = useContext(authContext)
 
   const [ formValues, handleInputChanges ] = useForm({
     nombre:"",
@@ -46,6 +42,8 @@ const CompanyRegistrationPage = () => {
   const [ isDisabled, setIsDisabled ] = useState(true)
   const [countries, setCountries ] = useState([])
   const [ currentSection, setCurrentSection ] = useState(1)
+
+  const setLogged = useLogin()
 
   /* currentSection es la sección del formulario que se muestra: 
     1: Información de la cuenta
@@ -116,19 +114,7 @@ const CompanyRegistrationPage = () => {
     .then(data => {
 
       if(data.exito){
-
-        // 0 --> Candidato
-        // 1 --> Reclutador
-        const rol = data.data.is_staff ? 1 : 0
-
-        const decodedToken = jwt_Decode(data.token.access)
-        const payload  = {...decodedToken, rol, token:data.access, tokenRefresh:data.refresh}
-
-        dispatch({type: types.login, 
-          payload
-        })
-
-        window.localStorage.setItem("itJobToken", JSON.stringify({...payload}))
+         setLogged({...data.token})
       }
     })
 
