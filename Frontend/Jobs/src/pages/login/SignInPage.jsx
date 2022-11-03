@@ -1,16 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { authContext } from '../../context/context'
 import { useForm } from '../../hooks/useForm'
-import { types } from '../../reducers/types'
 import { post } from '../../services/services'
 
-import jwt_decode from 'jwt-decode'
+import { useLogin } from '../../hooks/useLogin'
 
 const SignInPage = () => {
-
-    const {dispatch} = useContext(authContext)
 
     const [ isDisabled, setIsDisabled  ] = useState(true)
     
@@ -18,6 +14,8 @@ const SignInPage = () => {
         email: "",
         password: ""
     })
+    
+    const setLogged = useLogin()
     
      useEffect(() => {
         if(formValues.email !== "" && formValues.password !== ""){
@@ -34,20 +32,10 @@ const SignInPage = () => {
         .then(data =>{
             
             if(data.access){
-                
-                const decodedToken = jwt_decode(data.access)
-                
-                const rol = decodedToken.is_staff ? 1 : 0
-
-                const payload  = {...decodedToken, rol, token:data.access, tokenRefresh:data.refresh}
-
-                dispatch({
-                    type: types.login,
-                    payload
-                })
-
-                window.localStorage.setItem("itJobToken", JSON.stringify({...payload}))
-            }else{
+                setLogged({access: data.access, refresh: data.refresh})
+               
+            }
+            else{
                 Swal.fire("Credenciales inválidas", "Su contraseña o correo son incorrectos", "error")
             }
         })
