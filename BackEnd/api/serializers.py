@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from vacantes.models import Categoria, Empresa, Vacante, Candidato, Solicitude, VacantesGuardadas
+from vacantes.models import Categoria, Empresa, Vacante, Candidato, Solicitude, VacantesGuardada
 
 #Categorias
 class Categoria_Serializer(serializers.ModelSerializer):
@@ -33,6 +33,7 @@ class Vacante_Serializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
 
+        # self.fields['categoria'] = Categoria_Serializer()
         self.fields['categoria'] = serializers.StringRelatedField()
         self.fields['empresa'] = Empresa_Serializer()
 
@@ -69,7 +70,7 @@ class Solicitude_Serializer(serializers.ModelSerializer):
 class Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
 
     class Meta:
-        model = VacantesGuardadas
+        model = VacantesGuardada
         fields = '__all__'
 
     def to_representation(self, obj):

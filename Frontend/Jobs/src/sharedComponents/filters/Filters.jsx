@@ -37,7 +37,7 @@ const Filters = ({setFiltersVisible, filters, setFilters, handleOnCleanFilters, 
       }, [])
 
     useEffect(()=>{
-        get('obtener/categorias/', {"Authorization":`Bearer ${auth.token}`} )
+        get('categorias/', {"Authorization":`Bearer ${auth.token}`} )
         .then(({data}) => {
             let categoriesId = data.map(cat => cat.id)
             let categoriesName = data.map(cat => cat.nombre)

@@ -9,7 +9,7 @@ const SaveGrid = ({vacancy, setVacancies}) => {
 
    const onHandleRemove = (e) => {
         e.preventDefault()
-        f_delete(`vacante/eliminar/guardada/${auth.user_id}/${vacancy.vacante.id}/`, {"Authorization":`Bearer ${auth.token}`})
+        f_delete(`vacante/guardada/eliminar/${auth.user_id}/${vacancy.vacante.id}/`, {"Authorization":`Bearer ${auth.token}`})
         .then(data => {
             if(data.exito){
                 setVacancies(vacancies => vacancies.filter(vac => vac.id !== vacancy.id))

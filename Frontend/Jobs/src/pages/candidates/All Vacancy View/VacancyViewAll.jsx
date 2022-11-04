@@ -30,7 +30,7 @@ const VacancyViewAll = () => {
       setIsLoading(true)
    
       if(location.search){
-        get(`filtrar/vacantes/${location.search}`, {"Authorization":`Bearer ${auth.token}`})
+        get(`vacantes/filtrar/${location.search}`, {"Authorization":`Bearer ${auth.token}`})
         .then(data => {
           setVacancies(data)
           setIsLoading(false)
