@@ -4,7 +4,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status
 
+from django.http import Http404
 from django_filters.rest_framework import DjangoFilterBackend
 
 from . import serializers as s
@@ -20,26 +22,36 @@ class ApiView(APIView):
     def get(self, request, *args, **kwargs):
             
         api_urls = {
-            'token': 'api/token/',
-            'token-refresh': 'api/token/refresh/',
-            
-            'crear-usuario-candidato': 'api/register/',
-            'crear-usuario-empresa': 'api/register/empresa/',
-            'crear-vacante': 'api/vacantes/',
-            'crear-solicitud': 'api/crear/solicitud/',
-            
-            'obtener-categorias': 'api/obtener/categorias/',
-            'obtener-vacantes': 'api/vacantes/',
-            'obtener-vacante': 'api/obtener/vacante/id_vacante/',
-            'obtener-solicitudes-vacante': 'api/solicitudes/vacante/id_vacante/',
-            'obtener-vacantes-empresa': 'api/vacantes/empresa/id_empresa/',
-            'obtener-vacantes-guardadas-candidato': 'api/obtener/vacantes/candidato/id_candidato/',
-            
-            'eliminar-vacante-guardada': 'api/vacante/eliminar/guardada/id_usuario/id_vacante/',
+    
+            'register':{
+                'registrar-candidato': 'register/',
+                'registrar-empresa': 'register/empresa/',
+            },
 
-            'guardar-vacante': 'api/vacante/guardar/',
+            'token': {
+                'obtener-token': 'token/',
+                'obtener-token-refresh': 'token/refresh/',
+            },
 
-            'filtrar-vacantes': 'api/filtrar/vacantes/',
+            'vacantes': {
+                'crear-vacante': 'vacantes/',
+                'obtener-vacantes-empresa': 'vacantes/empresa/<int:id_empresa>/',
+                'obtener-vacante': 'vacante/<int:id_vacante>/',
+                'obtener-vacantes-guardadas': 'vacante/guardada/<int:id_candidato>/',
+                'editar-vacante': 'vacante/<int:id_vacante>/',
+                'guardar-vacante': 'vacante/guardar/',
+                'eliminar-vacante-guardada': 'vacante/guardada/eliminar/<int:id_usuario>/<int:id_vacante>/',
+                'filtrar-vacantes': 'vacantes/filtrar/',
+            },
+
+            'solicitudes': {
+                'crear-solicitud': 'solicitud/',
+                'obtener-solicitudes-vacante': 'solicitudes/vacante/<int:id_vacante>/',  
+            },    
+
+            'categorias': {
+                'obtener-categorias': 'categorias/',
+            }      
         }
 
         return Response(api_urls)
@@ -110,9 +122,9 @@ class RegisterView(APIView):
                         
                     return Response({'data': serializer_user.data, 'token':token, 'status':200, 'exito':True})
             else:
-                return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_candidato.errors})
+                return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error_message': serializer_candidato.errors})
         else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_user.errors})
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error_message': serializer_user.errors})
 
 class RegisterEmpresaView(APIView):
 
@@ -153,9 +165,9 @@ class RegisterEmpresaView(APIView):
                         
                     return Response({'data': serializer_user_empresa.data, 'token':token, 'status':200, 'exito':True})
             else:
-                return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_empresa.errors})
+                return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error_message': serializer_empresa.errors})
         else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error_message': serializer_user_empresa.errors})
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error_message': serializer_user_empresa.errors})
 
 #Vacantes
 class VacantesView(APIView):
@@ -176,21 +188,37 @@ class VacantesView(APIView):
             serializer.save()
 
             return Response({'data':serializer.data, 'status':200, 'exito': True})
-        else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
-class ObtenerVacanteView(APIView):
+class VacanteView(APIView):
 
-    permission_classes = [ IsAuthenticated ]
+    # permission_classes = [ IsAuthenticated ]
     serializer_class = s.Vacante_Serializer
 
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.Vacante.objects.get(pk=pk)
+        except m.Vacante.DoesNotExist:
+            raise Http404
+
     def get(self, request, *args, **kwargs):
-        pk = self.kwargs["pk"]
+        pk = self.kwargs["id_vacante"]
 
         vacante = m.Vacante.objects.filter(id=pk)
         serializer = self.serializer_class(vacante, many=True)
 
         return Response({'data':serializer.data, 'status':200, 'exito':True})
+
+    def put(self, request, id_vacante):
+        pk = self.get_object(id_vacante)
+        serializer = self.serializer_class(pk, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
 class FiltrarVacantes(ListAPIView):
 
@@ -214,7 +242,7 @@ class EmpresaView(APIView):
     # Get vacancies of a company
     def get(self, request, *args, **kwargs):
 
-        pk_empresa = self.kwargs['pk']
+        pk_empresa = self.kwargs['id_empresa']
 
         vacantes = m.Vacante.objects.filter(empresa=pk_empresa).order_by('-fecha', '-hora')
         serializer = s.Vacante_Serializer(vacantes, many=True)
@@ -234,8 +262,7 @@ class CandidatoView(APIView):
             serializer.save()
 
             return Response({'data':serializer.data, 'status':200, 'exito': True})
-        else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
 #Solicitudes
 class SolicitudesView(APIView):
@@ -246,7 +273,7 @@ class SolicitudesView(APIView):
     # Get requests of a vacancy
     def get(self, request, *args, **kwargs):
 
-        pk_vacante = self.kwargs['pk']
+        pk_vacante = self.kwargs['id_vacante']
 
         solicitudes = m.Solicitude.objects.filter(vacante=pk_vacante).order_by('-fecha')
         serializer = self.serializer_class(solicitudes, many=True)
@@ -261,8 +288,7 @@ class SolicitudesView(APIView):
             serializer.save()
 
             return Response({'data':serializer.data, 'status':200, 'exito': True})
-        else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
 #Vacantes Guardadas
 class VacantesGuardadasView(ApiView):
@@ -272,7 +298,7 @@ class VacantesGuardadasView(ApiView):
 
     def get(self, request, *args, **kwargs):
 
-        id_usuario = self.kwargs['pk']
+        id_usuario = self.kwargs['id_candidato']
 
         user = m.VacantesGuardadas.objects.filter(usuario=id_usuario)
         serializer = self.serializer_class(user, many=True)
@@ -286,8 +312,7 @@ class VacantesGuardadasView(ApiView):
             serializer.save()
 
             return Response({'data':serializer.data, 'status':200, 'exito':True})
-        else:
-            return Response({'data':None, 'status':400, 'exito':False, 'error message':serializer.errors})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
     def delete(self, request, *args, **kwargs):
         id_usuario = self.kwargs['id_usuario']
@@ -299,11 +324,10 @@ class VacantesGuardadasView(ApiView):
             vacante.delete()
 
             return Response({'message':'La vacante a sido eliminada', 'status':200, 'exito':True})
-        else:
-            return Response({'message':'La vacante especificada no a sido guardada por dicho usuario', 'status':400, 'exito':False})
+        return Response({'message':'La vacante especificada no a sido guardada por dicho usuario', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
 
 #Categoria
-class ObtenerCategoriasView(APIView):
+class CategoriasView(APIView):
 
     permission_classes = [ IsAuthenticated ]
     serializer_class = s.Categoria_Serializer

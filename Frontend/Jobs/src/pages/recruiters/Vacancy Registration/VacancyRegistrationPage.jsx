@@ -46,7 +46,7 @@ const VacancyRegistrationPage = () => {
   const history = useNavigate()
 
   useEffect(()=> {
-    get('obtener/categorias/', {"Authorization":`Bearer ${auth.token}`})
+    get('categorias/', {"Authorization":`Bearer ${auth.token}`})
     .then(({data}) => {
       setCategories([...data])
     })
