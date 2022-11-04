@@ -15,7 +15,7 @@ const SavedJobsPanel_Page = () => {
 
       if(cardType === 1){
         setIsLoading(true)
-        get(`obtener/vacantes/candidato/${auth.user_id}/`,{ "Authorization":`Bearer ${auth.token}` })
+        get(`vacante/guardada/${auth.user_id}/`,{ "Authorization":`Bearer ${auth.token}` })
         .then(data => {
           console.log(data)
             if(data.exito){

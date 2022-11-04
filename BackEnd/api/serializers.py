@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from vacantes.models import Categoria, Empresa, Vacante, Candidato, Solicitude, VacantesGuardadas
+from vacantes.models import Categoria, Empresa, Vacante, Candidato, Solicitude, VacantesGuardada
 
 #Categorias
 class Categoria_Serializer(serializers.ModelSerializer):
@@ -14,17 +14,15 @@ class Categoria_Serializer(serializers.ModelSerializer):
 #Empresas
 class Empresa_Serializer(serializers.ModelSerializer):
 
-    usuario = serializers.StringRelatedField()
-
     class Meta:
         model = Empresa
         fields = '__all__'
 
-class Empresa_Save_Serializer(serializers.ModelSerializer):
+    def to_representation(self, obj):
 
-    class Meta:
-        model = Empresa
-        fields = '__all__'
+        self.fields['usuario'] = serializers.StringRelatedField()
+
+        return super(Empresa_Serializer, self).to_representation(obj)
 
 #Vacantes
 class Vacante_Serializer(serializers.ModelSerializer):
@@ -33,62 +31,26 @@ class Vacante_Serializer(serializers.ModelSerializer):
         model = Vacante
         fields = '__all__'
 
-class Obtener_Vacantes_Serializer(serializers.ModelSerializer):
+    def to_representation(self, obj):
 
-    categoria = serializers.StringRelatedField()
-    empresa = Empresa_Serializer()
+        # self.fields['categoria'] = Categoria_Serializer()
+        self.fields['categoria'] = serializers.StringRelatedField()
+        self.fields['empresa'] = Empresa_Serializer()
 
-    class Meta:
-        model = Vacante
-        fields = [
-            "id",
-            "nombre_puesto",
-            "categoria",
-            "empresa",
-            "tipo_trabajo",
-            "forma_trabajo",
-            "experiencia",
-            "responsabilidades_puesto",
-            "requisitos_obligatorios",
-            "requisitos_opcionales",
-            "salario_min",
-            "salario_max",
-            "beneficios",
-            "horario_trabajo",
-            "fecha",
-            "hora"
-        ]
-
-class Obtener_Vacante_Serializer(serializers.ModelSerializer):
-
-    empresa = Empresa_Serializer()
-
-    class Meta:
-        model = Vacante
-        fields = '__all__'
-
+        return super(Vacante_Serializer, self).to_representation(obj)
+        
 #Candidatos
 class Candidato_Serializer(serializers.ModelSerializer):
     
-    usuario = serializers.StringRelatedField()
-
     class Meta:
         model = Candidato
         fields = '__all__'
 
-class Candidato_Save_Serializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Candidato
-        fields = '__all__'
+    def to_representation(self, obj):
 
-class Obtener_Candidato_Serializer(serializers.ModelSerializer):
+        self.fields['usuario'] = serializers.StringRelatedField()
 
-    usuario = serializers.StringRelatedField()
-
-    class Meta:
-        model = Candidato
-        fields = '__all__'
+        return super(Candidato_Serializer, self).to_representation(obj)
 
 #Solicitudes
 class Solicitude_Serializer(serializers.ModelSerializer):
@@ -97,28 +59,23 @@ class Solicitude_Serializer(serializers.ModelSerializer):
         model = Solicitude
         fields = '__all__'
 
-class Solicitude_Vacante_Serializer(serializers.ModelSerializer):
+    def to_representation(self, obj):
 
-    vacante = serializers.StringRelatedField()
-    candidato = Candidato_Serializer()
+        self.fields['vacante'] = serializers.StringRelatedField()
+        self.fields['candidato'] = Candidato_Serializer()      
 
-    class Meta:
-        model = Solicitude
-        fields = '__all__'
+        return super(Solicitude_Serializer, self).to_representation(obj)
 
 #Vacantes Guardadas
 class Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
 
     class Meta:
-        model = VacantesGuardadas
+        model = VacantesGuardada
         fields = '__all__'
 
-class Obtener_Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
+    def to_representation(self, obj):
 
-    vacante = Obtener_Vacantes_Serializer()
-    usuario = serializers.StringRelatedField()
-    # fecha_guardado = serializers.StringRelatedField()
+        self.fields['vacante'] = Vacante_Serializer()
+        self.fields['usuario'] = serializers.StringRelatedField()      
 
-    class Meta:
-        model = VacantesGuardadas
-        fields = '__all__'
+        return super(Vacantes_Guardadas_Serializer, self).to_representation(obj)

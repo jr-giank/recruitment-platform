@@ -15,7 +15,7 @@ const VacancyViewSingle = () => {
 
     useEffect(() => {
       setIsLoading(true)
-        get(`obtener/vacante/${location.id}/`, {"Authorization":`Bearer ${auth.token}`})
+        get(`vacante/${location.id}/`, {"Authorization":`Bearer ${auth.token}`})
         .then(({data})=> {
           setVacancy({...data[0]})
           setIsLoading(false)
