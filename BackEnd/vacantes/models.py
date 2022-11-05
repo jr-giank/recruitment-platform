@@ -58,7 +58,7 @@ class Vacante(models.Model):
     nombre_puesto = models.CharField(max_length=50, blank=False, null=False)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    status = models.CharField(max_length=7, choices=status_vacante_opciones, default='A'),
+    status = models.CharField(max_length=7, choices=status_vacante_opciones, default='A')
     tipo_trabajo = models.CharField(max_length=10, choices=tipo_trabajo_opciones, default='TEMPORAL')
     forma_trabajo = models.CharField(max_length=10, choices=forma_trabajo_opciones, default='PRESENCIAL')
     experiencia = models.BooleanField(blank=False, null=False)
@@ -83,7 +83,7 @@ class Candidato(models.Model):
     apellido = models.CharField(max_length=50, blank=True, null=True)
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     mensage_presentacion = models.TextField(blank=True, null=True)
-    correo_contacto = models.EmailField(max_length=60, blank=False, null=False)
+    correo_contacto = models.EmailField(max_length=60, blank=True, null=True)
     pais = models.CharField(max_length=56, blank=True, null=True)
     foto = models.ImageField(upload_to=image_upload_location, blank=True, null=True)
     sexo = models.CharField(max_length=1, blank=True, null=True)
@@ -134,6 +134,9 @@ class Proyecto(models.Model):
     fecha_creacion = models.DateField(blank=False, null=False)
     url_repositorio = models.URLField(blank=False, null=False)
     url_demo = models.URLField(blank=True, null=True)
+    
+    def __str__(self):
+        return f'{self.candidato.nombre} - {self.nombre}'
 
 class ExperienciaLaboralCandidato(models.Model):
 
@@ -144,11 +147,17 @@ class ExperienciaLaboralCandidato(models.Model):
     fecha_inicio = models.DateField(blank=False, null=False)
     fecha_final = models.DateField(blank=False, null=False)
 
+    def __str__(self):
+        return f'{self.candidato.nombre} - {self.nombre_puesto}'
+
 class TecnologiasCandidato(models.Model):
 
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
     nombre_tecnologia = models.CharField(max_length=30, blank=False, null=False)
-    nivel_conocimiento = models.CharField(max_length=7, choices=nivel_conocimiento_opciones, default='A'),
+    nivel_conocimiento = models.CharField(max_length=7, choices=nivel_conocimiento_opciones, default='A')
+
+    def __str__(self):
+        return f'{self.candidato.nombre} - {self.nombre_tecnologia}'
 
 class Mensaje(models.Model):
 
@@ -157,7 +166,13 @@ class Mensaje(models.Model):
     fecha = models.DateField(auto_now_add=True, blank=False, null=False)
     motivo_mensaje = models.CharField(max_length=30, blank=False, null=False)
 
+    def __str__(self):
+        return f'{self.texto}'
+
 class MensajesUsuariosDestino(models.Model):
 
     mensaje = models.ForeignKey(Mensaje, on_delete=models.CASCADE)
     usuario_destino = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=False, null=False)
+
+    def __str__(self):
+        return f'{self.usuario_destino}'
