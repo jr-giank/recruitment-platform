@@ -45,11 +45,34 @@ class Candidato_Serializer(serializers.ModelSerializer):
     
     class Meta:
         model = m.Candidato
-        fields = '__all__'
+        fields = [
+            "id",
+            "nombre",
+            "apellido",
+            "usuario",
+            "mensage_presentacion",
+            "correo_contacto",
+            "pais",
+            "foto",
+            "sexo",
+            "nacimiento",
+            "titulo_personal",
+            "url_web",
+            "url_facebook",
+            "url_twitter",
+            "url_instagram",
+            "url_linkedin",
+            "url_github",
+            "url_telegram",
+            "url_twitter",
+            "cv_1",
+            "cv_2"
+        ]
 
     def to_representation(self, obj):
 
         self.fields['usuario'] = serializers.StringRelatedField()
+        # self.fields['usuario'] = UserSerializer()
 
         return super(Candidato_Serializer, self).to_representation(obj)
 
@@ -105,7 +128,7 @@ class Experiencia_Laboral_Serializer(serializers.ModelSerializer):
 
         self.fields['candidato'] = Candidato_Serializer()      
 
-        return super(Proyecto_Serializer, self).to_representation(obj)
+        return super(Experiencia_Laboral_Serializer, self).to_representation(obj)
 
 #Tecnologias Candidato
 class Tecnologias_Candidato_Serializer(serializers.ModelSerializer):
@@ -116,6 +139,34 @@ class Tecnologias_Candidato_Serializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
 
-        self.fields['candidato'] = Candidato_Serializer()      
+        self.fields['candidato'] = Candidato_Serializer()
+        self.fields['nivel_conocimiento'] = serializers.CharField(source='get_nivel_conocimiento_display')  
 
-        return super(Proyecto_Serializer, self).to_representation(obj)
+        return super(Tecnologias_Candidato_Serializer, self).to_representation(obj)
+
+#Mensaje
+class Mensaje_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.Mensaje
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['usuario'] = serializers.StringRelatedField()
+
+        return super(Mensaje_Serializer, self).to_representation(obj)
+
+#Mensajes Usuarios Destino
+class Mensajes_Destino_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.MensajesUsuariosDestino
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['mensaje'] = Mensaje_Serializer()
+        self.fields['usuario_destino'] = serializers.StringRelatedField()
+
+        return super(Mensajes_Destino_Serializer, self).to_representation(obj)
