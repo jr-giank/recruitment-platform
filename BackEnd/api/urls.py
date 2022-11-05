@@ -34,5 +34,7 @@ urlpatterns = [
     path('vacante/guardada/eliminar/<int:id_usuario>/<int:id_vacante>/', v.VacantesGuardadasView.as_view(), name='eliminar-vacante-guardada'),
     path('solicitud/', v.SolicitudesView.as_view(), name='crear-solicitud'),
     path('solicitudes/vacante/<int:id_vacante>/', v.SolicitudesView.as_view(), name='obtener-solicitudes-vacante'),
+    path('solicitudes/candidato/<int:id_candidato>/', v.SolicitudesCandidatoView.as_view(), name='obtener-solicitudes-candidato'),
+    path('candidato/<int:id_candidato>/', v.CandidatoView.as_view(), name='obtener-candidato'),
     path('categorias/', v.CategoriasView.as_view(), name='obtener-categorias'),
 ]

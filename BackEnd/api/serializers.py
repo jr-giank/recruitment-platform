@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from vacantes.models import Categoria, Empresa, Vacante, Candidato, Solicitude, VacantesGuardada
+from vacantes import models as m
 
 #Categorias
 class Categoria_Serializer(serializers.ModelSerializer):
@@ -8,14 +8,14 @@ class Categoria_Serializer(serializers.ModelSerializer):
     nombre = serializers.StringRelatedField()
 
     class Meta:
-        model = Categoria
+        model = m.Categoria
         fields = '__all__'
 
 #Empresas
 class Empresa_Serializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Empresa
+        model = m.Empresa
         fields = '__all__'
 
     def to_representation(self, obj):
@@ -28,12 +28,13 @@ class Empresa_Serializer(serializers.ModelSerializer):
 class Vacante_Serializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Vacante
+        model = m.Vacante
         fields = '__all__'
 
     def to_representation(self, obj):
 
         # self.fields['categoria'] = Categoria_Serializer()
+        self.fields['status'] = serializers.CharField(source='get_status_display')
         self.fields['categoria'] = serializers.StringRelatedField()
         self.fields['empresa'] = Empresa_Serializer()
 
@@ -43,7 +44,7 @@ class Vacante_Serializer(serializers.ModelSerializer):
 class Candidato_Serializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Candidato
+        model = m.Candidato
         fields = '__all__'
 
     def to_representation(self, obj):
@@ -56,7 +57,7 @@ class Candidato_Serializer(serializers.ModelSerializer):
 class Solicitude_Serializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Solicitude
+        model = m.Solicitude
         fields = '__all__'
 
     def to_representation(self, obj):
@@ -70,7 +71,7 @@ class Solicitude_Serializer(serializers.ModelSerializer):
 class Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
 
     class Meta:
-        model = VacantesGuardada
+        model = m.VacantesGuardada
         fields = '__all__'
 
     def to_representation(self, obj):
@@ -79,3 +80,42 @@ class Vacantes_Guardadas_Serializer(serializers.ModelSerializer):
         self.fields['usuario'] = serializers.StringRelatedField()      
 
         return super(Vacantes_Guardadas_Serializer, self).to_representation(obj)
+
+#Proyectos Candidato
+class Proyecto_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.Proyecto
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['candidato'] = Candidato_Serializer()      
+
+        return super(Proyecto_Serializer, self).to_representation(obj)
+
+#Experiencia Candidato
+class Experiencia_Laboral_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.ExperienciaLaboralCandidato
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['candidato'] = Candidato_Serializer()      
+
+        return super(Proyecto_Serializer, self).to_representation(obj)
+
+#Tecnologias Candidato
+class Tecnologias_Candidato_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.TecnologiasCandidato
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['candidato'] = Candidato_Serializer()      
+
+        return super(Proyecto_Serializer, self).to_representation(obj)
