@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { useSearchParams } from 'react-router-dom'
+
 import Cvs from './cv/Cvs'
 import TechStack from './tech-stack/TechStack'
 import Experience from './experience/Experience'
@@ -14,16 +16,32 @@ import FormExp from './experience/FormExp'
 import FormProjects from './projects/FormProjects'
 import FormContact from './contact/FormContact'
 
-const Portfolio= () => {
+const Portfolio= ({candidateData, setCandidateData, editableData, setEditableData, setIsEdited }) => {
 
   const [ currentSection, setCurrentSection ] = useState(1)
   const [ isOpenModal, setIsOpenModal ] = useState(false)
+  const [ currentDoc, setCurrentDoc ] = useState(null)
+
+  const [ params, setParams ] = useSearchParams()
 
   const onHandleOpenModal = (e) => {
     e.preventDefault()
     setIsOpenModal(true)
     document.getElementById("portal").classList.add("modal_show-modal")
   }
+
+  const onCloseModal = () => {
+    setIsOpenModal(false);
+    document.getElementById("portal").classList.remove("modal_show-modal")
+    setParams()
+    setCurrentDoc(null)
+}
+
+const handleOpenForEdit = (e, exp) => {
+  setCurrentDoc({...exp})
+  onHandleOpenModal(e)
+  setParams({cardType : "Edit"})
+}
 
   return (
     <div className='w-3/4 flex justify-center px-4'>
@@ -66,30 +84,67 @@ const Portfolio= () => {
 
         </div>
       
-          { currentSection === 1 && <Cvs onHandleOpenModal={onHandleOpenModal} /> }
+          { currentSection === 1 && <Cvs cv1 ={candidateData.candidato[0].cv_1}  
+                                         cv2 ={candidateData.candidato[0].cv_2} 
+                                         onHandleOpenModal={onHandleOpenModal}
+                                         setEditableData={setEditableData}
+                                         setIsEdited={setIsEdited}
+                                    /> }
           
-          { currentSection === 2 && (<TechStack onHandleOpenModal={onHandleOpenModal} />) }
+          { currentSection === 2 && (<TechStack 
+                                    data={candidateData} 
+                                    setCandidateData={setCandidateData} 
+                                    onHandleOpenModal={onHandleOpenModal} />) }
           
-          { currentSection === 3 && (<Experience onHandleOpenModal={onHandleOpenModal} />) }
+          { currentSection === 3 && (<Experience 
+                                  data={candidateData}  
+                                  setCandidateData={setCandidateData} 
+                                  onHandleOpenModal={onHandleOpenModal} 
+                                  handleOpenForEdit={handleOpenForEdit} 
+                                  />) }
 
-          { currentSection === 4 && (<Projects onHandleOpenModal={onHandleOpenModal} />) }
+          { currentSection === 4 && (<Projects 
+                                  data={candidateData}
+                                  setCandidateData={setCandidateData} 
+                                  onHandleOpenModal={onHandleOpenModal} 
+                                  handleOpenForEdit={handleOpenForEdit}  />) }
 
-          { currentSection === 5 && (<Contacts onHandleOpenModal={onHandleOpenModal} />) }
+          { currentSection === 5 && (<Contacts onHandleOpenModal={onHandleOpenModal} candidateData={candidateData.candidato[0]} />) }
 
       </div>
 
           {
             isOpenModal && (
-              <PortfolioModal setIsOpenModal={setIsOpenModal} >
-                  { currentSection === 1 && <FormCv /> }
+              <PortfolioModal setIsOpenModal={setIsOpenModal} onCloseModal={onCloseModal}
+               >
+                  { currentSection === 1 && <FormCv 
+                                            onCloseModal={onCloseModal} 
+                                            setEditableData={setEditableData}
+                                            editableData={editableData}
+                                            setIsEdited={setIsEdited}  /> }
 
-                  { currentSection === 2 && <FormTech /> }
+                  { currentSection === 2 && <FormTech 
+                                              setIsOpenModal={setIsOpenModal} 
+                                              onCloseModal={onCloseModal} 
+                                              setCandidateData={setCandidateData} 
+                                              /> }
 
-                  { currentSection === 3 && <FormExp /> }
+                  { currentSection === 3 && <FormExp 
+                                              onCloseModal={onCloseModal} 
+                                              setCandidateData={setCandidateData}
+                                              currentDoc={currentDoc} /> }
                   
-                  { currentSection === 4 && <FormProjects /> }
+                  { currentSection === 4 && <FormProjects 
+                                            onCloseModal={onCloseModal} 
+                                            setCandidateData={setCandidateData}
+                                            currentDoc={currentDoc} /> }
                   
-                  { currentSection === 5 && <FormContact /> }
+                  { currentSection === 5 && <FormContact 
+                                            onCloseModal={onCloseModal} 
+                                            setEditableData={setEditableData}
+                                            candidateData={candidateData.candidato[0]}
+                                            setIsEdited={setIsEdited} 
+                                            /> }
                                   
               </PortfolioModal>
             )

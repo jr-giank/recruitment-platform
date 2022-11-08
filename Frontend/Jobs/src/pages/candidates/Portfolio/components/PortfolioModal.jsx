@@ -1,13 +1,8 @@
 import React from 'react'
 import { Portal } from 'react-portal'
 
-const PortfolioModal = ({children, setIsOpenModal, expanded}) => {
+const PortfolioModal = ({children, expanded, onCloseModal}) => {
   
-  const onCloseModal = () => {
-    setIsOpenModal(false);
-    document.getElementById("portal").classList.remove("modal_show-modal")
-}
-
   return (
     <Portal node={document.getElementById("portal")}>
       <div className={`bg-white modal_content ${expanded && 'expanded' } max-h-[80%] overflow-auto overflow-x-hidden`}>
