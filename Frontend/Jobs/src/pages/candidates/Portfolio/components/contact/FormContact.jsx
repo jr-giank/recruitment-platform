@@ -9,17 +9,23 @@ import linkedin from '../../../../../assets/icons/linkedin.png'
 import email from '../../../../../assets/icons/email.png'
 import pagina from '../../../../../assets/icons/pagina.png'
 
-const FormContact = () => {
+const FormContact = ({setEditableData, candidateData, setIsEdited, onCloseModal}) => {
 
   const [ formValues, handleInputChanges ] = useForm({
-    "correo_contacto": "",
-    "url_github":"",
-    "url_linkedin": "",
-    "url_instagram": "",
-    "url_twitter":"",
-    "url_facebook": "",
-    "url_pagina_personal":""
+    "correo_contacto": candidateData.correo_contacto || "",
+    "url_github": candidateData.url_github || "",
+    "url_linkedin": candidateData.url_linkedin || "" ,
+    "url_instagram": candidateData.url_instagram || "",
+    "url_twitter":candidateData.url_twitter || "",
+    "url_facebook": candidateData.url_facebook || "",
+    "url_web":candidateData.url_web || ""
   })
+
+  const submitEdit = (e) => {
+    setEditableData(data => ({...data, ...formValues}))
+    setIsEdited(true)
+    onCloseModal()
+  }
 
   return (
     <form className='flex flex-col px-3'>
@@ -109,9 +115,9 @@ const FormContact = () => {
         <img src={pagina} alt="" className='w-8 h-8 ' />        
         <input 
           type="text" 
-          name="url_pagina_personal" 
+          name="url_web" 
           id="" 
-          value={formValues.url_pagina_personal} 
+          value={formValues.url_web} 
           onChange={handleInputChanges}
           className='flex-grow ml-2' 
           placeholder='URL Página Personal' 
@@ -119,8 +125,8 @@ const FormContact = () => {
       </div>
           
     <div className='w-full flex mt-6 text-[14px]'>
-      <button className='bg-seventh text-white py-2 rounded-md px-3'>Agregar</button>
-      <button className='bg-fifth  py-2 rounded-md px-3 ml-3'>Cancelar</button>
+      <button className='bg-seventh text-white py-2 rounded-md px-3' onClick={submitEdit}>Agregar</button>
+      <button className='bg-fifth  py-2 rounded-md px-3 ml-3' onClick={onCloseModal}>Cancelar</button>
     </div>
 
   </form>

@@ -2,6 +2,8 @@ import { BASE_URL } from "../constants/baseURL"
 
 export const post = async (endpoint, headers, body, isFormData) =>  {
 
+    console.log(body)
+
     const request = {
         method: 'POST',
         headers,
@@ -11,8 +13,6 @@ export const post = async (endpoint, headers, body, isFormData) =>  {
     const res = await fetch(`${BASE_URL}${endpoint}`, request);    
     const data = await res.json()
     
-    // console.log(data)
-
     return data
 }
 
@@ -40,6 +40,20 @@ export const f_delete = async (endpoint, headers) => {
     return await res.json()
 }
 
+export const put = async(endpoint, headers, body, isFormData) => {
+
+    const request = {
+        method: 'PUT',
+        headers,
+        body: isFormData ? body : JSON.stringify(body)
+    }
+
+    const res = await fetch(`${BASE_URL}${endpoint}`, request);    
+    const data = await res.json()
+    
+    return data
+    
+}
 
 export const getCountries = async () => {
 

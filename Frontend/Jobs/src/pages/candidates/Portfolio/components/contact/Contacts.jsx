@@ -8,7 +8,8 @@ import email from '../../../../../assets/icons/email.png'
 import pagina from '../../../../../assets/icons/pagina.png'
 import ContactGrid from './ContactGrid'
 
-const Contacts = ({contacts, onHandleOpenModal}) => {
+const Contacts = ({candidateData, onHandleOpenModal }) => {
+
   return (
     <div className='flex flex-col'>
 
@@ -18,13 +19,30 @@ const Contacts = ({contacts, onHandleOpenModal}) => {
           </button>
       </div>
 
-      <ContactGrid name={'elkanguro@outlook.com'} url={'https://github.com/bflorentino'} pic={email} />
-      <ContactGrid name={'Github'} url={'https://github.com/bflorentino'} pic={github} />
-      <ContactGrid name={'Linkedin'} url={'https://www.linkedin.com/in/bryan-xavier-florentino-montero-34b00620b/'} pic={linkedin} />
-      <ContactGrid name={'Instagram'} url={'https://www.instagram.com/bflorentin0/'} pic={instagram} />
-      <ContactGrid name={'Twitter'} url={'https://twitter.com/Bryan_X_F_M/'} pic={twitter} />
-      <ContactGrid name={'Facebook'} url={'https://www.facebook.com/bryanxfm23'} pic={facebook} />
-      <ContactGrid name={'Página Web Personal'} url={'https://github.com/bflorentino'} pic={pagina} />
+        {
+          candidateData.url_github && <ContactGrid name={'Github'} url={candidateData.url_github} pic={github} />
+        }
+
+        {
+          candidateData.url_linkedin &&  <ContactGrid name={'Linkedin'} url={candidateData.url_linkedin} pic={linkedin} />
+        }
+
+        {
+          candidateData.url_instagram && <ContactGrid name={'Instagram'} url={candidateData.url_instagram} pic={instagram} /> 
+        }
+
+        {
+          candidateData.url_twitter &&  <ContactGrid name={'Twitter'} url={candidateData.url_twitter} pic={twitter} />
+        }
+
+        {
+          candidateData.url_facebook &&  <ContactGrid name={'Facebook'} url={candidateData.url_facebook} pic={facebook} />
+        }
+
+        {
+          candidateData.url_web && <ContactGrid name={'Página Web Personal'} url={candidateData.url_web} pic={pagina} />
+        }
+      
     </div>
   )
 }
