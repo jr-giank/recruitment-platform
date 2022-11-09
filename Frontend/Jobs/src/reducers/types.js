@@ -2,5 +2,7 @@
 
 export const types = {
     login: 'LOGIN',
-    logout: 'LOGOUT'
+    logout: 'LOGOUT',
+    add: 'ADD',
+    remove: 'REMOVE'
 }

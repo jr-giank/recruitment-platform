@@ -28,10 +28,11 @@ export const get = async (endpoint, headers) =>  {
     return await res.json()
 }
 
-export const f_delete = async (endpoint, headers) => {
+export const f_delete = async (endpoint, headers, body) => {
 
     const request = {
         method: 'DELETE',
+        body : JSON.stringify(body),
         headers
     }
     

@@ -11,21 +11,29 @@ const VacancyViewPage = () => {
   const {auth} = useContext(authContext)
 
   const [ vacancies, setVacancies ] = useState([])
-  const [ currentVacancy, setCurrentVacancy ] = useState({})
+  const [ currentVacancy, setCurrentVacancy ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(false)
-
+  const [ optionStatus, setOptionStatus ] = useState("ABIERTA")
+ 
   useEffect(() => {
     setIsLoading(true)
 
     get(`vacantes/empresa/${auth.empresa_id}/`, { "Authorization":`Bearer ${auth.token}` })
     .then(({data}) => {
+      console.log(data)
       setVacancies(data)
-      if(data.length > 0){
-        setCurrentVacancy(data[0])
-      }
       setIsLoading(false)
     })
   }, [])
+
+  const handleChangeStatus = (e, status) => {
+    e.preventDefault()
+    
+    if(status !== optionStatus){
+      setOptionStatus(status)
+      setCurrentVacancy(null)
+    }
+  }
 
   return (
     
@@ -40,16 +48,33 @@ const VacancyViewPage = () => {
                   (
                     <>
                       <div className='w-1/3 border-r-fifth border-r pt-2 overflow-y-auto'>
-                      <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
+                        <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
+                        <div className='w-full flex justify-center mt-2 border-b border-b-sixth'>  
+                          
+                          <button className='text-tenth font-bold hover:underline' onClick={(e)=>handleChangeStatus(e, "ABIERTA")}>
+                            Abiertas
+                          </button>
+                          <button className='text-tenth font-bold ml-8 hover:underline' onClick={(e)=>handleChangeStatus(e, "CERRADA")}>
+                            Cerradas
+                          </button>
+                        
+                        </div>
                       {
                         vacancies.map(vacancy => (
-                          <VacancyGrid key={vacancy.id} vacancy={vacancy} setCurrentVacancy={setCurrentVacancy} />
+                          vacancy.status === optionStatus &&
+                             <VacancyGrid key={vacancy.id} vacancy={vacancy} setCurrentVacancy={setCurrentVacancy} />
                           ))
-                        }
+                      }
                     </div>
 
                     <div className='w-2/3 overflow-y-auto'>
-                      <VacancyDescription vacancy={currentVacancy} />
+                      {
+                          currentVacancy ?
+                            <VacancyDescription vacancy={currentVacancy} setVacancies={setVacancies}  />
+                          :
+                          <h4 className='text-center mt-8 text-sixth font-bold'>Selecciona tus vacantes</h4>
+                      }
+                        
                     </div>
                   </>
                )

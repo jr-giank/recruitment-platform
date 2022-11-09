@@ -36,20 +36,9 @@ const SaveGrid = ({vacancy, setVacancies}) => {
                     <button className='justify-center cursor-pointer text-[12px] mt-5 py-1.5 rounded-lg px-4 hover:bg-tertiary border border-sixth' onClick={onHandleRemove}>Dejar de guardar</button>  
 
                 </div>
-
-                {/* <p className='text-base'>Scopic Software</p>
-                <ul className='flex space-x-4'>
-                    <li><h5 className='font-bold'>Ubicación</h5> Spain</li>
-                    <li><h5 className='font-bold'>Publicado</h5>29 septiembre de 2022</li>
-                    <li><h5 className='font-bold'>Categoria</h5>Backend Developer</li>
-                </ul> */}
             </div>
         </div>
-
     </div>
-
-    
-
   )
 }
 

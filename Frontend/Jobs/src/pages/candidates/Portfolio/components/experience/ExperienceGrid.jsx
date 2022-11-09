@@ -7,6 +7,7 @@ import { f_delete } from '../../../../../services/services'
 import { authContext } from '../../../../../context/context'
 import { useContext } from 'react'
 import Swal from 'sweetalert2'
+import { uid } from 'uid'
 
 const ExperienceGrid = ({exp , handleOpenForEdit, setCandidateData}) => {
 
@@ -59,9 +60,13 @@ const ExperienceGrid = ({exp , handleOpenForEdit, setCandidateData}) => {
   
           {
             isExpanded && (
-                  <p className='ml-4 my-2'>
-                    {exp.responsabilidades}
-                </p>
+                  <ul className='ml-8 my-2 text-[15px] list-disc'>
+                    {
+                      exp.responsabilidades.split("\n").map(resp => (
+                        <li key={uid()}>{resp}</li>
+                    ))
+                    }
+                </ul>
             )
           }
   
