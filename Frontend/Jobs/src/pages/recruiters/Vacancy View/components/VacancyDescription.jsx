@@ -1,15 +1,45 @@
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
+import  { Link, useNavigate } from 'react-router-dom'
+
+import ModalDelete from './ModalDelete'
+
+import { authContext, vacancyContext } from '../../../../context/context'
+
 import bag from '../../../../assets/icons/maleta.png'
 import check from '../../../../assets/icons/garrapata.png'
 import xSymbol from '../../../../assets/icons/simbolo-x.png'
 import sitOnPc from '../../../../assets/icons/lanza-libre.png'
+import edit from '../../../../assets/icons/editar.png'
+import remove from '../../../../assets/icons/eliminar.png'
+
 import { uid } from 'uid';
-import { Link } from 'react-router-dom'
 
-const VacancyDescription = ({vacancy}) => {
+import { f_delete, get, put } from '../../../../services/services'
+
+import { types } from '../../../../reducers/types'
+import Swal from 'sweetalert2'
+import { useState } from 'react'
+import { useEffect } from 'react'
+
+const VacancyDescription = ({vacancy, setVacancies, setCurrentVacancy}) => {
+
+  const history = useNavigate()
+  const { dispatch2 } = useContext(vacancyContext)
+  const { auth } = useContext(authContext)
   
-  console.log
+  const [ vacancyDelOpen, setIsVacancyDelOpen ] = useState(false)
+  const [ requestAmount, setRequestAmount ] = useState(0)
 
+  useEffect(()=> {
+    get(`solicitudes/vacante/${vacancy.id}/`,   { "Authorization":`Bearer ${auth.token}` })
+    .then(res => {
+      if(res.exito){
+        setRequestAmount(res.data.length)
+      }
+    })
+  }, [])
+
+  // Configuracion sobre salario
   let salary;
 
   if(vacancy.salario_max && vacancy.salario_min){
@@ -25,14 +55,100 @@ const VacancyDescription = ({vacancy}) => {
     salary = "No Disponible"
   }
 
+  const handleCloseVacancy = (e) => {
+    e.preventDefault()
+
+    Swal.fire({
+      title: "Cerrar Vacante",
+      text : "¿Estás seguro de que deseas cerrar esta vacante? Esta acción es irreversible y ya no se podrán hacer mas solicitudes a esta vacante",
+      icon: "warning",
+      showDenyButton: true,
+      showConfirmButton: true,
+      confirmButtonText : "Aceptar",
+      denyButtonText: "Cancelar"
+    })
+    .then(result => {
+
+      if(result.isConfirmed){
+                put(`vacante/${vacancy.id}/`, 
+                    {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, 
+                    {...vacancy, status: 'C', empresa: auth.empresa_id, categoria:1 } )
+               .then(res => {
+              if(res.exito){
+                // La vacante cerrada se reflejará en el state de todas las vacantes
+                setVacancies(currentData => currentData.map(cur => cur.id === res.data.id ? res.data : cur))
+                Swal.fire("Cerrada", "La vacante ha sido cerrada")
+              }
+          })
+      }
+    })
+  }
+
+  const handleEditMode = (e) => {
+    dispatch2({type: types.add, payload: {...vacancy, toEdit: true}})
+    history({pathname :'/app/recruiter/createVacancy'})
+  }
+  
+  const onHandleModal = (e) => {
+    e.preventDefault()
+    if(requestAmount > 0){
+      setIsVacancyDelOpen(true)
+      document.getElementById("portal").classList.add("modal_show-modal")
+    }
+    else{
+      deleteWithNoRequests()
+    }
+  }
+
+  const deleteWithNoRequests = () => {
+    
+    Swal.fire({
+      title: "Eliminar Vacante",
+      text : "¿Estás seguro de que deseas eliminar esta Vacante? Esta acción no se puede revertir",
+      showDenyButton: true,
+      showConfirmButton: true,
+      confirmButtonText : "Aceptar",
+      denyButtonText: "Cancelar"
+    })
+    .then(result => {
+      if(result.isConfirmed){
+              f_delete(`vacante/${vacancy.id}/`, 
+                    { 'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, 
+                    {
+                      usuario: "",
+                      texto: "",
+                      motivo_mensaje: ""
+                    })
+              .then(res => {
+                if(res.exito){
+                  Swal.fire("Vacante eliminada", "La vacante ha sido eliminada")
+                  setVacancies(vacancies => vacancies.filter(vac => vac.id !== vacancy.id))
+                  setCurrentVacancy(null)
+                }
+                else{
+                  Swal.fire("Error al eliminar Vacante", "La Vacante no pudo ser eliminada", "error")
+                  console.log(res)
+                }
+              })
+      }
+    })
+
+  }
+
   return (
     <>
       <div className='flex flex-col px-4 w-full mb-4'>
 
-        <div>
-          <h2 className='font-semibold mt-2'>{vacancy.nombre_puesto}</h2>
-          <small>150 Solicitudes</small>
-        </div>
+      <div className='w-full flex justify-between mt-2'>
+          <span>
+            <h2 className='font-semibold'>{vacancy.nombre_puesto}</h2>
+            <small>{requestAmount} solicitudes</small>
+          </span>
+          <div className='mt-2'>
+            <button onClick={handleEditMode}><img src={edit} alt="" className='w-6 h-6' /></button>
+            <button><img src={remove} alt="" className='w-6 h-6 ml-4' onClick={onHandleModal} /></button>
+          </div>
+      </div>
 
         <div className='mt-2'>
           <p><strong>Categoria</strong>: {vacancy.categoria} </p> 
@@ -122,9 +238,22 @@ const VacancyDescription = ({vacancy}) => {
             Ver Solicitudes
           </Link>
           
-          <button className='bg-fourth text-white rounded-md px-6 ml-4 py-2'>Cerrar Vacante</button>
+          {
+            vacancy.status === "ABIERTA" && 
+              <button className='bg-fourth text-white rounded-md px-6 ml-4 py-2' onClick={handleCloseVacancy}>
+                Cerrar Vacante
+              </button>
+          }
         </div>
       </div>
+      {
+       vacancyDelOpen && <ModalDelete 
+                            setVacancies={setVacancies} 
+                            setIsVacancyDelOpen={setIsVacancyDelOpen} 
+                            vacancy={vacancy} 
+                            setCurrentVacancy={setCurrentVacancy} 
+                          /> 
+      }
     </>
   )
 }

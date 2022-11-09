@@ -40,6 +40,7 @@ const VacancyViewAll = () => {
         get ('vacantes/', {"Authorization":`Bearer ${auth.token}`},)
         .then(({data})=> {
           setVacancies(data)
+          console.log(data)
           setIsLoading(false)
         })
       }
@@ -108,7 +109,8 @@ const VacancyViewAll = () => {
                 <h1 className='text-center font-bold text-2xl'>Vacantes disponibles</h1>
                   {
                     vacancies.map(vacancy => (
-                      <VacancyGridAll key={vacancy.id} vacancy={vacancy} />
+                      vacancy.status ==="ABIERTA" &&
+                          <VacancyGridAll key={vacancy.id} vacancy={vacancy} />
                       ))
                     }
                 </>

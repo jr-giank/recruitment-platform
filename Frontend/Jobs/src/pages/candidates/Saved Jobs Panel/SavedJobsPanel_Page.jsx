@@ -29,7 +29,6 @@ const SavedJobsPanel_Page = () => {
       else{
         get(`solicitudes/candidato/${auth.candidato_id}/`,{ "Authorization":`Bearer ${auth.token}` })
         .then(data => {
-          console.log(data)
           if(data.exito){
             setVacancies([...data.data])
           }

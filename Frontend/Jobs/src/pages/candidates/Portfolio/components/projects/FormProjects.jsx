@@ -24,7 +24,7 @@ const FormProjects = ({ onCloseModal, setCandidateData, currentDoc }) => {
 
   const { auth } = useContext(authContext)
 
-  const foto_proyecto = currentDoc.foto_proyecto 
+  const foto_proyecto = currentDoc?.foto_proyecto 
                                         ? `http://127.0.0.1:8000${currentDoc.foto_proyecto}` 
                                         :  null
 

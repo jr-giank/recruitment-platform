@@ -1,43 +1,45 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { authContext } from '../../../context/context'
+import { authContext, vacancyContext } from '../../../context/context'
 import { validateVacancyForm } from '../../../helpers/validators/ValidateVacancyRegistration'
 import { useForm } from '../../../hooks/useForm'
-import { get, post } from '../../../services/services'
+import { types } from '../../../reducers/types'
+import { get, post, put } from '../../../services/services'
 
 const VacancyRegistrationPage = () => {
 
   const {auth} = useContext(authContext)
+  const { vac, dispatch2 } = useContext(vacancyContext) 
 
-  const [ formValues, handleInputChanges, handleCheckChanges ] = useForm({
-    nombre_puesto:"Desarrollador Backend Java",
-    categoria: 1,
-    tipo_trabajo: "TEMPORAL",
-    forma_trabajo: "REMOTO",
-    experiencia: 'true',
-    responsabilidades_puesto: "Crear API REST.\nMantenimiento de componentes ya existentes.",
-    requisitos_obligatorios: "5 años de experiencia en Java.\nPor lo menos un año de experiencia en HTML, CSS y JS.\nConocimiento de algún framework como React o Angular\nGit\nMetodología Scrum",
-    requisitos_opcionales: "Manejo de Docker\nConocimientos de AWS",
-    beneficios: "Plan de seguro médico familiar. \n1 mes de vacaciones al año.",
-    hora_entrada: "08:00",
-    hora_salida: "16:00",
-    empresa: 1,
-    horario_trabajo:"8:00 a.m - 5:00 p.m",
-    salario_min:75000,
-    salario_max: 95000,
+  // Se estan utilizando las propiedades del context como estado inicial para el formulario. Esto solo aplicará para los casos en que se vaya a editar una vacante. Si la vacante se creará nueva, en este caso los valores del formulario serán vacios. Se usa la propiedad edit del objeto del vacancyContext (vac) para saber si se va a editar o no.
+
+  const [ formValues, handleInputChanges, handleCheckChanges, ] = useForm({
+    nombre_puesto:            vac.toEdit ? vac.nombre_puesto : "",
+    categoria:                1,
+    tipo_trabajo:             vac.toEdit ? vac.tipo_trabajo   : "",
+    forma_trabajo:            vac.toEdit ? vac.forma_trabajo :  "",
+    experiencia:              vac.toEdit ? vac.experiencia?.toString() : 'true',
+    responsabilidades_puesto: vac.toEdit ? vac.responsabilidades_puesto : "",
+    requisitos_obligatorios:  vac.toEdit ? vac.requisitos_obligatorios :  "",
+    requisitos_opcionales:    vac.toEdit ? vac.requisitos_opcionales : "",
+    beneficios:               vac.toEdit ? vac.beneficios :"",
+    hora_entrada:             vac.toEdit ? vac.horario_trabajo?.split("-")[0] : "",
+    hora_salida:              vac.toEdit ? vac.horario_trabajo?.split("-")[1] : "",
+    salario_min:              vac.toEdit ? vac.salario_min : 0,
+    salario_max:              vac.toEdit ? vac.salario_max : 0,
     companyDescription: true
   })
 
   const [ errors, setErrors ] = useState([
-      {name:"nombre_puesto", message: null, touched: false},
-      {name:"categoria", message: null, touched: false},
-      {name:"tipo_trabajo", message: null, touched: false},
-      {name:"forma_trabajo",message: null, touched: false},
-      {name:"responsabilidades_puesto",message: null, touched: false},
-      {name:"requisitos_obligatorios",message: null, touched: false},
+      {name:"nombre_puesto",           message: null, touched: vac.toEdit ? true:  false},
+      {name:"categoria",               message: null, touched: vac.toEdit ? true: false},
+      {name:"tipo_trabajo",            message: null, touched: vac.toEdit ? true: false},
+      {name:"forma_trabajo",           message: null, touched: vac.toEdit ? true: false},
+      {name:"responsabilidades_puesto",message: null, touched: vac.toEdit ? true: false},
+      {name:"requisitos_obligatorios", message: null, touched: vac.toEdit ? true: false},
       {name: "salary", message:null},
-      {name: "horario_trabajo", message:null, touched: false},
+      {name: "horario_trabajo",        message:null, touched: vac.toEdit ? true: false},
   ]) 
 
   const [ isDisabled, setIsDisabled ] = useState(true)
@@ -46,6 +48,7 @@ const VacancyRegistrationPage = () => {
   const history = useNavigate()
 
   useEffect(()=> {
+
     get('categorias/', {"Authorization":`Bearer ${auth.token}`})
     .then(({data}) => {
       setCategories([...data])
@@ -62,6 +65,12 @@ const VacancyRegistrationPage = () => {
     
   }, [errors])
 
+  useEffect(()=>{ 
+    return()=> {
+      dispatch2({type: types.remove})
+    }
+  }, [])
+
   const handleOnSubmit = (e) => {
     e.preventDefault()
 
@@ -69,13 +78,28 @@ const VacancyRegistrationPage = () => {
     formValues.horario_trabajo = `${formValues.hora_entrada}-${formValues.hora_salida}`
     formValues.empresa = auth.empresa_id
 
-    post('vacantes/',{'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},  formValues)
+    if(vac.toEdit){
+      formValues.status = vac.status === "ABIERTA" ? 'A' : 'C'
+    }
+
+    let method;
+
+    // Encapsular el método de peticion correspondiente
+    if(vac.toEdit){
+      method = () => put(`vacante/${vac.id}/`, {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},  formValues) 
+    } 
+    else{
+      method = () =>  post('vacantes/',{'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},  formValues)
+    }
+
+      method()
         .then((data) => {
           if(data.status === 200){
-            Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", 'success')
+            Swal.fire("Cambios guardados", "La información ha sido guardada exitosamente", 'success')
             history('/app/recruiter/viewVacancies')
           }else{
-            Swal.fire("Error al guardar vacante", "La vacante no se ha podido guardar correctamente", "error")
+            Swal.fire("Error al guardar cambios", "Los cambios no se pudieron guardar correctamente", "error")
+            console.log(data)
           }
       })   
   }
@@ -292,7 +316,7 @@ const VacancyRegistrationPage = () => {
               type='submit'
               onClick={handleOnSubmit}
             >
-              Registrar
+              {vac.toEdit ? 'Guardar Cambios' : 'Registrar' } 
             </button>
             
           </form>

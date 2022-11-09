@@ -446,7 +446,7 @@ class VacantesGuardadasView(ApiView):
         id_usuario = self.kwargs['id_usuario']
         id_vacante = self.kwargs['id_vacante']
 
-        vacante = m.VacantesGuardadas.objects.filter(usuario=id_usuario, vacante=id_vacante)
+        vacante = m.VacantesGuardada.objects.filter(usuario=id_usuario, vacante=id_vacante)
         
         if vacante:
             vacante.delete()
