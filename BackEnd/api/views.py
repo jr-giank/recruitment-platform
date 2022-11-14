@@ -47,6 +47,7 @@ class ApiView(APIView):
 
             'solicitudes': {
                 'crear-solicitud': 'api/solicitud/',
+                'atualizar-solicitud': 'api/solicitud/id_solicitud/',
                 'obtener-solicitudes-vacante': 'api/solicitudes/vacante/id_vacante/',  
                 'obtener-solicitudes-candidato': 'api/solicitudes/candidato/id_candidato/',
             },   
@@ -80,7 +81,21 @@ class ApiView(APIView):
             },
 
             'mensajes': {
-                'obtener-mensajes': 'api/mensaje/id_usuario/',
+                'actualizar-mensajes': 'api/mensaje/id_mensaje/',
+                'obtener-mensajes': 'api/mensajes/id_usuario/',
+            },
+
+            'pruebas': {
+                'crear-prueba': 'api/prueba/',
+                'actualizar-prueba': 'api/prueba/id_prueba>/',
+                'obtener-pruebas-empresa': 'api/prueba/id_empresa>/',
+            },
+
+            'pruebas-tecnicas-asignadas': { 
+                'crear-asignacion-prueba': 'api/prueba/asignada/',
+                'obtener-prueba-asignada': 'api/prueba/asignada/id_candidato>/',
+                'actualizar-prueba-asignada': 'api/prueba/asignada/id_prueba_tecnica_asignada>/',
+                'obtener-pruebas-vacante': 'api/prueba/vacante/<id_vacante>/',
             }
         }
 
@@ -222,7 +237,7 @@ class VacantesView(APIView):
 
 class VacanteView(APIView):
 
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = s.Vacante_Serializer
 
     def get_object(self, pk):
@@ -369,8 +384,26 @@ class CandidatoView(APIView):
         return Response({'data':{'candidato':serializer_candidato.data, 'proyectos':serializer_proyecto.data, 'experiencia_laboral':serializer_experiencia.data, 'tecnologias':serializer_tecnologias.data}, 'status':status.HTTP_200_OK, 'exito':True})
 
     def put(self, request, id_candidato):
-        pk = self.get_object(id_candidato)
-        serializer = self.serializer_class(pk, data=request.data)
+        canditato = self.get_object(id_candidato)
+        data = request.data
+
+        if 'cv_1' in request.data and request.data['cv_1'] == "" or 'cv_2' in request.data and request.data['cv_2'] == "":
+            
+            if canditato.cv_1 and 'cv_1' in data:
+                canditato.cv_1.storage.delete(canditato.cv_1.name)
+                canditato.cv_1 = None
+
+                data.pop('cv_1')
+            
+            if canditato.cv_2 and 'cv_2' in data:
+                canditato.cv_2.storage.delete(canditato.cv_2.name)
+                canditato.cv_2 = None
+
+                data.pop('cv_2')
+            
+            canditato.save()
+
+        serializer = self.serializer_class(canditato, data=request.data)
         
         if serializer.is_valid():
             serializer.save()
@@ -382,6 +415,14 @@ class SolicitudesView(APIView):
 
     permission_classes = [ IsAuthenticated ]
     serializer_class = s.Solicitude_Serializer
+
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.Solicitude.objects.get(pk=pk)
+        except m.Solicitude.DoesNotExist:
+            raise Http404
 
     # Requests of a vacancy
     def get(self, request, *args, **kwargs):
@@ -403,6 +444,28 @@ class SolicitudesView(APIView):
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito': True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
+class ActualizarSolicitudesView(APIView):
+
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Solicitude_Serializer
+
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.Solicitude.objects.get(pk=pk)
+        except m.Solicitude.DoesNotExist:
+            raise Http404
+
+    def put(self, request, id_solicitud):
+        pk = self.get_object(id_solicitud)
+        serializer = self.serializer_class(pk, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+    
 class SolicitudesCandidatoView(APIView):
 
     permission_classes = [ IsAuthenticated ]
@@ -412,11 +475,22 @@ class SolicitudesCandidatoView(APIView):
     def get(self, request, *args, **kwargs):
 
         pk_candidato = self.kwargs['id_candidato']
+        serializer_empresa = None
+
+        vacantes = []
 
         solicitudes = m.Solicitude.objects.filter(candidato=pk_candidato).order_by('-fecha')
         serializer = s.Solicitude_Serializer(solicitudes, many=True)
 
-        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        for solicitud in solicitudes:
+            
+            vacante = m.Vacante.objects.get(id=solicitud.vacante.id)
+            
+            serializer_empresa = s.Vacante_Serializer(vacante, many=False)
+
+            vacantes.append(serializer_empresa.data)
+
+        return Response({'data':serializer.data, 'vacantes':vacantes, 'status':status.HTTP_200_OK, 'exito':True})
 
 #Vacantes Guardadas
 class VacantesGuardadasView(ApiView):
@@ -600,6 +674,30 @@ class TecnologiasCandidatoView(APIView):
             return Response({'message':'La tecnologia a sido eliminada', 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'message':'La tecnologia no se a podido eliminar', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
 
+#Mensajes Destino
+class MensajesView(APIView):
+
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Mensaje_Serializer
+
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.Mensaje.objects.get(pk=pk)
+        except m.Mensaje.DoesNotExist:
+            raise Http404
+
+    def put(self, request, id_mensaje):
+        mensaje = self.get_object(id_mensaje)
+        serializer = self.serializer_class(mensaje, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+    
+#Mensajes Destino
 class MensajesDestinosView(APIView):
 
     permission_classes = [ IsAuthenticated ]
@@ -609,7 +707,124 @@ class MensajesDestinosView(APIView):
 
         id_usuario = self.kwargs['id_usuario']
 
-        usuario = m.MensajesUsuariosDestino.objects.filter(usuario_destino=id_usuario)
-        serializer = self.serializer_class(usuario, many=True)
+        mensajes = m.MensajesUsuariosDestino.objects.filter(usuario_destino=id_usuario)
+        serializer = self.serializer_class(mensajes, many=True)
 
         return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+
+#Prueba tecnica
+class PruebaTecnicaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Serializer
+
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.PruebaTecnica.objects.get(pk=pk)
+        except m.PruebaTecnica.DoesNotExist:
+            raise Http404
+
+    def get(self, request, *args, **kwargs):
+
+        id_empresa = self.kwargs['pk']
+
+        pruebas = m.PruebaTecnica.objects.filter(empresa=id_empresa)
+        serializer = self.serializer_class(pruebas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+
+    def put(self, request, pk):
+        prueba = self.get_object(pk)
+        serializer = self.serializer_class(prueba, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+
+class CrearPruebaTecnicaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Serializer
+
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+
+#Prueba tecnica asignada
+class PruebaTecnicaAsignadaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Asignada_Serializer
+
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.PruebaTecnicaAsignada.objects.get(pk=pk)
+        except m.PruebaTecnicaAsignada.DoesNotExist:
+            raise Http404
+
+    def get(self, request, *args, **kwargs):
+
+        id_candidato = self.kwargs['pk']
+
+        pruebas = m.PruebaTecnicaAsignada.objects.filter(candidato=id_candidato)
+        serializer = self.serializer_class(pruebas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+
+    def put(self, request, pk):
+        prueba_asignada = self.get_object(pk)
+        serializer = self.serializer_class(prueba_asignada, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+
+class CrearPruebaTecnicaAsignadaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Asignada_Serializer
+
+    def post(self, request, *args, **kwargs):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+
+class PruebasAsignadasVacante(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Asignada_Serializer
+    
+    def get(self, request, *args, **kwargs):
+
+        vacante = self.kwargs['id_vacante']
+
+        asignaciones_prueba = []
+
+        pruebas = m.PruebaTecnica.objects.filter(vacante=vacante)
+        
+        for prueba in pruebas:
+            
+            asignacion = m.PruebaTecnicaAsignada.objects.get(prueba=prueba)
+        
+            serializer = self.serializer_class(asignacion, many=False)
+
+            asignaciones_prueba.append(serializer.data)
+
+        return Response({'data':asignaciones_prueba, 'status':status.HTTP_200_OK, 'exito':True})
