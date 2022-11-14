@@ -13,7 +13,7 @@ class Categoria_Serializer(serializers.ModelSerializer):
 
 #Empresas
 class Empresa_Serializer(serializers.ModelSerializer):
-
+    
     class Meta:
         model = m.Empresa
         fields = '__all__'
@@ -33,9 +33,8 @@ class Vacante_Serializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
 
-        # self.fields['categoria'] = Categoria_Serializer()
+        self.fields['categoria'] = Categoria_Serializer()
         self.fields['status'] = serializers.CharField(source='get_status_display')
-        self.fields['categoria'] = serializers.StringRelatedField()
         self.fields['empresa'] = Empresa_Serializer()
 
         return super(Vacante_Serializer, self).to_representation(obj)
@@ -170,3 +169,31 @@ class Mensajes_Destino_Serializer(serializers.ModelSerializer):
         self.fields['usuario_destino'] = serializers.StringRelatedField()
 
         return super(Mensajes_Destino_Serializer, self).to_representation(obj)
+
+#Prueba tecnica
+class Prueba_Tecnica_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.PruebaTecnica
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['empresa'] = Empresa_Serializer()
+        self.fields['vacante'] = Vacante_Serializer()
+
+        return super(Prueba_Tecnica_Serializer, self).to_representation(obj)
+
+#Prueba tecnica asignada
+class Prueba_Tecnica_Asignada_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.PruebaTecnicaAsignada
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['candidato'] = Candidato_Serializer()
+        self.fields['prueba'] = Prueba_Tecnica_Serializer()
+
+        return super(Prueba_Tecnica_Asignada_Serializer, self).to_representation(obj)

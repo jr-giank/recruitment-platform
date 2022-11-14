@@ -27,6 +27,16 @@ nivel_conocimiento_opciones = [
     ('D', 'Avanzado')
 ]
 
+status_mensajes_opciones = [
+    ('N', 'No leído'),
+    ('V', 'Visto')
+]
+
+status_prueba_tecnica_opciones = [
+    ('E', 'En curso'),
+    ('F', 'Finalizada')
+]
+
 # Create your models here.
 class Categoria(models.Model):
     
@@ -165,6 +175,7 @@ class Mensaje(models.Model):
     texto = models.TextField(blank=False, null=False)
     fecha = models.DateField(auto_now_add=True, blank=False, null=False)
     motivo_mensaje = models.CharField(max_length=30, blank=False, null=False)
+    status = models.CharField(max_length=8, choices=status_mensajes_opciones, default='N')
 
     def __str__(self):
         return f'{self.texto}'
@@ -176,3 +187,26 @@ class MensajesUsuariosDestino(models.Model):
 
     def __str__(self):
         return f'{self.usuario_destino}'
+
+class PruebaTecnica(models.Model):
+    
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=30, blank=False, null=False)
+    mandato = models.TextField(blank=False, null=False)
+    tecnologias = models.TextField(blank=True, null=True)
+    info_subida = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.empresa} - {self.vacante}'
+
+class PruebaTecnicaAsignada(models.Model):
+    
+    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
+    prueba = models.ForeignKey(PruebaTecnica, on_delete=models.CASCADE)
+    fecha_limite = models.DateField(blank=False, null=False)
+    fecha_asignacion = models.DateField(auto_now_add=True, blank=False, null=False)
+    status = models.CharField(max_length=10, choices=status_prueba_tecnica_opciones, default='E')
+
+    def __str__(self):
+        return f'{self.candidato} - {self.prueba}'
