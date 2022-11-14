@@ -69,9 +69,6 @@ class ApiView(APIView):
                     'registrar-tecnologia': 'api/tecnologia/',
                     'editar-tecnologia': 'api/tecnologia/id_tecnologia/',
                     'eliminar-tecnologia': 'api/tecnologia/id_tecnologia/',
-                },
-                'pruebas-tecnicas': { 
-                    'obtener-prueba-asignada': 'api/prueba/asignada/id_candidato>/',
                 }
             },
 
@@ -85,7 +82,7 @@ class ApiView(APIView):
 
             'mensajes': {
                 'actualizar-mensajes': 'api/mensaje/id_mensaje/',
-                'obtener-mensajes': 'api/mensaje/id_usuario/',
+                'obtener-mensajes': 'api/mensajes/id_usuario/',
             },
 
             'pruebas': {
@@ -96,6 +93,7 @@ class ApiView(APIView):
 
             'pruebas-tecnicas-asignadas': { 
                 'crear-asignacion-prueba': 'api/prueba/asignada/',
+                'obtener-prueba-asignada': 'api/prueba/asignada/id_candidato>/',
                 'actualizar-prueba-asignada': 'api/prueba/asignada/id_prueba_tecnica_asignada>/',
                 'obtener-pruebas-vacante': 'api/prueba/vacante/<id_vacante>/',
             }
@@ -446,6 +444,19 @@ class SolicitudesView(APIView):
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito': True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
+class ActualizarSolicitudesView(APIView):
+
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Solicitude_Serializer
+
+    def get_object(self, pk):
+        # Returns an object instance that should 
+        # be used for detail views.
+        try:
+            return m.Solicitude.objects.get(pk=pk)
+        except m.Solicitude.DoesNotExist:
+            raise Http404
+
     def put(self, request, id_solicitud):
         pk = self.get_object(id_solicitud)
         serializer = self.serializer_class(pk, data=request.data)
@@ -454,7 +465,7 @@ class SolicitudesView(APIView):
             serializer.save()
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
-
+    
 class SolicitudesCandidatoView(APIView):
 
     permission_classes = [ IsAuthenticated ]
@@ -724,6 +735,20 @@ class PruebaTecnicaView(APIView):
 
         return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
 
+    def put(self, request, pk):
+        prueba = self.get_object(pk)
+        serializer = self.serializer_class(prueba, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+
+class CrearPruebaTecnicaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Serializer
+
     def post(self, request, *args, **kwargs):
 
         serializer = self.serializer_class(data=request.data)
@@ -731,15 +756,6 @@ class PruebaTecnicaView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
-        return {'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors}
-
-    def put(self, request, pk):
-        prueba = self.get_object(pk)
-        serializer = self.serializer_class(prueba, data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
@@ -766,6 +782,20 @@ class PruebaTecnicaAsignadaView(APIView):
 
         return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
 
+    def put(self, request, pk):
+        prueba_asignada = self.get_object(pk)
+        serializer = self.serializer_class(prueba_asignada, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+
+class CrearPruebaTecnicaAsignadaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Asignada_Serializer
+
     def post(self, request, *args, **kwargs):
 
         serializer = self.serializer_class(data=request.data)
@@ -773,15 +803,6 @@ class PruebaTecnicaAsignadaView(APIView):
         if serializer.is_valid():
             serializer.save()
 
-            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
-        return {'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors}
-
-    def put(self, request, pk):
-        prueba_asignada = self.get_object(pk)
-        serializer = self.serializer_class(prueba_asignada, data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
@@ -794,9 +815,16 @@ class PruebasAsignadasVacante(APIView):
 
         vacante = self.kwargs['id_vacante']
 
-        prueba = m.PruebaTecnica.objects.filter(vacante=vacante)
-        asignaciones_prueba = m.PruebaTecnicaAsignada.objects.filter(prueba=prueba)
-        
-        serializer = self.serializer_class(asignaciones_prueba, many=True)
+        asignaciones_prueba = []
 
-        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        pruebas = m.PruebaTecnica.objects.filter(vacante=vacante)
+        
+        for prueba in pruebas:
+            
+            asignacion = m.PruebaTecnicaAsignada.objects.get(prueba=prueba)
+        
+            serializer = self.serializer_class(asignacion, many=False)
+
+            asignaciones_prueba.append(serializer.data)
+
+        return Response({'data':asignaciones_prueba, 'status':status.HTTP_200_OK, 'exito':True})

@@ -179,7 +179,6 @@ class Prueba_Tecnica_Serializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
 
-        self.fields['empresa'] = Empresa_Serializer()
         self.fields['vacante'] = Vacante_Serializer()
 
         return super(Prueba_Tecnica_Serializer, self).to_representation(obj)
@@ -195,5 +194,6 @@ class Prueba_Tecnica_Asignada_Serializer(serializers.ModelSerializer):
 
         self.fields['candidato'] = Candidato_Serializer()
         self.fields['prueba'] = Prueba_Tecnica_Serializer()
+        self.fields['status'] = serializers.CharField(source='get_status_display')  
 
         return super(Prueba_Tecnica_Asignada_Serializer, self).to_representation(obj)
