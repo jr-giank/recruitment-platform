@@ -239,7 +239,7 @@ class VacantesView(APIView):
 
 class VacanteView(APIView):
 
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = s.Vacante_Serializer
 
     def get_object(self, pk):
@@ -386,8 +386,26 @@ class CandidatoView(APIView):
         return Response({'data':{'candidato':serializer_candidato.data, 'proyectos':serializer_proyecto.data, 'experiencia_laboral':serializer_experiencia.data, 'tecnologias':serializer_tecnologias.data}, 'status':status.HTTP_200_OK, 'exito':True})
 
     def put(self, request, id_candidato):
-        pk = self.get_object(id_candidato)
-        serializer = self.serializer_class(pk, data=request.data)
+        canditato = self.get_object(id_candidato)
+        data = request.data
+
+        if 'cv_1' in request.data and request.data['cv_1'] == "" or 'cv_2' in request.data and request.data['cv_2'] == "":
+            
+            if canditato.cv_1 and 'cv_1' in data:
+                canditato.cv_1.storage.delete(canditato.cv_1.name)
+                canditato.cv_1 = None
+
+                data.pop('cv_1')
+            
+            if canditato.cv_2 and 'cv_2' in data:
+                canditato.cv_2.storage.delete(canditato.cv_2.name)
+                canditato.cv_2 = None
+
+                data.pop('cv_2')
+            
+            canditato.save()
+
+        serializer = self.serializer_class(canditato, data=request.data)
         
         if serializer.is_valid():
             serializer.save()
@@ -446,11 +464,22 @@ class SolicitudesCandidatoView(APIView):
     def get(self, request, *args, **kwargs):
 
         pk_candidato = self.kwargs['id_candidato']
+        serializer_empresa = None
+
+        vacantes = []
 
         solicitudes = m.Solicitude.objects.filter(candidato=pk_candidato).order_by('-fecha')
         serializer = s.Solicitude_Serializer(solicitudes, many=True)
 
-        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        for solicitud in solicitudes:
+            
+            vacante = m.Vacante.objects.get(id=solicitud.vacante.id)
+            
+            serializer_empresa = s.Vacante_Serializer(vacante, many=False)
+
+            vacantes.append(serializer_empresa.data)
+
+        return Response({'data':serializer.data, 'vacantes':vacantes, 'status':status.HTTP_200_OK, 'exito':True})
 
 #Vacantes Guardadas
 class VacantesGuardadasView(ApiView):
