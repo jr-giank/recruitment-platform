@@ -51,4 +51,5 @@ urlpatterns = [
     path('prueba/<int:pk>/', v.PruebaTecnicaView.as_view()),
     path('prueba/asignada/', v.PruebaTecnicaAsignadaView.as_view(), name='crear-asignacion-prueba'),
     path('prueba/asignada/<int:pk>/', v.PruebaTecnicaAsignadaView.as_view(), name='obtener-pruebas-asignadas'),
+    path('prueba/vacante/<int:id_vacante>/', v.PruebasAsignadasVacante.as_view(), name='obtener-pruebas-vacante'),
 ]

@@ -97,6 +97,7 @@ class ApiView(APIView):
             'pruebas-tecnicas-asignadas': { 
                 'crear-asignacion-prueba': 'api/prueba/asignada/',
                 'actualizar-prueba-asignada': 'api/prueba/asignada/id_prueba_tecnica_asignada>/',
+                'obtener-pruebas-vacante': 'api/prueba/vacante/<id_vacante>/',
             }
         }
 
@@ -758,4 +759,15 @@ class PruebaTecnicaAsignadaView(APIView):
 class PruebasAsignadasVacante(APIView):
     
     permission_classes = [ IsAuthenticated ]
-    pass
+    serializer_class = s.Prueba_Tecnica_Asignada_Serializer
+    
+    def get(self, request, *args, **kwargs):
+
+        vacante = self.kwargs['id_vacante']
+
+        prueba = m.PruebaTecnica.objects.filter(vacante=vacante)
+        asignaciones_prueba = m.PruebaTecnicaAsignada.objects.filter(prueba=prueba)
+        
+        serializer = self.serializer_class(asignaciones_prueba, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
