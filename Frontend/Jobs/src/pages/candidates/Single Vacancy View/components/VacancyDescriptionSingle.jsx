@@ -47,7 +47,7 @@ const VacancyDescriptionSingle = ({vacancy}) => {
           </div>
     
           <div className='mt-2 '>
-            <p><strong>Categoria</strong>: Desarrollo Web </p> 
+            <p><strong>Categoria</strong>: {vacancy.categoria?.nombre} </p> 
             <p className='flex items-center mt-2'>
             <strong>Requiere Experiencia: </strong> 
             {vacancy.experiencia} <img className='w-4 h-4 ml-2' src={vacancy.experiencia ? check : xSymbol } alt="" /> </p> 
