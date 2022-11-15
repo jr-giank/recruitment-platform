@@ -10,6 +10,9 @@ const VacancyRequestsPage = () => {
     const {id, vacancyName} = useParams()
     const [ request, setRequests] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
+
+    const [ currentSection, setCurrentSection ] = useState(1)
+
     const history = useNavigate()
 
     const {auth} = useContext(authContext)
@@ -43,10 +46,10 @@ const VacancyRequestsPage = () => {
                         <div className='border-b flex justify-between border-sixth w-full mx-8 mt-4'>
                         
                         <div>
-                            <button className='text-tenth ml-3 px-2 text-[14px]'>Solicitudes</button>
+                            <button onClick={()=>setCurrentSection(1)} className='text-tenth ml-3 px-2 text-[14px]'>Solicitudes En Curso</button>
+                            <button onClick={()=>setCurrentSection(2)} className='text-tenth ml-3 px-2 text-[14px]'>Solicitudes Descartadas</button>
                             <button className='text-tenth ml-3 px-2 text-[14px]'>Pruebas Técnicas en Curso</button>
                             <button className='text-tenth ml-3 px-2 text-[14px]'>Entrevistas Programadas</button>
-                            <button className='text-tenth ml-3 px-2 text-[14px]'>Feedback</button>
                         </div>
 
                         <div className='mb-2'>
@@ -55,7 +58,17 @@ const VacancyRequestsPage = () => {
 
                     </div>
                     <div className='w-full overflow-x-auto'>
-                         <RequestsBoardView requests={request} />
+                        
+                        { (currentSection === 1 || currentSection === 2)  &&
+                            <RequestsBoardView 
+                                requests={request} 
+                                setRequests={setRequests} 
+                                vacancyId={id} 
+                                currentSection={currentSection}  
+                            />
+                        }
+
+
                     </div>
                    
                     </>

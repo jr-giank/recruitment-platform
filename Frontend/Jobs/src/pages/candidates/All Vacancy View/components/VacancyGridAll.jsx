@@ -21,7 +21,7 @@ const VacancyGridAll = ({vacancy}) => {
                 <ul className='flex space-x-4'>
                     <li><h5 className='font-bold'>Ubicación</h5> {vacancy.empresa.pais}</li>
                     <li><h5 className='font-bold'>Publicado</h5>{vacancy.fecha}</li>
-                    <li><h5 className='font-bold'>Categoria</h5>{vacancy.categoria}</li>
+                    <li><h5 className='font-bold'>Categoria</h5>{vacancy.categoria.nombre}</li>
                 </ul>
             </div>
         </div>

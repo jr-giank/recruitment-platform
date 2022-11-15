@@ -14,7 +14,6 @@ export const useForm = (initialState = {}) => {
 
     const handleCheckChanges = ({target})=>{
         
-        console.log(target.checked)
         setFormValues({
             ...formValues,
             [ target.name ]: target.checked

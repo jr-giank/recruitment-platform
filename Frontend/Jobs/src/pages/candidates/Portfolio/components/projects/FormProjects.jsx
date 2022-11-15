@@ -7,9 +7,7 @@ import { authContext } from '../../../../../context/context'
 import { useForm } from '../../../../../hooks/useForm'
 import { post, put } from '../../../../../services/services'
 
-const FormProjects = ({ onCloseModal, setCandidateData, currentDoc }) => {
-  
-  console.log(currentDoc)
+const FormProjects = ({ onCloseModal, setCandidateData, currentDoc }) => {  
 
   const [ formValues, handleInputChanges ] = useForm({
   nombre: currentDoc?.nombre || "",

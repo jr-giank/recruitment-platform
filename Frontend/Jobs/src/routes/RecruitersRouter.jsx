@@ -2,6 +2,7 @@ import React from 'react'
 import {Routes, Route} from 'react-router-dom'
 
 import VacancyRequestsPage from '../pages/recruiters/Request Info/VacancyRequests'
+import FormNewTestPage from '../pages/recruiters/Technical Tests/FormNewTestPage'
 import VacancyRegistrationPage from '../pages/recruiters/Vacancy Registration/VacancyRegistrationPage'
 import VacancyViewPage from '../pages/recruiters/Vacancy View/VacancyViewPage'
 
@@ -12,6 +13,7 @@ const RecruitersRouter = () => {
               <Route path='/createVacancy' element={<VacancyRegistrationPage />} />
               <Route path='/viewVacancies' element={<VacancyViewPage />} />
               <Route path='/viewVacancyRequests/:id/:vacancyName' element={<VacancyRequestsPage />} />
+              <Route path='/createTest' element={<FormNewTestPage />} />
         </Routes>
   )
 }
