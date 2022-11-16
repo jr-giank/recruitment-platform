@@ -17,11 +17,13 @@ module.exports = {
       nineth: '#e0f2fe',
       tenth: 'rgba(0, 0, 0, 0.71)',
       eleventh: '#F5F5F5',
+      twelve: '#2d3954',
       white : '#fff',
     },
 
     fontFamily: {
-      inter : ['Inter', 'sans-serif']
+      inter :   ['Inter', 'sans-serif'],
+      poppins : ['Poppins', 'sans-serif']
     }
   },
   plugins: [],

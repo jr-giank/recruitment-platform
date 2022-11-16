@@ -6,6 +6,7 @@ import { types } from '../../reducers/types'
 import empleo from '../../assets/icons/empleo.png'
 import nueva from '../../assets/icons/registro.png'
 import logout from '../../assets/icons/desconectar.png'
+import test from '../../assets/icons/desarrollo-web.png'
 
 const RecruitersMenu = ({onAccount}) => {
 
@@ -18,6 +19,14 @@ const RecruitersMenu = ({onAccount}) => {
     
     return (
     <div className='flex justify-around'>
+
+
+        <Link className={`flex flex-col items-center px-2 ` } 
+            to='/app/recruiter/viewTests' 
+        >
+            <img src={test} alt="" className='w-7 h-7' />
+            <small>Pruebas Técnicas</small>
+        </Link>
         
         <Link className={`flex flex-col items-center px-2 ` } 
               to='/app/recruiter/viewVacancies' 
