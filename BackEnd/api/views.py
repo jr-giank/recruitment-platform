@@ -808,7 +808,7 @@ class CrearPruebaTecnicaAsignadaView(APIView):
 
 class PruebasAsignadasVacante(APIView):
     
-   # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = s.Prueba_Tecnica_Asignada_Serializer
     
     def get(self, request, *args, **kwargs):
@@ -821,10 +821,11 @@ class PruebasAsignadasVacante(APIView):
         
         for prueba in pruebas:
             
-            asignacion = m.PruebaTecnicaAsignada.objects.get(prueba=prueba)
+            asignaciones = m.PruebaTecnicaAsignada.objects.filter(prueba=prueba)
         
-            serializer = self.serializer_class(asignacion, many=False)
+            for asignacion in asignaciones:
+                serializer = self.serializer_class(asignacion, many=False)
 
-            asignaciones_prueba.append(serializer.data)
+                asignaciones_prueba.append(serializer.data)
 
         return Response({'data':asignaciones_prueba, 'status':status.HTTP_200_OK, 'exito':True})
