@@ -808,7 +808,7 @@ class CrearPruebaTecnicaAsignadaView(APIView):
 
 class PruebasAsignadasVacante(APIView):
     
-    permission_classes = [ IsAuthenticated ]
+   # permission_classes = [ IsAuthenticated ]
     serializer_class = s.Prueba_Tecnica_Asignada_Serializer
     
     def get(self, request, *args, **kwargs):
