@@ -2,7 +2,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import edit from '../../../../../assets/icons/editar.png'
+import edit from '../../../../../assets/icons/lapiz.png'
 import more from '../../../../../assets/icons/mas.png'
 import { technicalTestContext } from '../../../../../context/context'
 import { types } from '../../../../../reducers/types'
@@ -35,8 +35,8 @@ const TestGrid = ({cTest}) => {
       <h4 className='text-twelve font-semibold text-poppins'>{cTest.titulo}</h4>
       
       <div>
-        <button> <img src={more} onClick={(e)=> handleNavigate(e, 1)} alt="" className='w-6 h-6' title='Ver Más' /></button>
-        <button> <img src={edit} onClick={(e)=> handleNavigate(e, 2)} alt="" className='w-6 h-6 ml-3' title='Editar' /> </button>
+        <button> <img src={more} onClick={(e)=> handleNavigate(e, 1)} alt="" className='w-7 h-7' title='Ver Más' /></button>
+        <button> <img src={edit} onClick={(e)=> handleNavigate(e, 2)} alt="" className='w-7 h-7 ml-3' title='Editar' /> </button>
       </div>
     </div>
   )
