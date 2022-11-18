@@ -87,6 +87,7 @@ class ApiView(APIView):
 
             'pruebas': {
                 'crear-prueba': 'api/prueba/',
+                'obtener-unica-prueba': 'api/prueba/unica/id_prueba>/',
                 'actualizar-prueba': 'api/prueba/id_prueba>/',
                 'obtener-pruebas-empresa': 'api/prueba/id_empresa>/',
             },
@@ -384,26 +385,49 @@ class CandidatoView(APIView):
         return Response({'data':{'candidato':serializer_candidato.data, 'proyectos':serializer_proyecto.data, 'experiencia_laboral':serializer_experiencia.data, 'tecnologias':serializer_tecnologias.data}, 'status':status.HTTP_200_OK, 'exito':True})
 
     def put(self, request, id_candidato):
+
         canditato = self.get_object(id_candidato)
-        data = request.data
+
+        data_candidato = {
+            "id": canditato,
+            "nombre": request.data['nombre'],
+            "apellido": request.data['apellido'],
+            "usuario": request.data['usuario'],
+            "mensage_presentacion": request.data['mensage_presentacion'],
+            "correo_contacto": request.data['correo_contacto'],
+            "pais": request.data['pais'],
+            "sexo": request.data['sexo'],
+            "nacimiento": request.data['nacimiento'],
+            "titulo_personal": request.data['titulo_personal'],
+            "url_web": request.data['url_web'],
+            "url_facebook": request.data['url_facebook'],
+            "url_twitter": request.data['url_twitter'],
+            "url_instagram": request.data['url_instagram'],
+            "url_linkedin": request.data['url_linkedin'],
+            "url_github": request.data['url_github'],
+            "url_telegram": request.data['url_telegram']
+        }
 
         if 'cv_1' in request.data and request.data['cv_1'] == "" or 'cv_2' in request.data and request.data['cv_2'] == "":
             
-            if canditato.cv_1 and 'cv_1' in data:
+            if canditato.cv_1 and 'cv_1' in request.data:
                 canditato.cv_1.storage.delete(canditato.cv_1.name)
                 canditato.cv_1 = None
-
-                data.pop('cv_1')
             
-            if canditato.cv_2 and 'cv_2' in data:
+            
+            if canditato.cv_2 and 'cv_2' in request.data:
                 canditato.cv_2.storage.delete(canditato.cv_2.name)
                 canditato.cv_2 = None
-
-                data.pop('cv_2')
             
             canditato.save()
+        elif 'cv_1' and 'cv_2' in request.data:
+            data_candidato.update({'cv_1': request.data['cv_1'], 'cv_2': request.data['cv_2']})
+        elif 'cv_1' in request.data:
+            data_candidato.update({'cv_1': request.data['cv_1']})
+        elif 'cv_2' in request.data:
+            data_candidato.update({'cv_2': request.data['cv_2']})
 
-        serializer = self.serializer_class(canditato, data=request.data)
+        serializer = self.serializer_class(canditato, data=data_candidato)
         
         if serializer.is_valid():
             serializer.save()
@@ -788,10 +812,19 @@ class PruebaTecnicaView(APIView):
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
-class CrearPruebaTecnicaView(APIView):
+class UnicaPruebaTecnicaView(APIView):
     
     permission_classes = [ IsAuthenticated ]
     serializer_class = s.Prueba_Tecnica_Serializer
+
+    def get(self, request, *args, **kwargs):
+
+        prueba = self.kwargs['id_prueba']
+
+        pruebas = m.PruebaTecnica.objects.filter(id=prueba)
+        serializer = self.serializer_class(pruebas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
 
     def post(self, request, *args, **kwargs):
 
