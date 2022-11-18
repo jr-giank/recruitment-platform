@@ -354,7 +354,7 @@ class EmpresaView(APIView):
 #Candidato
 class CandidatoView(APIView):
 
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = s.Candidato_Serializer
 
     def get_object(self, pk):
@@ -420,12 +420,12 @@ class CandidatoView(APIView):
                 canditato.cv_2 = None
             
             canditato.save()
+        elif 'cv_1' and 'cv_2' in request.data:
+            data_candidato.update({'cv_1': request.data['cv_1'], 'cv_2': request.data['cv_2']})
         elif 'cv_1' in request.data:
             data_candidato.update({'cv_1': request.data['cv_1']})
         elif 'cv_2' in request.data:
             data_candidato.update({'cv_2': request.data['cv_2']})
-        elif 'cv_1' and 'cv_2' in request.data:
-            data_candidato.update({'cv_1': request.data['cv_1'], 'cv_2': request.data['cv_2']})
 
         serializer = self.serializer_class(canditato, data=data_candidato)
         
