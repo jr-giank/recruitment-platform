@@ -11,7 +11,15 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['email', 'password', 'is_staff']
+        fields = ['id', 'email', 'password', 'is_staff']
 
     def validate_password(self, value):
         return make_password(value)
+
+    def to_representation(self, obj):
+        rep = super().to_representation(obj)
+        
+        rep.pop('password')
+        rep.pop('is_staff')
+
+        return rep
