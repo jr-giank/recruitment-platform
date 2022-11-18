@@ -9,7 +9,6 @@ const BoardGrid = ({request, setRequests, vacancyId}) => {
     const [ isModalOpen, setIsModalOpen] = useState(false)
     const [ actionType, setActionType ] = useState(1)
 
-
     const onHandleModal = (e, type) => {
         e.preventDefault()
         setActionType(type)
@@ -18,7 +17,6 @@ const BoardGrid = ({request, setRequests, vacancyId}) => {
     }
      
     const onCloseModal = () => {
-
         setIsModalOpen(false);
         document.getElementById("portal").classList.remove("modal_show-modal")
     }

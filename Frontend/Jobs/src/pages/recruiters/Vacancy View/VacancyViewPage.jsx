@@ -51,10 +51,17 @@ const VacancyViewPage = () => {
                         <h1 className='text-center font-bold text-2xl'>Tus Vacantes anunciadas</h1>
                         <div className='w-full flex justify-center mt-2 border-b border-b-sixth'>  
                           
-                          <button className='text-tenth font-bold hover:underline' onClick={(e)=>handleChangeStatus(e, "ABIERTA")}>
+                          <button 
+                            className={`text-tenth font-bold hover:border-b-2 ${optionStatus === "ABIERTA" && 'border-b-2'}`} 
+                            onClick={(e)=>handleChangeStatus(e, "ABIERTA")}
+                          >
                             Abiertas
                           </button>
-                          <button className='text-tenth font-bold ml-8 hover:underline' onClick={(e)=>handleChangeStatus(e, "CERRADA")}>
+                          
+                          <button 
+                            className={`text-tenth font-bold ml-8 hover:border-b-2 ${optionStatus === "CERRADA" && 'border-b-2'}`}  
+                            onClick={(e)=>handleChangeStatus(e, "CERRADA")}
+                          >
                             Cerradas
                           </button>
                         
@@ -62,7 +69,7 @@ const VacancyViewPage = () => {
                       {
                         vacancies.map(vacancy => (
                           vacancy.status === optionStatus &&
-                             <VacancyGrid key={vacancy.id} vacancy={vacancy} setCurrentVacancy={setCurrentVacancy} />
+                             <VacancyGrid key={vacancy.id} vacancy={vacancy} setCurrentVacancy={setCurrentVacancy} currentVacancy={currentVacancy} />
                           ))
                       }
                     </div>

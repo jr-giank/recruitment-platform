@@ -5,7 +5,7 @@ import remove from '../../../../../assets/icons/eliminar.png'
 const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
   
     const handleRemovePdf = (e, target) => {
-        setEditableData(data => ({...data, [target]: null}))
+        setEditableData(data => ({...data, [target]: ""}))
         setIsEdited(true)
     }
 
@@ -34,7 +34,7 @@ const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
                                 Ver PDF
                             </a>
                         </div>
-                       <button> <img src={remove} onClick={handleRemovePdf} alt="" className='w-7' /> </button>
+                       <button> <img src={remove} onClick={(e) => handleRemovePdf(e, 'cv_1')} alt="" className='w-7' /> </button>
                     </div>
                 )
             }
@@ -52,7 +52,7 @@ const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
                             Ver PDF
                         </a>
                     </div>
-                    <button> <img src={remove} onClick={handleRemovePdf} alt="" className='w-7' /> </button>
+                    <button> <img src={remove} onClick={(e) => handleRemovePdf(e, 'cv_2')} alt="" className='w-7' /> </button>
                 </div>
                 )
             }

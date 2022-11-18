@@ -42,11 +42,11 @@ const ProfilePage = () => {
     dataToSend.append("correo_contacto", editableData.correo_contacto || "")
     dataToSend.append("nombre", editableData.nombre)
 
-    if(editableData.cv_1 && typeof(editableData.cv_1) !== "string"){
+    if(editableData.cv_1 === "" || editableData.cv_1 instanceof File){
       dataToSend.append("cv_1", editableData.cv_1)
     }
 
-    if(editableData.cv_2 && typeof(editableData.cv_2) !== "string"){
+    if(editableData.cv_2 === "" || editableData.cv_2 instanceof File){
       dataToSend.append("cv_2", editableData.cv_2)
     }
 
@@ -54,6 +54,7 @@ const ProfilePage = () => {
     dataToSend.append("mensage_presentacion", editableData.mensage_presentacion || "")
     dataToSend.append("nacimiento", editableData.nacimiento || "")
     dataToSend.append("sexo", editableData.sexo || "")
+    dataToSend.append("pais", editableData.pais || "")
     dataToSend.append("titulo_personal", editableData.titulo_personal || "")
     dataToSend.append("url_facebook", editableData.url_facebook || "")
     dataToSend.append("url_github", editableData.url_github || "")
@@ -70,6 +71,7 @@ const ProfilePage = () => {
       if(res.exito){
         console.log(res.data)
         setCandidateData({...candidateData, candidato: [{...res.data}] })
+        setEditableData({...res.data})
         Swal.fire("Datos guardados", "Se han actualizado los datos", "success")
       }else{
         console.log(res)

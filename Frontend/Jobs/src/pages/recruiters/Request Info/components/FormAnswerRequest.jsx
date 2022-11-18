@@ -7,12 +7,13 @@ import { put } from '../../../../services/services'
 
 const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
   
+    const { auth } = useContext(authContext)
+
     const [ formValues, handleInputChanges ] = useForm({
+        usuario: auth.user_id,
         motivo_mensaje: "",
         texto:""
     })
-
-    const { auth } = useContext(authContext)
 
     const hanldeSubmitAnswer = (e) => {
         e.preventDefault()
@@ -43,12 +44,8 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
             requestModified.status = "D"
         }
 
-        //requestModified.status = 'A'
-
         requestModified.candidato = request.candidato.id
         requestModified.vacante = vacancyId
-
-        console.log(requestModified)
 
         put(`solicitud/${request.id}/`,  { 'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, requestModified )
         .then(res => {
@@ -68,7 +65,7 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
     
     <form>
 
-        <div className='flex mt-1'>
+        <div className='flex mt-1 ml-3'>
                 <img  src={`http://127.0.0.1:8000${request.candidato.foto}`} className='w-16 h-16 rounded-full'/>
                 <span className='ml-2'>
                    <h4>{request.candidato.nombre} {request.candidato.apellido}</h4>
@@ -77,10 +74,13 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
         </div>
 
         <div className='w-full px-4 mt-4'>
-            <h5 className='font-bold text-fourth'>Leer</h5>
-            <small>
-                En ITJob.Net nos aseguramos de garantizar que los solicitantes tendrán una respuesta a su solicitud. Es por esta razón, que para nosotros es importante que al momento de dar una respuesta a una solicitud, se le envíe un mensaje al candidato, ya sea de aprobación a su solicitud o explicando su descarte. En caso de descartar, le instamos a que proporcione una retroalimentación de mejora al candidato para que pueda mejorar sus solicitudes a próximas vacantes que solicite.
-            </small>
+            <h5 className='font-bold text-fourth'>LEER</h5>
+            
+            <p className='text-justify'>
+                <small >
+                    En ITJob.Net nos aseguramos de garantizar que los solicitantes tendrán una respuesta a su solicitud. Es por esta razón, que para nosotros es importante que al momento de dar una respuesta a una solicitud, se le envíe un mensaje al candidato, ya sea de aprobación a su solicitud o explicando su descarte. En caso de descartar, le instamos a que proporcione una retroalimentación de mejora al candidato para que pueda mejorar sus solicitudes a próximas vacantes que solicite.
+                </small>
+            </p>
 
             <div className='mt-4'>
                 <h4 className='font-bold'>Seleccione el tipo de respuesta</h4>
