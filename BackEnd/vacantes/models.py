@@ -37,6 +37,20 @@ status_prueba_tecnica_opciones = [
     ('F', 'Finalizada')
 ]
 
+leido_prueba_tecnica_opciones = [
+    ('N', 'No leído'),
+    ('V', 'Visto')
+]
+
+status_solicitude_opciones = [
+    ('A', 'Aplicado'),
+    ('P', 'Prueba tecnica'),
+    ('E', 'Para entrevista'),
+    ('O', 'Entrevistado'),
+    ('S', 'Seleccionado'),
+    ('D', 'Descartado')
+]
+
 # Create your models here.
 class Categoria(models.Model):
     
@@ -119,7 +133,7 @@ class Solicitude(models.Model):
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
     mensaje = models.TextField(blank=False, null=False)
     cv_url = models.URLField(default='http://127.0.0.1:8000/media/cv/f37aca8b-4b2b-11ed-8a6f-c80c0051d672-Nita_Ditch.pdf', blank=False, null=False)
-    status = models.CharField(max_length=1, blank=True, null=True)
+    status = models.CharField(max_length=15, choices=status_solicitude_opciones, default='A')
     fecha = models.DateField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
@@ -174,11 +188,11 @@ class Mensaje(models.Model):
     usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=False, null=False)
     texto = models.TextField(blank=False, null=False)
     fecha = models.DateField(auto_now_add=True, blank=False, null=False)
-    motivo_mensaje = models.CharField(max_length=30, blank=False, null=False)
+    motivo_mensaje = models.CharField(max_length=60, blank=False, null=False)
     status = models.CharField(max_length=8, choices=status_mensajes_opciones, default='N')
 
     def __str__(self):
-        return f'{self.texto}'
+        return f'{self.motivo_mensaje} - {self.usuario}'
 
 class MensajesUsuariosDestino(models.Model):
 
@@ -192,13 +206,13 @@ class PruebaTecnica(models.Model):
     
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
-    titulo = models.CharField(max_length=30, blank=False, null=False)
+    titulo = models.CharField(max_length=60, blank=False, null=False)
     mandato = models.TextField(blank=False, null=False)
     tecnologias = models.TextField(blank=True, null=True)
     info_subida = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.empresa} - {self.vacante}'
+        return f'{self.vacante}'
 
 class PruebaTecnicaAsignada(models.Model):
     
@@ -206,7 +220,9 @@ class PruebaTecnicaAsignada(models.Model):
     prueba = models.ForeignKey(PruebaTecnica, on_delete=models.CASCADE)
     fecha_limite = models.DateField(blank=False, null=False)
     fecha_asignacion = models.DateField(auto_now_add=True, blank=False, null=False)
+    solucion = models.URLField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=status_prueba_tecnica_opciones, default='E')
+    leido = models.CharField(max_length=8, choices=leido_prueba_tecnica_opciones, default='N')
 
     def __str__(self):
         return f'{self.candidato} - {self.prueba}'

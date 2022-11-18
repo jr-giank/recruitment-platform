@@ -459,6 +459,32 @@ class ActualizarSolicitudesView(APIView):
 
     def put(self, request, id_solicitud):
         pk = self.get_object(id_solicitud)
+
+        if "usuario" and "texto" and "motivo_mensaje" in request.data:
+            
+            nuevo_mensaje = {
+                "usuario": request.data['usuario'],
+                "texto": request.data['texto'],
+                "motivo_mensaje": request.data['motivo_mensaje']
+            }
+
+            serializer_mensaje = s.Mensaje_Serializer(data=nuevo_mensaje)
+
+            if serializer_mensaje.is_valid():
+                serializer_mensaje.save()
+                
+                candidato = m.Candidato.objects.get(id=request.data['candidato'])
+                
+                mensaje_destino = {
+                    "mensaje": serializer_mensaje.data['id'],
+                    "usuario_destino": candidato.usuario.id
+                }
+                
+                serializer_mensaje_destino = s.Mensajes_Destino_Serializer(data=mensaje_destino)
+
+                if serializer_mensaje_destino.is_valid():
+                    serializer_mensaje_destino.save()
+
         serializer = self.serializer_class(pk, data=request.data)
         
         if serializer.is_valid():
@@ -564,7 +590,7 @@ class ProyectoView(APIView):
             serializer.save()
 
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
-        return {'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors}
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
     def put(self, request, id_proyecto):
         pk = self.get_object(id_proyecto)
@@ -608,7 +634,7 @@ class ExperienciaView(APIView):
             serializer.save()
 
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
-        return {'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors}
+        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
     def put(self, request, id_experiencia):
         pk = self.get_object(id_experiencia)
@@ -710,7 +736,25 @@ class MensajesDestinosView(APIView):
         mensajes = m.MensajesUsuariosDestino.objects.filter(usuario_destino=id_usuario)
         serializer = self.serializer_class(mensajes, many=True)
 
-        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+        mensajes = serializer.data
+        user_serializer, mensajes_data = None, []
+
+        for mensaje in mensajes:
+
+            id_user = mensaje['mensaje']['usuario']['id']
+
+            try:
+                usuario = m.Empresa.objects.get(usuario=id_user)
+
+                user_serializer = s.Empresa_Serializer(usuario, many=False)
+            except:
+                usuario = m.Candidato.objects.get(usuario=id_user)
+
+                user_serializer = s.Candidato_Serializer(usuario, many=False)
+            finally:
+                mensajes_data.append(user_serializer.data)
+
+        return Response({'data':serializer.data, 'usuario': mensajes_data, 'status':status.HTTP_200_OK, 'exito':True})
 
 #Prueba tecnica
 class PruebaTecnicaView(APIView):

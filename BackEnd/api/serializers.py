@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from vacantes import models as m
+from users.serializers import UserSerializer
 
 #Categorias
 class Categoria_Serializer(serializers.ModelSerializer):
@@ -152,7 +153,7 @@ class Mensaje_Serializer(serializers.ModelSerializer):
 
     def to_representation(self, obj):
 
-        self.fields['usuario'] = serializers.StringRelatedField()
+        self.fields['usuario'] = UserSerializer()
 
         return super(Mensaje_Serializer, self).to_representation(obj)
 
