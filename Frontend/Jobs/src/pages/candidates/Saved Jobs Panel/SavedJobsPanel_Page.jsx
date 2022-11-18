@@ -4,11 +4,13 @@ import { get } from '../../../services/services'
 import Loading from '../../../sharedComponents/ui/Loading'
 import AppliedJobs from './components/AppliedJobs'
 import SavedJobs from './components/SavedJobs'
+import TechnicalTest from './components/TechnicalTest'
 
 const SavedJobsPanel_Page = () => {
 
     const { auth  } = useContext(authContext)
     const [ vacancies, setVacancies ] = useState([])
+    const [test, setTechnicalTest] = useState([])
     const [ isLoading, setIsLoading ] = useState(false)
     const [ cardType, setCardType ] = useState(1)
 
@@ -26,7 +28,7 @@ const SavedJobsPanel_Page = () => {
             setIsLoading(false)
         })        
       }
-      else{
+      else if(cardType ===2){
         get(`solicitudes/candidato/${auth.candidato_id}/`,{ "Authorization":`Bearer ${auth.token}` })
         .then(data => {
           if(data.exito){
@@ -34,6 +36,20 @@ const SavedJobsPanel_Page = () => {
           }
           else{
             setVacancies([])
+          }
+          setIsLoading(false)
+      })        
+      }
+
+      else if(cardType ===3){
+        get(`prueba/asignada/${auth.candidato_id}/`,{ "Authorization":`Bearer ${auth.token}` })
+        .then(data => {
+          console.log(data)
+          if(data.exito){
+            setTechnicalTest([...data.data])
+          }
+          else{
+            setTechnicalTest([])
           }
           setIsLoading(false)
       })        
@@ -68,17 +84,28 @@ const SavedJobsPanel_Page = () => {
                 >
                   Mis Aplicaciones
                 </button>  
+
+                <button 
+                  className='ml-4 rounded-lg border border-fifth text-tenth px-3 py-1 text-[18px] font-bold hover:bg-secondary hover:text-white'
+                  onClick={(e)=> handleCardType(e, 3)}
+                >
+                  Mis Pruebas tecnicas
+                </button> 
               </div>
               {
                 isLoading 
                 ? <div className='w-full flex justify-center mt-4 mb-4'> <Loading /> </div> 
-                : (
-                    cardType === 1 
-                      ?
-                        <SavedJobs vacancies={vacancies} setVacancies={setVacancies} />
-                      :(
-                          <AppliedJobs vacancies={vacancies} setVacancies={setVacancies} />
-                      )
+                : (<>
+                
+                    {cardType === 1 
+                      && <SavedJobs vacancies={vacancies} setVacancies={setVacancies} />}
+                    {cardType === 2
+                     &&
+                          <AppliedJobs vacancies={vacancies} setVacancies={setVacancies} />}
+                    {cardType === 3
+                    &&
+                        <TechnicalTest test={test} setTechnicalTest={setTechnicalTest}/>}
+                 </>    
                 )
               }
           

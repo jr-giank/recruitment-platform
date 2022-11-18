@@ -30,7 +30,7 @@ const CandidatesMenu = ({onAccount}) => {
         </Link>
         
         <Link className={`flex flex-col items-center px-3 ` } 
-              to='/app/candidate/Profile' 
+              to='/app/candidate/message' 
         >
             <img src={mensaje} alt="" className='w-7 h-7' />
             <small>Mensajes</small>

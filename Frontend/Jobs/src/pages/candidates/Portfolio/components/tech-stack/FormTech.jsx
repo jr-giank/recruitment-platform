@@ -16,6 +16,12 @@ const FormTech = ({onCloseModal, setCandidateData}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    //arreglar aqui
+    if(formValues.nombre_tecnologia === "" || formValues.nivel_conocimiento === "Nivel de conocimiento"){
+      Swal.fire("Ingrese el nombre de la tecnologia", "Seleccione su nivel de conocimiento", "error")
+      return
+     }
+    //preguntar si los campos estan vacion, utilizar sweet alert, buscar en formulario de eliminacion de vacantes, modal que elimina la vacante ModalDelete
     formValues.candidato = auth.candidato_id
 
     post('tecnologia/', {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, formValues)
