@@ -3,6 +3,9 @@ import { uid } from "uid";
 
 const TechnicalTestDescription = ({techTest, setTechnicalTest}) => {
     console.log(techTest)
+
+  //aqui falta validar el text area que no se envie vacio y poner a funcionar el boton de enviar
+
     return(
       <div className='flex justify-center w-full mt-24 px-8' >
       <div className='w-3/5 mb-8'>
@@ -44,7 +47,29 @@ const TechnicalTestDescription = ({techTest, setTechnicalTest}) => {
                   <p key={uid()} className='text-justify'> {text}</p>
           ))
         }
+
+        <h3 className='mb-1 font-bold font-poppins mt-4'> Subir enlace </h3>
+        <textarea 
+              rows='5' 
+              name="enlaceTechTest" 
+              id="enlaceTechTest" 
+              placeholder='ingrese su prueba tecnica'
+              className='w-full'
+              // value={formValues.responsabilidades_puesto}
+              // onChange={handleInputChanges}
+              // onBlur={handleOnBlur}
+            />
+            <button 
+              className='w-full mb-8 mt-8 bg-primary rounded-md text-white py-1 text-lg cursor-pointer disabled:bg-sixth disabled:cursor-default'
+              // disabled={isDisabled}
+              type='submit'
+              // onClick={handleOnSubmit}
+            >
+              Enviar
+            </button>
+
       </div>
+
     </div>
   )
 

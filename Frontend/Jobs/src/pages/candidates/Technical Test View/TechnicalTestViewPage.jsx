@@ -13,7 +13,6 @@ const TechnicalTestViewPage = () => {
 
     useEffect(() => {
         setIsLoading(true)
-        //revisar si este es el endpoint correcto
         get(`prueba/unica/${id}/`, { "Authorization":`Bearer ${auth.token}` })
         .then((res) => {
             console.log(res)
