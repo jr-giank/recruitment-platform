@@ -226,3 +226,13 @@ class PruebaTecnicaAsignada(models.Model):
 
     def __str__(self):
         return f'{self.candidato} - {self.prueba}'
+
+class AgendaEntrevista(models.Model):
+
+    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
+    room_id = models.UUIDField(blank=True, null=True)
+    fecha = models.DateField(blank=False, null=False)
+    hora = models.TimeField(blank=False, null=False)
+    completa = models.BooleanField(blank=True, null=True)
