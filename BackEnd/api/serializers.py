@@ -198,3 +198,20 @@ class Prueba_Tecnica_Asignada_Serializer(serializers.ModelSerializer):
         self.fields['status'] = serializers.CharField(source='get_status_display')  
 
         return super(Prueba_Tecnica_Asignada_Serializer, self).to_representation(obj)
+
+#Prueba tecnica asignada
+class Agenda_Entrevista_Serializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = m.AgendaEntrevista
+        fields = '__all__'
+
+    def to_representation(self, obj):
+
+        self.fields['candidato'] = Candidato_Serializer()
+        self.fields['vacante'] = Vacante_Serializer()
+
+        rep = super().to_representation(obj)
+        rep.pop('empresa')
+
+        return rep
