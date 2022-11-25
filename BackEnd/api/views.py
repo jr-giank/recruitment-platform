@@ -103,6 +103,10 @@ class ApiView(APIView):
                 'crear-agenda-entrevista': 'api/entrevista/',
                 'actualizar-agenda-entrevista': 'api/entrevista/id_entrevista/',
                 'eliminar-agenda-entrevista': 'api/entrevista/id_entrevista/',
+
+                'obtener-agenda-entrevista-vacante': 'entrevista/vacante/id_vacante/',
+                'obtener-agenda-entrevista-empresa': 'api/entrevista/empresa/id_empresa/',
+                'obtener-agenda-entrevista-candidato': 'api/entrevista/candidato/id_candidato/',
             }
         }
 
@@ -916,7 +920,7 @@ class PruebasAsignadasVacante(APIView):
 #Agenda entrevista
 class AgendaEntrevistaView(APIView):
     
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = s.Agenda_Entrevista_Serializer
 
     def get_object(self, pk):
@@ -926,13 +930,6 @@ class AgendaEntrevistaView(APIView):
             return m.AgendaEntrevista.objects.get(pk=pk)
         except m.AgendaEntrevista.DoesNotExist:
             raise Http404
-
-    def get(self, request, *args, **kwargs):
-        entrevistas = m.AgendaEntrevista.objects.all()
-
-        serializer = self.serializer_class(entrevistas, many=True)
-
-        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
 
     def post(self, request, *args, **kwargs):
 
@@ -944,8 +941,8 @@ class AgendaEntrevistaView(APIView):
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
-    def put(self, request, id_entrevista):
-        agenda_entrevista = self.get_object(id_entrevista)
+    def put(self, request, pk):
+        agenda_entrevista = self.get_object(pk)
         serializer = self.serializer_class(agenda_entrevista, data=request.data)
         
         if serializer.is_valid():
@@ -954,7 +951,7 @@ class AgendaEntrevistaView(APIView):
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
     def delete(self, request, *args, **kwargs):
-        pk = self.kwargs['id_entrevista']
+        pk = self.kwargs['pk']
 
         agenda_entrevista = m.AgendaEntrevista.objects.filter(id=pk)
         
@@ -963,3 +960,45 @@ class AgendaEntrevistaView(APIView):
 
             return Response({'message':'La entrevista a sido eliminada', 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'message':'La entrevista no se a podido eliminar', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
+
+class AgendaEntrevistaVacante(APIView):
+
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Agenda_Entrevista_Serializer
+
+    def get(self, request, *args, **kwargs):
+        vacante = self.kwargs['pk']
+
+        entrevistas = m.AgendaEntrevista.objects.filter(vacante=vacante)
+
+        serializer = self.serializer_class(entrevistas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+
+class AgendaEntrevistaEmpresa(APIView):
+
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Agenda_Entrevista_Serializer
+
+    def get(self, request, *args, **kwargs):
+        empresa = self.kwargs['pk']
+
+        entrevistas = m.AgendaEntrevista.objects.filter(empresa=empresa)
+
+        serializer = self.serializer_class(entrevistas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+
+class AgendaEntrevistaCandidato(APIView):
+
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Agenda_Entrevista_Serializer
+
+    def get(self, request, *args, **kwargs):
+        candidato = self.kwargs['pk']
+
+        entrevistas = m.AgendaEntrevista.objects.filter(candidato=candidato).order_by('-fecha')
+
+        serializer = self.serializer_class(entrevistas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})

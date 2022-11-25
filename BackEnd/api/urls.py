@@ -54,5 +54,8 @@ urlpatterns = [
     path('prueba/asignada/<int:pk>/', v.PruebaTecnicaAsignadaView.as_view(), name='obtener-pruebas-asignadas'),
     path('prueba/vacante/<int:id_vacante>/', v.PruebasAsignadasVacante.as_view(), name='obtener-pruebas-vacante'),
     path('entrevista/', v.AgendaEntrevistaView.as_view(), name='crear-agenda-entrevista'),
-    path('entrevista/<int:id_entrevista>/', v.AgendaEntrevistaView.as_view(), name='actualizar-eliminar-agenda-entrevista'),
+    path('entrevista/<int:pk>/', v.AgendaEntrevistaView.as_view(), name='agenda-entrevista-actualizar-eliminar'),
+    path('entrevista/vacante/<int:pk>/', v.AgendaEntrevistaVacante.as_view(), name='obtener-agenda-entrevista-vacante'),
+    path('entrevista/empresa/<int:pk>/', v.AgendaEntrevistaEmpresa.as_view(), name='obtener-agenda-entrevista-empresa'),
+    path('entrevista/candidato/<int:pk>/', v.AgendaEntrevistaCandidato.as_view(), name='obtener-agenda-entrevista-candidato'),
 ]
