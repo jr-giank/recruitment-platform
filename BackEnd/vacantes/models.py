@@ -236,3 +236,6 @@ class AgendaEntrevista(models.Model):
     fecha = models.DateField(blank=False, null=False)
     hora = models.TimeField(blank=False, null=False)
     completa = models.BooleanField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.candidato} - {self.vacante}'

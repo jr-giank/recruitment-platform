@@ -104,7 +104,7 @@ class ApiView(APIView):
                 'actualizar-agenda-entrevista': 'api/entrevista/id_entrevista/',
                 'eliminar-agenda-entrevista': 'api/entrevista/id_entrevista/',
 
-                'obtener-agenda-entrevista-vacante': 'entrevista/vacante/id_vacante/',
+                'obtener-agenda-entrevista-vacante': 'api/entrevista/vacante/id_vacante/',
                 'obtener-agenda-entrevista-empresa': 'api/entrevista/empresa/id_empresa/',
                 'obtener-agenda-entrevista-candidato': 'api/entrevista/candidato/id_candidato/',
             }
@@ -788,7 +788,9 @@ class MensajesDestinosView(APIView):
             finally:
                 mensajes_data.append(user_serializer.data)
 
-        return Response({'data':serializer.data, 'usuario': mensajes_data, 'status':status.HTTP_200_OK, 'exito':True})
+        data = {"mensaje": serializer.data, "enviado_por": mensajes_data}
+
+        return Response({'data':data, 'status':status.HTTP_200_OK, 'exito':True})
 
 #Prueba tecnica
 class PruebaTecnicaView(APIView):
@@ -953,17 +955,46 @@ class AgendaEntrevistaView(APIView):
     def delete(self, request, *args, **kwargs):
         pk = self.kwargs['pk']
 
-        agenda_entrevista = m.AgendaEntrevista.objects.filter(id=pk)
-        
-        if agenda_entrevista:
-            agenda_entrevista.delete()
+        agenda_entrevista = m.AgendaEntrevista.objects.get(id=pk)
 
-            return Response({'message':'La entrevista a sido eliminada', 'status':status.HTTP_200_OK, 'exito':True})
+        if agenda_entrevista:
+
+            if "usuario" and "texto" and "motivo_mensaje" in request.data:
+                
+                nuevo_mensaje = {
+                    "usuario": request.data['usuario'],
+                    "texto": request.data['texto'],
+                    "motivo_mensaje": request.data['motivo_mensaje']
+                }
+
+                mensaje_serializer = s.Mensaje_Serializer(data=nuevo_mensaje)
+
+                if mensaje_serializer.is_valid():
+                    mensaje_serializer.save()
+
+                    candidato = m.Candidato.objects.get(id=agenda_entrevista.candidato.id)
+
+                    destino = {
+                        "mensaje": mensaje_serializer.data['id'],
+                        "usuario_destino": candidato.usuario.id
+                    }
+
+                    serializer_mensaje_destino = s.Mensajes_Destino_Serializer(data=destino)
+
+                    if serializer_mensaje_destino.is_valid():
+                        serializer_mensaje_destino.save()
+
+                        agenda_entrevista.delete()
+
+                        return Response({'message':'La entrevista a sido eliminada, el mensaje a sido guardado', 'status':status.HTTP_200_OK, 'exito':True})
+                    return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer_mensaje_destino.errors})
+                return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':mensaje_serializer.errors})
+            return Response({'message':'No indicaste el mensaje para eliminar la agenda de entresvista', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
         return Response({'message':'La entrevista no se a podido eliminar', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
 
 class AgendaEntrevistaVacante(APIView):
 
-    permission_classes = [ IsAuthenticated ]
+    # permission_classes = [ IsAuthenticated ]
     serializer_class = s.Agenda_Entrevista_Serializer
 
     def get(self, request, *args, **kwargs):
