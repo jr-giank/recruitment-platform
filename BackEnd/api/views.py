@@ -955,7 +955,7 @@ class AgendaEntrevistaView(APIView):
     def delete(self, request, *args, **kwargs):
         pk = self.kwargs['pk']
 
-        agenda_entrevista = m.AgendaEntrevista.objects.filter(id=pk)
+        agenda_entrevista = m.AgendaEntrevista.objects.get(id=pk)
 
         if agenda_entrevista:
 
@@ -994,7 +994,7 @@ class AgendaEntrevistaView(APIView):
 
 class AgendaEntrevistaVacante(APIView):
 
-    permission_classes = [ IsAuthenticated ]
+    # permission_classes = [ IsAuthenticated ]
     serializer_class = s.Agenda_Entrevista_Serializer
 
     def get(self, request, *args, **kwargs):
