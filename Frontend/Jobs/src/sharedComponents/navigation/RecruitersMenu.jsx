@@ -7,6 +7,7 @@ import empleo from '../../assets/icons/empleo.png'
 import nueva from '../../assets/icons/registro.png'
 import logout from '../../assets/icons/desconectar.png'
 import test from '../../assets/icons/desarrollo-web.png'
+import calendar from '../../assets/icons/calendar.png'
 
 const RecruitersMenu = ({onAccount}) => {
 
@@ -22,6 +23,13 @@ const RecruitersMenu = ({onAccount}) => {
 
 
         <Link className={`flex flex-col items-center px-2 ` } 
+            to='/app/recruiter/diary' 
+        >
+            <img src={calendar} alt="" className='w-7 h-7' />
+            <small>Agenda</small>
+        </Link>
+
+        <Link className={`flex flex-col items-center px-2 ` } 
             to='/app/recruiter/viewTests' 
         >
             <img src={test} alt="" className='w-7 h-7' />
@@ -35,7 +43,7 @@ const RecruitersMenu = ({onAccount}) => {
             <small>Vacantes</small>
         </Link>
         
-        <Link className={`flex flex-col items-center ml-6 px-2 `}
+        <Link className={`flex flex-col items-center px-2 `}
               to='/app/recruiter/createVacancy' 
         >
             <img src={nueva} alt="" className='w-7 h-7' />
