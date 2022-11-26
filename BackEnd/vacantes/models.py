@@ -229,7 +229,7 @@ class PruebaTecnicaAsignada(models.Model):
 
 class AgendaEntrevista(models.Model):
 
-    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE)
+    candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE, blank=True, null=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
     room_id = models.UUIDField(blank=True, null=True)
