@@ -3,6 +3,8 @@ import {useNavigate, useParams} from 'react-router-dom'
 import { authContext } from '../../../context/context'
 import { get } from '../../../services/services'
 import Loading from '../../../sharedComponents/ui/Loading'
+import FormNewInterview from './components/Interviews/FormNewInterview'
+import InterviewsAvailable from './components/Interviews/InterviewsAvailable'
 import RequestActionModal from './components/RequestActionModal'
 import RequestsBoardView from './components/RequestsBoardView'
 import AssignTest from './components/Technical Tests/AssignTest'
@@ -33,8 +35,13 @@ const VacancyRequestsPage = () => {
         })
     }, [])
 
-    const onHandleModal = (e) => {
+    const onHandleModal = (e, sect) => {
         e.preventDefault()
+
+        if(sect){
+            setCurrentModalSection(sect)
+        }
+
         setIsModalOpen(true)
         document.getElementById("portal").classList.add("modal_show-modal")
     }
@@ -65,7 +72,7 @@ const VacancyRequestsPage = () => {
                             <h3 className='font-bold ml-8 w-full'>Panel de Administración de Solicitudes</h3>
                             <h4 className='ml-8 w-full'><strong>Puesto: </strong> {vacancyName}</h4>
 
-                            <div className='border-b flex justify-between border-sixth w-full mx-8 mt-4'>
+                            <div className='border-b flex justify-between border-sixth w-full min-w-[1200px] mx-8 mt-4'>
                             
                             <div>
                                 <button 
@@ -96,8 +103,15 @@ const VacancyRequestsPage = () => {
                             </div>
 
                             <div className='mb-2'>  
-                                <button className='bg-nineth text-[12px]  py-1 px-1 rounded-md' onClick={onHandleModal}>Asignar Pruebas Técnicas</button>
-                                <button className='bg-fourth text-[12px] text-white py-1 px-1 rounded-md ml-2'>Cerrar Vacante</button>
+                                <button className='bg-nineth text-[12px]  py-1 px-1 rounded-md' onClick={onHandleModal}>
+                                    Asignar Pruebas Técnicas
+                                </button>
+                                <button className='bg-fifth text-[12px]  py-1 px-1 rounded-md ml-2' onClick={(e)=>onHandleModal(e, 3)}>
+                                    Agendar Entrevista
+                                </button>
+                                <button className='bg-fourth text-[12px] text-white py-1 px-1 rounded-md ml-2'>
+                                    Cerrar Vacante
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -116,6 +130,12 @@ const VacancyRequestsPage = () => {
                                     <ViewTestsStatus vacancyId={id} />
                                 </div>
                         }
+                        {
+                            currentSection === 4 &&
+                            <div className='w-full overflow-x-auto h-3/4'> 
+                                <InterviewsAvailable vacancyId={id} />
+                            </div>
+                        }
                    
                     </>
                     )} 
@@ -126,23 +146,31 @@ const VacancyRequestsPage = () => {
                         <RequestActionModal onCloseModal={onCloseModal} >
 
                             {
-                                currentModalSection === 1 
-                                    ?
+                                currentModalSection === 1  &&
+                                    
                                         <CandidatesAvailable_forTest 
                                             candidates={request.filter(req => req.status ==='P')} 
                                             setCurrentModalSection={setCurrentModalSection}
                                             setCurrentCandidate={setCurrentCandidate} />
-                                    :
-                                        <AssignTest 
-                                            candidate={currentCandidate} 
-                                            vacancyId={id} 
-                                            setCurrentModalSection={setCurrentModalSection}    
-                                        />
                             }
 
+                            {
+                                currentModalSection === 2 &&
+                                    <AssignTest 
+                                        candidate={currentCandidate} 
+                                        vacancyId={id} 
+                                        setCurrentModalSection={setCurrentModalSection}    
+                                    />
+                            }
+                                
+                            {
+                                currentModalSection === 3 &&
+
+                                    <FormNewInterview vacancyId={id} />
+                            }
+                            
                         </RequestActionModal>
                     }
-
                 </div>
   )
 }

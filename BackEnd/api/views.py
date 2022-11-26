@@ -430,8 +430,9 @@ class CandidatoView(APIView):
                 canditato.cv_2 = None
             
             canditato.save()
-        elif 'cv_1' and 'cv_2' in request.data:
-            data_candidato.update({'cv_1': request.data['cv_1'], 'cv_2': request.data['cv_2']})
+        elif 'cv_1' in request.data and 'cv_2' in request.data:
+            data_candidato.update({'cv_1': request.data['cv_1']})
+            data_candidato.update({'cv_2': request.data['cv_2']})
         elif 'cv_1' in request.data:
             data_candidato.update({'cv_1': request.data['cv_1']})
         elif 'cv_2' in request.data:
@@ -1014,7 +1015,7 @@ class AgendaEntrevistaEmpresa(APIView):
     def get(self, request, *args, **kwargs):
         empresa = self.kwargs['pk']
 
-        entrevistas = m.AgendaEntrevista.objects.filter(empresa=empresa)
+        entrevistas = m.AgendaEntrevista.objects.filter(empresa=empresa).order_by('fecha')
 
         serializer = self.serializer_class(entrevistas, many=True)
 
@@ -1028,7 +1029,7 @@ class AgendaEntrevistaCandidato(APIView):
     def get(self, request, *args, **kwargs):
         candidato = self.kwargs['pk']
 
-        entrevistas = m.AgendaEntrevista.objects.filter(candidato=candidato).order_by('-fecha')
+        entrevistas = m.AgendaEntrevista.objects.filter(candidato=candidato).order_by('fecha')
 
         serializer = self.serializer_class(entrevistas, many=True)
 

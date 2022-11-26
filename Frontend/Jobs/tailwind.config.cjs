@@ -18,6 +18,7 @@ module.exports = {
       tenth: 'rgba(0, 0, 0, 0.71)',
       eleventh: '#F5F5F5',
       twelve: '#2d3954',
+      thirteen: '#CDE9FE',
       white : '#fff',
     },
 
