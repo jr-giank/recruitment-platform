@@ -8,6 +8,7 @@ import SavedJobsPanel_Page from '../pages/candidates/Saved Jobs Panel/SavedJobsP
 import ProfilePage from '../pages/candidates/Portfolio/ProfilePage'
 import MessagesPage from '../pages/candidates/Messages/MessagesPage'
 import TechnicalTestViewPage from '../pages/candidates/Technical Test View/TechnicalTestViewPage'
+import AgendaPage from '../pages/candidates/Agenda/AgendaPage'
 
 const CandidatesRouter = () => {
   return (
@@ -18,6 +19,7 @@ const CandidatesRouter = () => {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/message' element={<MessagesPage/>}/>
         <Route path='/technicalTest/:id' element={<TechnicalTestViewPage/>}/>
+        <Route path='/agenda' element={<AgendaPage/>}/>
     </Routes>
   )
 }

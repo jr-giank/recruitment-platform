@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { uid } from "uid";
+import { authContext } from  '../../../../context/context'
 
 const TechnicalTestDescription = ({techTest, setTechnicalTest}) => {
     console.log(techTest)
+    const {auth} = useContext(authContext)
+
+    
+
+    const handleOnSubmit = (e) => {
+      e.preventDefault()
+      post('prueba/asignada/',{'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},  formValues)
+    }
 
   //aqui falta validar el text area que no se envie vacio y poner a funcionar el boton de enviar
 
@@ -63,7 +72,7 @@ const TechnicalTestDescription = ({techTest, setTechnicalTest}) => {
               className='w-full mb-8 mt-8 bg-primary rounded-md text-white py-1 text-lg cursor-pointer disabled:bg-sixth disabled:cursor-default'
               // disabled={isDisabled}
               type='submit'
-              // onClick={handleOnSubmit}
+              onClick={handleOnSubmit}
             >
               Enviar
             </button>

@@ -1,14 +1,22 @@
-import React, { useContext } from 'react'
+import React, { useContext,useState } from 'react'
 import { Link } from 'react-router-dom'
 import { authContext } from '../../../../context/context'
 import { f_delete } from '../../../../services/services'
+import Modal from './Modal'
 
 const AppliedJobsGrid = ({vacancy, setVacancies}) => {
 
    const { auth } = useContext(authContext) 
+   const [ isVacancyReqOpen, setIsVacancyReqOpen ] = useState([])
+   
+   const handleModalRequests = (e) => {
+    e.preventDefault()
+    setIsVacancyReqOpen(true)
+    document.getElementById("portal").classList.add("modal_show-modal")
+  }
 
   return (
-
+    <>
     <div className='border-b w-full border-fifth pl-4 pr-4 py-4 '>
 
         <div className='flex gap-4'>
@@ -22,11 +30,19 @@ const AppliedJobsGrid = ({vacancy, setVacancies}) => {
                 <p><strong>Status:</strong> {vacancy?.status}</p>
                 <div className='mt-4'>
                     <Link className='justify-center text-[12px] border border-sixth rounded-lg cursor-pointer mr-3 mt-5 py-2 px-4 hover:bg-secondary ' to= {`/app/candidate/viewSingleVacancy/${vacancy.vacante.id}`} >Ver vacante</Link> 
+                    <button className='justify-center text-[12px] border border-sixth rounded-lg cursor-pointer mr-3 mt-5 py-2 px-4 hover:bg-secondary ' onClick={handleModalRequests} >Seleccionar horario</button> 
                 </div>
             </div>
         </div>
 
     </div>
+
+        {
+            isVacancyReqOpen && (
+            <Modal setIsVacancyReqOpen={setIsVacancyReqOpen} />
+            )
+        }
+    </>
   )
 }
 
