@@ -17,11 +17,14 @@ const TechStack = ({data, setCandidateData, onHandleOpenModal}) => {
   return (
     <div className='flex flex-col py-1'>
 
-            <div className='flex justify-center'>
-                <button className='bg-eleventh w-full py-2' onClick={onHandleOpenModal}>
-                    + Agregar Nuevo
-                </button>
-            </div>
+        {
+            auth.candidato_id &&
+                <div className='flex justify-center'>
+                    <button className='bg-eleventh w-full py-2' onClick={onHandleOpenModal}>
+                        + Agregar Nuevo
+                    </button>
+                </div>
+        }
 
         {
             data.tecnologias.length === 0
@@ -61,9 +64,13 @@ const TechStack = ({data, setCandidateData, onHandleOpenModal}) => {
 
                                 </span> <small className='text-[12px] ml-2'> {tech.nivel_conocimiento} </small >
                             </div>
-                            <button onClick={(e)=>handleRemove(e, tech.id)}>
-                                <img src={remove} alt="" className='w-7' />
-                            </button>
+                            {
+                            auth.candidato_id 
+                                &&
+                                <button onClick={(e)=>handleRemove(e, tech.id)}>
+                                    <img src={remove} alt="" className='w-7' />
+                                </button>
+                            }
                         </div>
                     ))
         }

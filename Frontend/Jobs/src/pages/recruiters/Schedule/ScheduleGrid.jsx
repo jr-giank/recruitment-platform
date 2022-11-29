@@ -5,6 +5,9 @@ const ScheduleGrid = ({interview, lastInterview}) => {
     return (
     <>
         {
+            // Esta comparacion busca agrupar la agenda de entrevista por cada fecha distinta comparando la fecha de la entrevista
+            // actual recibida con la fecha de la entrevista anterior para determiar cuando cambio la fecha.
+            // Si la fecha anterior es false, quiere decir que es el primer horario que se está renderizando.
             (!lastInterview || interview.fecha !== lastInterview.fecha) 
              && 
              <h3 className='font-bold text-seventh mt-4 w-full'>{interview.fecha}</h3> 

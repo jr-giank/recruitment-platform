@@ -7,17 +7,25 @@ import linkedin from '../../../../../assets/icons/linkedin.png'
 import email from '../../../../../assets/icons/email.png'
 import pagina from '../../../../../assets/icons/pagina.png'
 import ContactGrid from './ContactGrid'
+import { authContext } from '../../../../../context/context'
+import { useContext } from 'react'
 
 const Contacts = ({candidateData, onHandleOpenModal }) => {
+
+  const { auth } = useContext(authContext)
 
   return (
     <div className='flex flex-col'>
 
-      <div className='flex justify-center'>
-          <button className='bg-eleventh w-full py-2' onClick={onHandleOpenModal}>
-              + Agregar Nuevo
-          </button>
-      </div>
+      {
+        auth.candidato_id 
+          &&
+            <div className='flex justify-center'>
+                <button className='bg-eleventh w-full py-2' onClick={onHandleOpenModal}>
+                    + Agregar Nuevo
+                </button>
+            </div>
+      }
 
         {
           candidateData.url_github && <ContactGrid name={'Github'} url={candidateData.url_github} pic={github} />

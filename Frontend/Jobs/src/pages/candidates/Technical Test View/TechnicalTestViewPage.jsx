@@ -6,19 +6,20 @@ import TechnicalTestDescription from "./components/TechnicalTestDescription";
 import { useParams } from "react-router-dom";
 
 const TechnicalTestViewPage = () => {
+
     const {auth} = useContext(authContext)
     const {id} = useParams()
-    const [ isLoading, setIsLoading ] = useState(false)
-    const [ test, setTechnicalTest ] = useState([])
+    const [ isLoading, setIsLoading ] = useState(true)
+    const [ techTest, setTechnicalTest ] = useState({})
+    const [ deadline, setDeadline ] = useState("")
 
     useEffect(() => {
-        setIsLoading(true)
-        get(`prueba/unica/${id}/`, { "Authorization":`Bearer ${auth.token}` })
+        get(`prueba/asignada/unica/${id}/`, { "Authorization":`Bearer ${auth.token}` })
         .then((res) => {
             console.log(res)
             if (res.exito){
-              console.log(res.data)
-              setTechnicalTest(res.data)
+              setTechnicalTest({...res.data[0]})
+              setDeadline(new Date(res.data[0].fecha_limite))
             }
             setIsLoading(false)
         })
@@ -26,10 +27,14 @@ const TechnicalTestViewPage = () => {
 
     return(
         <div className='flex mx-10 mt-14 h-[91%]'>
-            <TechnicalTestDescription techTest={test} setTechnicalTest={setTechnicalTest}/>
+            {
+                isLoading
+                    ? 
+                 <Loading /> 
+                    : 
+                 <TechnicalTestDescription techTest={techTest} setTechnicalTest={setTechnicalTest} deadLine={deadline} />
+            }
         </div>
-
     )
-
 }
 export default TechnicalTestViewPage

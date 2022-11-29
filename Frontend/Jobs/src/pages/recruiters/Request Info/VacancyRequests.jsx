@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {useNavigate, useParams} from 'react-router-dom'
+import Swal from 'sweetalert2'
 import { authContext } from '../../../context/context'
-import { get } from '../../../services/services'
+import { get, put } from '../../../services/services'
 import Loading from '../../../sharedComponents/ui/Loading'
 import FormNewInterview from './components/Interviews/FormNewInterview'
 import InterviewsAvailable from './components/Interviews/InterviewsAvailable'
@@ -21,6 +22,7 @@ const VacancyRequestsPage = () => {
     const [ isModalOpen, setIsModalOpen ] = useState(false)
     const [ currentModalSection, setCurrentModalSection ] = useState(1)
     const [ currentCandidate, setCurrentCandidate ] = useState({})
+    const [ vacancy, setVacancy ] = useState({})
 
     const history = useNavigate()
 
@@ -35,13 +37,21 @@ const VacancyRequestsPage = () => {
         })
     }, [])
 
+    useEffect(() => {
+        // Peticion para obtener la vacante
+        get(`vacante/${id}/`, {"Authorization":`Bearer ${auth.token}`})
+        .then(res => {
+            if(res.exito){
+                setVacancy({...res.data[0]})
+            }
+        })
+    }, [])
+
     const onHandleModal = (e, sect) => {
         e.preventDefault()
-
         if(sect){
             setCurrentModalSection(sect)
         }
-
         setIsModalOpen(true)
         document.getElementById("portal").classList.add("modal_show-modal")
     }
@@ -56,6 +66,36 @@ const VacancyRequestsPage = () => {
     const goBack = () => {
         history(-1)
     }
+
+    const handleCloseVacancy = (e) => {
+        e.preventDefault()
+    
+        Swal.fire({
+          title: "Cerrar Vacante",
+          text : "¿Estás seguro de que deseas cerrar esta vacante? Esta acción es irreversible y ya no se podrán hacer mas solicitudes a esta vacante",
+          icon: "warning",
+          showDenyButton: true,
+          showConfirmButton: true,
+          confirmButtonText : "Aceptar",
+          denyButtonText: "Cancelar"
+        })
+        .then(result => {
+    
+          if(result.isConfirmed){
+            
+                // Cerrar Vacante
+                put(`vacante/${id}/`, 
+                {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, 
+                {...toUpdate, status: 'C', empresa: auth.empresa_id, categoria: toUpdate?.categoria.id } )
+                
+                .then(res => {
+                    if(res.exito){
+                        Swal.fire("Cerrada", "La vacante ha sido cerrada")
+                    }
+                })
+          }
+        })
+      }
 
     return (
             <div className='w-full h-[89%] flex flex-wrap pt-2 mt-16 bg-white overflow-auto'>
@@ -102,16 +142,19 @@ const VacancyRequestsPage = () => {
                                 </button>
                             </div>
 
-                            <div className='mb-2'>  
+                            <div className='flex items-center mb-2'>  
                                 <button className='bg-nineth text-[12px]  py-1 px-1 rounded-md' onClick={onHandleModal}>
                                     Asignar Pruebas Técnicas
                                 </button>
                                 <button className='bg-fifth text-[12px]  py-1 px-1 rounded-md ml-2' onClick={(e)=>onHandleModal(e, 3)}>
                                     Agendar Entrevista
                                 </button>
-                                <button className='bg-fourth text-[12px] text-white py-1 px-1 rounded-md ml-2'>
-                                    Cerrar Vacante
-                                </button>
+                                {
+                                    vacancy.status === "CERRADA" ? <p className='text-[12px] ml-2'>Cerrada</p> : 
+                                    <button className='bg-fourth text-[12px] text-white py-1 px-1 rounded-md ml-2' onClick={handleCloseVacancy}>
+                                        Cerrar Vacante
+                                    </button>
+                                }
                             </div>
                         </div>
                     </div>
@@ -133,10 +176,9 @@ const VacancyRequestsPage = () => {
                         {
                             currentSection === 4 &&
                             <div className='w-full overflow-x-auto h-3/4'> 
-                                <InterviewsAvailable vacancyId={id} />
+                                <InterviewsAvailable vacancyId={id} vacancyName={vacancyName}  />
                             </div>
                         }
-                   
                     </>
                     )} 
 

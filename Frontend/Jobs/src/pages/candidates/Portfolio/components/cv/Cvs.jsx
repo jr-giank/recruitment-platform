@@ -1,23 +1,30 @@
 import React from 'react'
 import pdfIcon from '../../../../../assets/icons/pdf.png'
 import remove from '../../../../../assets/icons/eliminar.png'
+import { useContext } from 'react'
+import { authContext } from '../../../../../context/context'
 
 const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
   
+    const { auth } = useContext(authContext)
+
     const handleRemovePdf = (e, target) => {
         setEditableData(data => ({...data, [target]: ""}))
         setIsEdited(true)
     }
-
+    
     return (
         <div className='flex flex-col'>
 
         {
             (cv1 === null || cv2 === null) && (
                 <div className='flex justify-center'>
-                    <button className='bg-eleventh w-full py-2' onClick={onHandleOpenModal}>
-                        + Agregar Nuevo
-                    </button>
+                    {
+                        auth.candidato_id &&
+                        <button className='bg-eleventh w-full py-2' onClick={onHandleOpenModal}>
+                            + Agregar Nuevo
+                        </button>
+                    }
                 </div>
             )
         }
@@ -25,6 +32,7 @@ const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
                 cv1 && (
                     <div className='w-full flex items-center justify-between shadow-md py-3 px-3 mt-4'>
                         <div className='flex items-center'>
+
                             <img src={pdfIcon} alt="" />
                             <p className='ml-2'>Este es el nombre del archivo PDF</p>
                             <a href={`http://127.0.0.1:8000${cv1}`} 
@@ -34,7 +42,12 @@ const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
                                 Ver PDF
                             </a>
                         </div>
-                       <button> <img src={remove} onClick={(e) => handleRemovePdf(e, 'cv_1')} alt="" className='w-7' /> </button>
+                        {
+                            auth.candidato_id &&
+                            <button> 
+                                <img src={remove} onClick={(e) => handleRemovePdf(e, 'cv_1')} alt="" className='w-7' /> 
+                            </button>
+                        }
                     </div>
                 )
             }

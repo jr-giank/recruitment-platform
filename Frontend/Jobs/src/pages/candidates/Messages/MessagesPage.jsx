@@ -18,12 +18,11 @@ const MessagesPage = () => {
         .then((res) => {
             if (res.exito){
               console.log(res.data)
-              setMessage(res.data)
+              setMessage(res.data.mensaje.map((msg, i) =>({...msg, enviadoPor: res.data.enviado_por[i]} )).reverse())
             }
             setIsLoading(false)
         })
     }, [])
-
 
     
     return(

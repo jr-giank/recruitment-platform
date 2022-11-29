@@ -90,11 +90,15 @@ const ProjectGrid = ({project, handleOpenForEdit, setCandidateData}) => {
 
                         </div>
                     </div>
-
-                    <div className='flex items-center h-full'>
-                        <button> <img src={editar} alt="" className='w-7 h-7 mx-3' onClick={(e) => handleOpenForEdit(e, project) } /> </button>
-                        <button> <img src={remove} alt="" className='w-7 h-7 mx-3' onClick={handleRemove} /> </button>
-                    </div>
+                    
+                    {
+                        auth.candidato_id 
+                            &&  
+                            <div className='flex items-center h-full'>
+                                <button> <img src={editar} alt="" className='w-7 h-7 mx-3' onClick={(e) => handleOpenForEdit(e, project) } /> </button>
+                                <button> <img src={remove} alt="" className='w-7 h-7 mx-3' onClick={handleRemove} /> </button>
+                            </div>
+                    }
             </div>
 
     </>
