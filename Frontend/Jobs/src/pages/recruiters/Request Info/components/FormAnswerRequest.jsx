@@ -18,12 +18,13 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
     const hanldeSubmitAnswer = (e) => {
         e.preventDefault()
 
+
         if(formValues.motivo_mensaje === "" || formValues.texto === ""){
             Swal.fire("Llenar Formulario", "Debe llenar todos los campos del formulario", "error")
             return
         }
 
-        const requestModified = {...request}
+        const requestModified = {...request, ...formValues}
 
         if(formValues.motivo_mensaje === 'Aprobacion'){
             switch(request.status){
@@ -43,9 +44,9 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
         else{
             requestModified.status = "D"
         }
-
+        
         requestModified.candidato = request.candidato.id
-        requestModified.vacante = vacancyId
+        requestModified.vacante = parseInt(vacancyId)
 
         put(`solicitud/${request.id}/`,  { 'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, requestModified )
         .then(res => {
@@ -104,9 +105,7 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
                         onChange={handleInputChanges} 
                     />
                     <label htmlFor="inpr2" className='text-[14px] ml-2'>Descartar Solicitud</label>
-                </div>
-
-            
+                </div>        
                 
                 <textarea 
                     name="texto" 
@@ -120,12 +119,8 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
 
             <div className='w-full flex mt-4 text-[14px]'>
                 <button className='bg-tenth text-white py-2 rounded-md px-3' onClick={hanldeSubmitAnswer}>Enviar Respuesta</button>
-                {/* <button className='bg-fifth  py-2 rounded-md px-3 ml-3' onClick={onCloseModal}>Cancelar</button> */}
             </div>
-
         </div>
-
-        
     </form>
   )
 }

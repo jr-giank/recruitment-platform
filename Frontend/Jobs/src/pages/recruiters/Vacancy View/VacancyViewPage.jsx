@@ -20,7 +20,6 @@ const VacancyViewPage = () => {
 
     get(`vacantes/empresa/${auth.empresa_id}/`, { "Authorization":`Bearer ${auth.token}` })
     .then(({data}) => {
-      console.log(data)
       setVacancies(data)
       setIsLoading(false)
     })

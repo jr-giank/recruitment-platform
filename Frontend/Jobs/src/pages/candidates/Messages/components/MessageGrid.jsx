@@ -6,7 +6,7 @@ const MessageGrid = ({mess, setCurrentMessage}) => {
     e.preventDefault()
     setCurrentMessage(mess)
   }
-
+  
 
   return (
     mess.mensaje?.status === 'N' ?

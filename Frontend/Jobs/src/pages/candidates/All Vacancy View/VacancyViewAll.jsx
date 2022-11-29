@@ -40,7 +40,6 @@ const VacancyViewAll = () => {
         get ('vacantes/', {"Authorization":`Bearer ${auth.token}`},)
         .then(({data})=> {
           setVacancies(data)
-          console.log(data)
           setIsLoading(false)
         })
       }
@@ -68,6 +67,8 @@ const VacancyViewAll = () => {
       const filteredModalidad  =  filters.modalidad.join(",")  
       const filteredCountries  =  filters.countries.join(",")
 
+      console.log(filteredCountries)
+
       let experiencia = ""
 
       if(filters.exp){
@@ -79,7 +80,7 @@ const VacancyViewAll = () => {
         forma_trabajo__in: filteredJobType,
         experiencia,
         tipo_trabajo__in : filteredModalidad,
-        empresa_pais__in: filteredCountries
+        empresa__pais__in: filteredCountries
       })
     } 
 
