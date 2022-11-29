@@ -23,7 +23,7 @@ const CandidatesMenu = ({onAccount}) => {
     <div className='flex justify-around'>
         
         <Link className={`flex flex-col items-center px-3 ` } 
-              to='/app/candidate/Profile' 
+              to={`/app/candidateProfile/${auth.candidato_id}`} 
         >
             <img src={perfil} alt="" className='w-7 h-7' />
             <small>Perfil</small>

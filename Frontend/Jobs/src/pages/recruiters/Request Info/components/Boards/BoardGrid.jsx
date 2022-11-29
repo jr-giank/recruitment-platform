@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import pdf from '../../../../../assets/icons/pdf.png'
 import FormAnswerRequest from '../FormAnswerRequest'
 import ReqPresentation from '../ReqPresentation'
@@ -32,7 +33,9 @@ const BoardGrid = ({request, setRequests, vacancyId}) => {
                 className='w-12 h-12 rounded-full ml-2' 
             />
             <span className='ml-2 flex flex-col w-3/4'>
-                <small className='font-bold mb-0'>{request.candidato.nombre} {request.candidato.apellido} </small>
+                <Link to={`/app/candidateProfile/${request.candidato.id}`} className='hover:underline'>
+                    <small className='font-bold mb-0 shrink-1'>{request.candidato.nombre} {request.candidato.apellido} </small>
+                </Link>
                 <small className='text-sixth font-medium'>{request.candidato.titulo_personal}</small>   
             </span>
         </div>

@@ -8,6 +8,7 @@ import { useContext } from 'react'
 import { useState } from 'react'
 import Loading from '../../../sharedComponents/ui/Loading'
 import Swal from 'sweetalert2'
+import { useParams } from 'react-router-dom'
 
 const ProfilePage = () => {
 
@@ -16,11 +17,12 @@ const ProfilePage = () => {
   const [ editableData, setEditableData ] = useState({})
   const [ isLoading, setIsLoading ] = useState(true)
   const [ isEdited, setIsEdited ] = useState(false)
+  const { id } = useParams()
 
   useEffect(()=> {
     
     setIsLoading(true)
-    get(`candidato/${auth.candidato_id}/`, {"Authorization":`Bearer ${auth.token}`})
+    get(`candidato/${id}/`, {"Authorization":`Bearer ${auth.token}`})
     .then(res => {
       if(res.exito){
         console.log(res.data)
@@ -89,8 +91,7 @@ const ProfilePage = () => {
             <ProfileBanner 
               setEditableData={setEditableData} 
               setIsEdited={setIsEdited}
-              title={candidateData.candidato[0].titulo_personal} 
-              message={candidateData.candidato[0].mensage_presentacion}
+              candidateData={candidateData.candidato[0]}
             />
             <Portfolio 
               candidateData={candidateData} 

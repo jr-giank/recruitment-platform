@@ -8,18 +8,27 @@ import { authContext } from '../../../context/context'
 const VacancyViewSingle = () => {
 
     const location = useParams()
-    const [ vacancy, setVacancy ] = useState({})
-    const [ isLoading, setIsLoading] = useState(false)
+    const [ vacancy, setVacancy ] = useState(null)
+    const [ isLoading, setIsLoading] = useState(true)
     
     const { auth } = useContext(authContext)
 
     useEffect(() => {
-      setIsLoading(true)
         get(`vacante/${location.id}/`, {"Authorization":`Bearer ${auth.token}`})
-        .then(({data})=> {
-          setVacancy({...data[0]})
-          setIsLoading(false)
-        })
+        .then((res)=> {
+
+          if(res.exito){
+            get(`solicitudes/vacante/${location.id}/`,   { "Authorization":`Bearer ${auth.token}` })
+            .then(res2 => {
+              if(res2.exito){
+                setVacancy({...res.data[0], cantidadSolicitudes: res2.data.length})
+              }else{
+                setVacancy({...res.data[0]})
+              }
+              setIsLoading(false)
+            })
+          }
+      })
       }, [])
 
     return(
@@ -32,7 +41,6 @@ const VacancyViewSingle = () => {
           }
         </div>
     )
-
 }
 
 export default VacancyViewSingle

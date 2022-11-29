@@ -3,25 +3,61 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { authContext } from '../../../../../context/context'
-import { get } from '../../../../../services/services'
+import { f_delete, get } from '../../../../../services/services'
 import Loading from '../../../../../sharedComponents/ui/Loading'
+import eliminar from '../../../../../assets/icons/eliminar.png'
+import Swal from 'sweetalert2'
 
-const InterviewsAvailable = ({vacancyId}) => {
+const InterviewsAvailable = ({vacancyId, vacancyName }) => {
 
   const [ schedule, setSchedules ] = useState([])
   const [ isLoading, setIsLoading ] = useState(true)
-  
+
   const { auth } = useContext(authContext)
 
   useEffect(() => {
     get(`entrevista/vacante/${vacancyId}/`, { "Authorization":`Bearer ${auth.token}` })
     .then(res => {
       if(res.exito){
-        setSchedules(res.data)
+        setSchedules([...res.data])
       }
       setIsLoading(false)
     })
   }, [])
+
+  const handleDelete = (e, id) => {
+    e.preventDefault()
+
+    const schToDelete = {
+      usuario: auth.user_id,
+      texto: `El horario que seleccionaste para la entrevista de la vacante ${vacancyName} ha sido eliminado. Favor agendar otro horario de los disponibles.`, 
+     motivo_mensaje: "Eliminación de horario de vacante"
+  }
+
+    Swal.fire({
+      title: "Eliminar Horario",
+      text : "¿Estás seguro de que deseas eliminar este horario? Se le enviará una notificación automática al candidato que ha agendado este horario de parte de su empresa.",
+      icon: "warning",
+      showDenyButton: true,
+      showConfirmButton: true,
+      confirmButtonText : "Aceptar",
+      denyButtonText: "Cancelar"
+    })
+    .then(result => {
+
+      if(result.isConfirmed){
+                f_delete(`entrevista/${id}/`, 
+                    {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, 
+                    schToDelete )
+               .then(res => {
+              if(res.exito){
+                setSchedules(schedules => schedules.filter( sch => sch.id !== id))
+                Swal.fire("Eliminado", "El horario ha sido eliminado")
+              }
+          })
+      }
+    })
+  }
 
   return (
     <div className='flex flex-col mx-10 mt-8'>
@@ -40,8 +76,9 @@ const InterviewsAvailable = ({vacancyId}) => {
             <tr className='text-left border-b border-fifth text-[15px] text-twelve'>
               <th>Fecha</th>
               <th>Hora</th>
-              <th>Seleccionado Por</th>
+              <th className='text-center'>Seleccionado Por</th>
               <th>Status</th>
+              <th className='text-center'>Acciones</th>
             </tr>
           </thead>
 
@@ -54,16 +91,18 @@ const InterviewsAvailable = ({vacancyId}) => {
                   <td className='py-2'>
                     {
                       sch.candidato ? (
-                        <div className='flex items-center'>
+                        <div className='flex justify-center items-center'>
                           <img src={`http://127.0.0.1:8000${sch.candidato.foto}`} className='w-10 h-10 rounded-full ml-2' alt="" />
                           <p className='ml-2'>{sch.candidato.nombre} {sch.candidato.apellido}</p> 
                         </div>
                       )
-                      : <p>N/A</p>
+                      : <p className='text-center'>N/A</p>
                     } 
                   </td>
                   <td className='py-2'> <h5 > {sch.completa ? "Completada" : "Pendiente"} </h5></td>
-
+                  <td className='flex justify-center py-2'>
+                    <button> <img src={eliminar} onClick={(e)=>handleDelete(e,sch.id)} className='w-6 h-6' alt="" /> </button>
+                  </td>
                 </tr>
               ))
             }
