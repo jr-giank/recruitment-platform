@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import status
 
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 
 from . import serializers as s
@@ -87,16 +88,17 @@ class ApiView(APIView):
 
             'pruebas': {
                 'crear-prueba': 'api/prueba/',
-                'obtener-unica-prueba': 'api/prueba/unica/id_prueba>/',
-                'actualizar-prueba': 'api/prueba/id_prueba>/',
-                'obtener-pruebas-empresa': 'api/prueba/id_empresa>/',
+                'obtener-unica-prueba': 'api/prueba/unica/id_prueba/',
+                'actualizar-prueba': 'api/prueba/id_prueba/',
+                'obtener-pruebas-empresa': 'api/prueba/id_empresa/',
             },
 
             'pruebas-tecnicas-asignadas': { 
                 'crear-asignacion-prueba': 'api/prueba/asignada/',
-                'obtener-prueba-asignada': 'api/prueba/asignada/id_candidato>/',
-                'actualizar-prueba-asignada': 'api/prueba/asignada/id_prueba_tecnica_asignada>/',
-                'obtener-pruebas-vacante': 'api/prueba/vacante/<id_vacante>/',
+                'obtener-prueba-asignada': 'api/prueba/asignada/id_candidato/',
+                'obtener-pruebas-vacante': 'api/prueba/vacante/id_vacante/',
+                "obtener-unica-prueba-asignada": 'api/prueba/asignada/unica/id_prueba/',
+                'actualizar-prueba-asignada': 'api/prueba/asignada/id_prueba_tecnica_asignada/',
             },
 
             'agenda-entrevista': {
@@ -881,6 +883,20 @@ class PruebaTecnicaAsignadaView(APIView):
             return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
+class UnicaPruebaTecnicaAsignadaView(APIView):
+    
+    permission_classes = [ IsAuthenticated ]
+    serializer_class = s.Prueba_Tecnica_Asignada_Serializer
+
+    def get(self, request, *args, **kwargs):
+
+        prueba_asignada = self.kwargs['pk']
+
+        pruebas = m.PruebaTecnicaAsignada.objects.filter(id=prueba_asignada)
+        serializer = self.serializer_class(pruebas, many=True)
+
+        return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+
 class CrearPruebaTecnicaAsignadaView(APIView):
     
     permission_classes = [ IsAuthenticated ]
@@ -956,7 +972,7 @@ class AgendaEntrevistaView(APIView):
     def delete(self, request, *args, **kwargs):
         pk = self.kwargs['pk']
 
-        agenda_entrevista = m.AgendaEntrevista.objects.get(id=pk)
+        agenda_entrevista = get_object_or_404(m.AgendaEntrevista, id=pk)
 
         if agenda_entrevista:
 
@@ -990,12 +1006,15 @@ class AgendaEntrevistaView(APIView):
                         return Response({'message':'La entrevista a sido eliminada, el mensaje a sido guardado', 'status':status.HTTP_200_OK, 'exito':True})
                     return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer_mensaje_destino.errors})
                 return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':mensaje_serializer.errors})
-            return Response({'message':'No indicaste el mensaje para eliminar la agenda de entresvista', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
+            else:
+                
+                agenda_entrevista.delete()
+            return Response({'message':'La entrevista a sido eliminada, sin embargo no se a guardado ningun mensaje', 'status':status.HTTP_200_OK, 'exito':True})
         return Response({'message':'La entrevista no se a podido eliminar', 'status':status.HTTP_400_BAD_REQUEST, 'exito':False})
 
 class AgendaEntrevistaVacante(APIView):
 
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serializer_class = s.Agenda_Entrevista_Serializer
 
     def get(self, request, *args, **kwargs):

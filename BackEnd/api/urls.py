@@ -52,6 +52,7 @@ urlpatterns = [
     path('prueba/unica/<int:id_prueba>/', v.UnicaPruebaTecnicaView.as_view(), name='obtener-unica-prueba'),
     path('prueba/asignada/', v.CrearPruebaTecnicaAsignadaView.as_view(), name='crear-asignacion-prueba'),
     path('prueba/asignada/<int:pk>/', v.PruebaTecnicaAsignadaView.as_view(), name='obtener-pruebas-asignadas'),
+    path('prueba/asignada/unica/<int:pk>/', v.UnicaPruebaTecnicaAsignadaView.as_view(), name='obtener-unica-prueba-asignada'),
     path('prueba/vacante/<int:id_vacante>/', v.PruebasAsignadasVacante.as_view(), name='obtener-pruebas-vacante'),
     path('entrevista/', v.AgendaEntrevistaView.as_view(), name='crear-agenda-entrevista'),
     path('entrevista/<int:pk>/', v.AgendaEntrevistaView.as_view(), name='agenda-entrevista-actualizar-eliminar'),
