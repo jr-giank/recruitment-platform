@@ -79,13 +79,13 @@ class Candidato_Serializer(serializers.ModelSerializer):
 #Solicitudes
 class Solicitude_Serializer(serializers.ModelSerializer):
 
-    class Meta:
+    class Meta: 
         model = m.Solicitude
         fields = '__all__'
 
     def to_representation(self, obj):
 
-        self.fields['vacante'] = serializers.StringRelatedField()
+        self.fields['vacante'] =  Vacante_Serializer()
         self.fields['candidato'] = Candidato_Serializer()      
 
         return super(Solicitude_Serializer, self).to_representation(obj)

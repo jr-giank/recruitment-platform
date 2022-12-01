@@ -101,7 +101,7 @@ const SavedJobsPanel_Page = () => {
                       && <SavedJobs vacancies={vacancies} setVacancies={setVacancies} />}
                     {cardType === 2
                      &&
-                          <AppliedJobs vacancies={vacancies} setVacancies={setVacancies} />}
+                          <AppliedJobs requests={vacancies} setVacancies={setVacancies} />}
                     {cardType === 3
                     &&
                         <TechnicalTest test={test} setTechnicalTest={setTechnicalTest}/>}

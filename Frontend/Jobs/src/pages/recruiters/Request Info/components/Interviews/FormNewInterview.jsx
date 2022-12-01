@@ -25,7 +25,6 @@ const FormNewInterview = ({vacancyId}) => {
         const scheduleToSend = {...formValues}
         scheduleToSend.empresa = auth.empresa_id
         scheduleToSend.vacante = parseInt(vacancyId)
-      //  scheduleToSend.candidato = 5;
 
         post('entrevista/',  
              {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},  

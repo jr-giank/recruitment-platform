@@ -25,14 +25,18 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
     })
   }, [])
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e,sch) => {
     e.preventDefault()
 
-    const schToDelete = {
-      usuario: auth.user_id,
-      texto: `El horario que seleccionaste para la entrevista de la vacante ${vacancyName} ha sido eliminado. Favor agendar otro horario de los disponibles.`, 
-     motivo_mensaje: "Eliminación de horario de vacante"
-  }
+    let schToDelete = {};
+
+    if(sch.candidato){
+        schToDelete = {
+          usuario: auth.user_id,
+          texto: `El horario que seleccionaste para la entrevista de la vacante ${vacancyName} ha sido eliminado. Favor agendar otro horario de los disponibles.`, 
+        motivo_mensaje: "Eliminación de horario de vacante"
+      }
+    }
 
     Swal.fire({
       title: "Eliminar Horario",
@@ -46,12 +50,12 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
     .then(result => {
 
       if(result.isConfirmed){
-                f_delete(`entrevista/${id}/`, 
+                f_delete(`entrevista/${sch.id}/`, 
                     {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, 
                     schToDelete )
                .then(res => {
               if(res.exito){
-                setSchedules(schedules => schedules.filter( sch => sch.id !== id))
+                setSchedules(schedules => schedules.filter( s => s.id !== sch.id))
                 Swal.fire("Eliminado", "El horario ha sido eliminado")
               }
           })
@@ -101,7 +105,7 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
                   </td>
                   <td className='py-2'> <h5 > {sch.completa ? "Completada" : "Pendiente"} </h5></td>
                   <td className='flex justify-center py-2'>
-                    <button> <img src={eliminar} onClick={(e)=>handleDelete(e,sch.id)} className='w-6 h-6' alt="" /> </button>
+                    <button> <img src={eliminar} onClick={(e)=>handleDelete(e,sch)} className='w-6 h-6' alt="" /> </button>
                   </td>
                 </tr>
               ))
