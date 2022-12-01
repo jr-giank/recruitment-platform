@@ -1020,7 +1020,7 @@ class AgendaEntrevistaVacante(APIView):
     def get(self, request, *args, **kwargs):
         vacante = self.kwargs['pk']
 
-        entrevistas = m.AgendaEntrevista.objects.filter(vacante=vacante)
+        entrevistas = m.AgendaEntrevista.objects.filter(vacante=vacante).order_by('fecha')
 
         serializer = self.serializer_class(entrevistas, many=True)
 
