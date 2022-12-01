@@ -3,6 +3,7 @@ import { useReducer } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { authContext, technicalTestContext } from '../context/context'
 import ProfilePage from '../pages/candidates/Portfolio/ProfilePage'
+import SchedulePage from '../pages/Schedule/SchedulePage'
 import NoAccess from '../pages/security/NoAccess'
 import { technicalTestReducer } from '../reducers/TechnicalTest'
 import CandidatesRouter from './CandidatesRouter'
@@ -23,6 +24,7 @@ const PrivateRouter = () => {
         <Route path='/candidate/*' element={auth.rol === 0 ? <CandidatesRouter /> : <NoAccess />} />
         <Route path='/recruiter/*' element={auth.rol === 1 ? <RecruitersRouter /> : <NoAccess />}/>
         <Route path='/candidateProfile/:id' element={<ProfilePage />} />
+        <Route path='/diary' element={<SchedulePage />}/>
     </Routes>
   </technicalTestContext.Provider>   
   )

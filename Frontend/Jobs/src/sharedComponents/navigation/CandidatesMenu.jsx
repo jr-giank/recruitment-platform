@@ -7,8 +7,8 @@ import logout from '../../assets/icons/desconectar.png'
 import guardado from '../../assets/icons/guardadas.png'
 import perfil from '../../assets/icons/perfil.png'
 import mensaje from '../../assets/icons/mensaje.png'
-
 import vacante from '../../assets/icons/vacante.png'
+import calendar from '../../assets/icons/calendar.png'
 
 const CandidatesMenu = ({onAccount}) => {
 
@@ -21,21 +21,14 @@ const CandidatesMenu = ({onAccount}) => {
 
   return (
     <div className='flex justify-around'>
-        
+
         <Link className={`flex flex-col items-center px-3 ` } 
               to={`/app/candidateProfile/${auth.candidato_id}`} 
         >
             <img src={perfil} alt="" className='w-7 h-7' />
             <small>Perfil</small>
         </Link>
-        
-        <Link className={`flex flex-col items-center px-3 ` } 
-              to='/app/candidate/message' 
-        >
-            <img src={mensaje} alt="" className='w-7 h-7' />
-            <small>Mensajes</small>
-        </Link>
-        
+
         <Link className={`flex flex-col items-center px-3  ml-1` } 
               to='/app/candidate/viewAllVacancies' 
         >
@@ -49,6 +42,22 @@ const CandidatesMenu = ({onAccount}) => {
             <img src={guardado} alt="" className='w-7 h-7' />
             <small>Aplicaciones</small>
         </Link>
+
+        
+        <Link className={`flex flex-col items-center px-2 ` } 
+              to='/app/diary' 
+          >
+              <img src={calendar} alt="" className='w-7 h-7' />
+              <small>Agenda</small>
+        </Link>
+        
+        <Link className={`flex flex-col items-center px-3 ` } 
+              to='/app/candidate/message' 
+        >
+            <img src={mensaje} alt="" className='w-7 h-7' />
+            <small>Mensajes</small>
+        </Link>
+        
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>
           <img 
@@ -76,8 +85,7 @@ const CandidatesMenu = ({onAccount}) => {
             </div>
           </div>
         </div>
-    
-    
+
     </div>
   )
 }

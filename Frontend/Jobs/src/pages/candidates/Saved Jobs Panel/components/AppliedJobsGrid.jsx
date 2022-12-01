@@ -1,11 +1,9 @@
-import React, { useContext,useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { authContext } from '../../../../context/context'
 import ScheduleModal from './ScheduleModal'
 
 const AppliedJobsGrid = ({request}) => {
 
-   const { auth } = useContext(authContext) 
    const [ isModalOpen, setIsModalOpen ] = useState(false)
    
    const handleModalRequests = (e) => {

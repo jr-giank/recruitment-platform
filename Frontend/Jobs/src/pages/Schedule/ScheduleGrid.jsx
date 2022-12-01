@@ -1,6 +1,8 @@
 import React from 'react'
 
-const ScheduleGrid = ({interview, lastInterview}) => {
+const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
+
+    console.log(isRecruiter)
   
     return (
     <>
@@ -18,17 +20,34 @@ const ScheduleGrid = ({interview, lastInterview}) => {
             <p>{interview.hora}</p>
         </div>
 
-        <div>
-            <h4 className='font-semibold'>Entrevista A:</h4>
-            <div className='flex items-center'>
-                <img 
-                    src={`http://127.0.0.1:8000${interview.candidato.foto}`} 
-                    className='w-7 h-7 rounded-full mr-2' 
-                    alt="" 
-                    />
-                <p>{interview.candidato.nombre} {interview.candidato.apellido}</p>
+        {
+            isRecruiter ?
+                <div>
+                    <h4 className='font-semibold'>Entrevista A:</h4>
+                    <div className='flex items-center'>
+                        <img 
+                            src={`http://127.0.0.1:8000${interview.candidato.foto}`} 
+                            className='w-7 h-7 rounded-full mr-2' 
+                            alt="" 
+                            />
+                        <p>{interview.candidato.nombre} {interview.candidato.apellido}</p>
+                        </div>
+                </div>
+
+            : 
+            <div>
+                <h4 className='font-semibold'>Empresa:</h4>
+                <div className='flex items-center'>
+                    <img 
+                        src={`http://127.0.0.1:8000${interview.vacante.empresa.foto}`} 
+                        className='w-7 h-7 rounded-full mr-2' 
+                        alt="" 
+                        />
+                    <p>{interview.vacante.empresa.nombre}</p>
+                    </div>
             </div>
-        </div>
+
+        }
 
         <div>
             <h4 className='font-semibold'>Vacante:</h4>
