@@ -21,21 +21,6 @@ const RecruitersMenu = ({onAccount}) => {
     return (
     <div className='flex justify-around'>
 
-
-        <Link className={`flex flex-col items-center px-2 ` } 
-            to='/app/recruiter/diary' 
-        >
-            <img src={calendar} alt="" className='w-7 h-7' />
-            <small>Agenda</small>
-        </Link>
-
-        <Link className={`flex flex-col items-center px-2 ` } 
-            to='/app/recruiter/viewTests' 
-        >
-            <img src={test} alt="" className='w-7 h-7' />
-            <small>Pruebas Técnicas</small>
-        </Link>
-        
         <Link className={`flex flex-col items-center px-2 ` } 
               to='/app/recruiter/viewVacancies' 
         >
@@ -48,6 +33,21 @@ const RecruitersMenu = ({onAccount}) => {
         >
             <img src={nueva} alt="" className='w-7 h-7' />
             <small>Nueva</small>
+        </Link>
+
+
+        <Link className={`flex flex-col items-center px-2 ` } 
+            to='/app/recruiter/viewTests' 
+        >
+            <img src={test} alt="" className='w-7 h-7' />
+            <small>Pruebas</small>
+        </Link>
+        
+        <Link className={`flex flex-col items-center px-2 ` } 
+            to='/app/diary' 
+        >
+            <img src={calendar} alt="" className='w-7 h-7' />
+            <small>Agenda</small>
         </Link>
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>

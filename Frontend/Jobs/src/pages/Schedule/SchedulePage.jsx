@@ -2,9 +2,9 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
-import { authContext } from '../../../context/context'
-import { get } from '../../../services/services'
-import Loading from '../../../sharedComponents/ui/Loading'
+import { authContext } from '../../context/context'
+import { get } from '../../services/services'
+import Loading from '../../sharedComponents/ui/Loading'
 import ScheduleGrid from './ScheduleGrid'
 
 const SchedulePage = () => {
@@ -13,8 +13,20 @@ const SchedulePage = () => {
     const [ interviews, setInterviews ] = useState([])
     const [ isLoading, setIsLoading ] = useState(true)
 
+    const isRecruiter = Boolean(auth.empresa_id)
+
     useEffect(()=> {
-        get(`entrevista/empresa/${auth.empresa_id}/`, { "Authorization":`Bearer ${auth.token}` })
+
+        let endpoint;
+
+        if(auth.empresa_id){
+            endpoint = `entrevista/empresa/${auth.empresa_id}/`;
+        }
+        else if(auth.candidato_id){
+            endpoint =`entrevista/candidato/${auth.candidato_id}/`;
+        }
+
+        get(endpoint, { "Authorization":`Bearer ${auth.token}` })
         .then(res => {
             if(res.exito){
                 setInterviews(res.data)
@@ -42,6 +54,7 @@ const SchedulePage = () => {
                             key={interview.id} 
                             interview={interview} 
                             lastInterview= {interviews[i-1]}
+                            isRecruiter={isRecruiter}
                         />
             ))
             }
