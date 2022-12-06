@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'api',
     'users',
     'vacantes',
+    'meeting',
 ]
 
 MIDDLEWARE = [
