@@ -109,6 +109,14 @@ class ApiView(APIView):
                 'obtener-agenda-entrevista-vacante': 'api/entrevista/vacante/id_vacante/',
                 'obtener-agenda-entrevista-empresa': 'api/entrevista/empresa/id_empresa/',
                 'obtener-agenda-entrevista-candidato': 'api/entrevista/candidato/id_candidato/',
+            },
+
+            'video-llamada': {
+                            
+                'obtener-token': 'api/llamada/get_token/',
+                'crear-miembro': 'api/llamada/create_member/',
+                'obtener-miembro': 'api/llamada/get_member/',
+                'borrar-miembro': 'api/llamada/delete_member/',
             }
         }
 

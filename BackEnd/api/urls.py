@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 from . import views as v 
+from meeting import views as vm
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -59,4 +60,9 @@ urlpatterns = [
     path('entrevista/vacante/<int:pk>/', v.AgendaEntrevistaVacante.as_view(), name='obtener-agenda-entrevista-vacante'),
     path('entrevista/empresa/<int:pk>/', v.AgendaEntrevistaEmpresa.as_view(), name='obtener-agenda-entrevista-empresa'),
     path('entrevista/candidato/<int:pk>/', v.AgendaEntrevistaCandidato.as_view(), name='obtener-agenda-entrevista-candidato'),
+
+    path('llamada/get_token/', vm.GetTokenView.as_view()),
+    path('llamada/create_member/', vm.MemberView.as_view()),
+    path('llamada/get_member/', vm.MemberView.as_view()),
+    path('llamada/delete_member/', vm.MemberView.as_view()),
 ]
