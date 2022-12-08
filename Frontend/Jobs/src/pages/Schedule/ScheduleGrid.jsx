@@ -1,8 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
 
-    console.log(isRecruiter)
+    const history = useNavigate()
+
+    const handleAccessVideo = (e) => {
+        e.preventDefault()
+        history('/app/video-room', {replace: true})
+    }
   
     return (
     <>
@@ -54,9 +60,15 @@ const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
             <p>{interview.vacante.nombre_puesto}</p>
         </div>
 
-        <div>
-            <h4 className='font-semibold'>Room Id</h4>
-            <p>{interview.roomId || "axacsdfktgsf"}</p>
+        <div className='flex flex-col'>
+            <button
+             className='bg-seventh text-white text-[14px] px-2 py-1 rounded-md' onClick={handleAccessVideo}>
+                Acceder a Videollamada
+            </button>
+            <div>
+                <small className='font-semibold'>Room Id:  </small>
+                <small>{interview.roomId || "axacsdfktgsf"}</small>
+            </div>
         </div>
     </div>
   </>
