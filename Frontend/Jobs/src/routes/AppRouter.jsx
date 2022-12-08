@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Route, Routes, BrowserRouter as Router, Navigate } from 'react-router-dom'
 
-import { authContext } from '../context/context'
+import { authContext, inVideoContext } from '../context/context'
 
 import Navigation from '../sharedComponents/navigation/Navigation'
 import AuthRouter from './AuthRouter'
@@ -14,6 +14,7 @@ const AppRouter = () => {
 
   const [ isAuthChecked, setIsAuthChecked ] = useState(false)
   const { auth, dispatch } = useContext(authContext)
+  const [ inVideo, setInVideo ] = useState(false)
 
   useEffect(() => {
 
@@ -31,16 +32,18 @@ const AppRouter = () => {
       {
         isAuthChecked ? (
           <Router>
-              <Navigation />
-                <Routes>
-                     <Route path='/'  element={<Navigate to='/auth/login' /> } /> 
-                    <Route 
-                      exact path='/auth/*' 
-                      element={!auth.logged ? <AuthRouter /> :  <Navigate to='/app'/> } 
-                    />
-                    <Route exact path='/app/*'  element={auth.logged ? <PrivateRouter /> : <Navigate to='/auth/login' />  } />
-                    <Route exact path='/NoAccess' element={<NoAccess />} />
-                </Routes>
+            <inVideoContext.Provider value={{inVideo, setInVideo}} >
+              {!inVideo && <Navigation /> }
+                  <Routes>
+                      <Route path='/'  element={<Navigate to='/auth/login' /> } /> 
+                      <Route 
+                        exact path='/auth/*' 
+                        element={!auth.logged ? <AuthRouter /> :  <Navigate to='/app'/> } 
+                        />
+                      <Route exact path='/app/*'  element={auth.logged ? <PrivateRouter /> : <Navigate to='/auth/login' />  } />
+                      <Route exact path='/NoAccess' element={<NoAccess />} />
+                  </Routes>
+              </inVideoContext.Provider>
             </Router>
         ):<Loading />
       }

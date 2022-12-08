@@ -5,6 +5,7 @@ import { authContext, technicalTestContext } from '../context/context'
 import ProfilePage from '../pages/candidates/Portfolio/ProfilePage'
 import SchedulePage from '../pages/Schedule/SchedulePage'
 import NoAccess from '../pages/security/NoAccess'
+import Room from '../pages/video calling/Room'
 import { technicalTestReducer } from '../reducers/TechnicalTest'
 import CandidatesRouter from './CandidatesRouter'
 import RecruitersRouter from './RecruitersRouter'
@@ -25,6 +26,7 @@ const PrivateRouter = () => {
         <Route path='/recruiter/*' element={auth.rol === 1 ? <RecruitersRouter /> : <NoAccess />}/>
         <Route path='/candidateProfile/:id' element={<ProfilePage />} />
         <Route path='/diary' element={<SchedulePage />}/>
+        <Route path='/video-room' element={<Room />}/>
     </Routes>
   </technicalTestContext.Provider>   
   )

@@ -9,6 +9,7 @@ import perfil from '../../assets/icons/perfil.png'
 import mensaje from '../../assets/icons/mensaje.png'
 import vacante from '../../assets/icons/vacante.png'
 import calendar from '../../assets/icons/calendar.png'
+import videocall from '../../assets/icons/videocall.png'
 
 const CandidatesMenu = ({onAccount}) => {
 
@@ -57,7 +58,6 @@ const CandidatesMenu = ({onAccount}) => {
             <img src={mensaje} alt="" className='w-7 h-7' />
             <small>Mensajes</small>
         </Link>
-        
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>
           <img 

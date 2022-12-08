@@ -20,6 +20,8 @@ module.exports = {
       twelve: '#2d3954',
       thirteen: '#CDE9FE',
       white : '#fff',
+      dark: '#141414',
+      dark2: '#1F1F1F'
     },
 
     fontFamily: {

@@ -23,7 +23,7 @@ class GetTokenView(APIView):
         appCertificate = "2f90641900454ead8cb8c81b9d421b77"
         uid = random.randint(1, 230)
         expirationTimeInSeconds = 3600
-        currentTimeStamp = int(time.time())
+        currentTimeStamp = int(time.time()) 
         privilegeExpiredTs = currentTimeStamp + expirationTimeInSeconds
         role = 1
         

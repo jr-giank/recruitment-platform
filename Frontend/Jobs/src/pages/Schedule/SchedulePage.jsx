@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { authContext } from '../../context/context'
 import { get } from '../../services/services'
 import Loading from '../../sharedComponents/ui/Loading'
@@ -12,7 +13,6 @@ const SchedulePage = () => {
     const { auth } = useContext(authContext)
     const [ interviews, setInterviews ] = useState([])
     const [ isLoading, setIsLoading ] = useState(true)
-
     const isRecruiter = Boolean(auth.empresa_id)
 
     useEffect(()=> {

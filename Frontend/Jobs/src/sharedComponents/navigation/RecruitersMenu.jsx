@@ -8,6 +8,7 @@ import nueva from '../../assets/icons/registro.png'
 import logout from '../../assets/icons/desconectar.png'
 import test from '../../assets/icons/desarrollo-web.png'
 import calendar from '../../assets/icons/calendar.png'
+import videocall from '../../assets/icons/videocall.png'
 
 const RecruitersMenu = ({onAccount}) => {
 
