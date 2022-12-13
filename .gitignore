@@ -7,3 +7,5 @@ BackEnd/users/__pycache__/
 BackEnd/users/migrations/
 BackEnd/api/__pycache__/
 BackEnd/api/migrations/
+BackEnd/meeting/__pycache__/
+BackEnd/meeting/migrations/
