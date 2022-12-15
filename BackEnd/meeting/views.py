@@ -12,6 +12,8 @@ from rest_framework import status
 
 from .serializers import MemberSerializer
 
+from vacantes.models import AgendaEntrevista
+
 # Create your views here.
 class GetTokenView(APIView):
 
@@ -43,10 +45,10 @@ class MemberView(APIView):
 
     def get(self, request, *args, **kwargs):
         
-        uid = request.data['uid']
-        room_name = request.data['room_name']
+        uid = self.kwargs['uid']
+        room_id = self.kwargs['room_id']
 
-        member = get_object_or_404(RoomMember, uid=uid, room_name=room_name)
+        member = get_object_or_404(RoomMember, uid=uid, room_id=room_id)
         serializer = self.serialiser_class(member, many=False)
 
         return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito': True})
@@ -63,12 +65,30 @@ class MemberView(APIView):
 
     def delete(self, request, *args, **kwargs):
         
-        name = request.data['name']
         uid = request.data['uid']
-        room_name = request.data['room_name']
+        room_id = request.data['room_name']
         
-        member = get_object_or_404(RoomMember, name=name, uid=uid, room_name=room_name)
+        member = get_object_or_404(RoomMember, uid=uid, room_id=room_id)
 
         member.delete()
 
         return Response({'data': 'El miembro a sido eliminado', 'status': status.HTTP_200_OK, 'exito': True})
+
+class AccesoMiembroView(APIView):
+
+    def get(self, request, *args, **kwargs):
+
+        staff = self.kwargs['staff']
+        usuario_id = self.kwargs['id_usuario']
+        room_id = self.kwargs['room_id']
+
+        try:
+            if staff == 1:
+                channelName = AgendaEntrevista.objects.get(empresa=usuario_id, room_id=room_id)
+            else:
+                channelName = AgendaEntrevista.objects.get(candidato=usuario_id, room_id=room_id)
+
+            return Response({'status': status.HTTP_200_OK, 'exito': True})    
+        except:
+
+            return Response({'status': status.HTTP_400_BAD_REQUEST, 'exito': False})
