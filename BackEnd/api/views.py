@@ -1,3 +1,6 @@
+import random
+import shortuuid
+
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,10 +15,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from . import serializers as s
 from users.serializers import UserSerializer
+from users.models import CustomUser
+from meeting.serializers import MemberSerializer
+from meeting.models import RoomMember
 
 from vacantes import models as m
 from vacantes.functions import get_tokens_for_user
-from users.models import CustomUser
 
 # Create your views here.
 class ApiView(APIView):

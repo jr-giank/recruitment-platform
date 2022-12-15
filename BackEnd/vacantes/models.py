@@ -232,7 +232,7 @@ class AgendaEntrevista(models.Model):
     candidato = models.ForeignKey(Candidato, on_delete=models.CASCADE, blank=True, null=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     vacante = models.ForeignKey(Vacante, on_delete=models.CASCADE)
-    room_id = models.UUIDField(blank=True, null=True)
+    room_id = models.CharField(max_length=200, blank=True, null=True)
     fecha = models.DateField(blank=False, null=False)
     hora = models.TimeField(blank=False, null=False)
     completa = models.BooleanField(blank=True, null=True)
