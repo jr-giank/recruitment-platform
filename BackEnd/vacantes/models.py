@@ -123,6 +123,8 @@ class Candidato(models.Model):
     url_twitter = models.URLField(blank=True, null=True)
     cv_1 = models.FileField(upload_to=file_upload_location, blank=True, null=True)
     cv_2 = models.FileField(upload_to=file_upload_location, blank=True, null=True)
+    cv1_nombre = models.CharField(max_length=50, blank=True, null=True)
+    cv2_nombre = models.CharField(max_length=50, blank=True, null=True) 
 
     def __str__(self):
         return f'{self.nombre} {self.apellido}'
