@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { validateCompanyRegistrationForm } from '../../../helpers/validators/validateCompanyRegistration'
 import { useForm } from '../../../hooks/useForm'
 import {  getCountries, post } from '../../../services/services'
+import Swal from 'sweetalert2'
 
 import { useLogin } from '../../../hooks/useLogin'
 
@@ -116,6 +117,8 @@ const CompanyRegistrationPage = () => {
       if(data.exito){
          setLogged({...data.token})
       }
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
 
   }

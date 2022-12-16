@@ -3,6 +3,7 @@ import { authContext } from '../../../../context/context'
 
 import editar  from '../../../../assets/icons/editar.png'
 import { useState } from 'react'
+import { BASE_URL_FILES } from '../../../../constants/baseURL'
 
 const ProfileBanner = ({setEditableData, setIsEdited, candidateData }) => {
 
@@ -20,7 +21,7 @@ const ProfileBanner = ({setEditableData, setIsEdited, candidateData }) => {
         <div className='w-1/4 flex items-center h-full'>
             <div className='bg-white flex flex-col items-center w-full h-[410px] shadow-md ml-2 pt-4 px-4'>
             <img 
-                src={`http://127.0.0.1:8000${candidateData.foto}`}  
+                src={`${BASE_URL_FILES}${candidateData.foto}`}  
                 alt=""
                 className='w-36 h-36 rounded-full' 
             />

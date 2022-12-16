@@ -34,6 +34,8 @@ const FormTech = ({onCloseModal, setCandidateData}) => {
       }else{
         Swal.fire("Error al Registrar", "Ha habido un error al agregar la herramienta", "error")
       }
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
   }
 

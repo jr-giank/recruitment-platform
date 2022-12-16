@@ -39,6 +39,8 @@ const TechnicalTestDescription = ({techTest, setTechnicalTest, deadLine}) => {
           console.log(res)
           Swal.fire("Error al subir", "La prueba técnica no pudo ser subida correctamente", "error" )
         }
+      }).catch(e => {
+        Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
       })
     }
 

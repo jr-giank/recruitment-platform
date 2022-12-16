@@ -110,8 +110,10 @@ const CandidatesRegistrationPage = () => {
             setLogged({...data.token})
           }
           else{
-            Swal.fire("Error al registrarse", "Ha ocurrido un error en el registro", "error")
+            Swal.fire("Error al registrarse", "Ha ocurrido un error en el registro. Asegurese de llenar los datos correctamente e intente nuevamente", "error")
           }
+        }).catch(e => {
+          Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
         })
       }
 

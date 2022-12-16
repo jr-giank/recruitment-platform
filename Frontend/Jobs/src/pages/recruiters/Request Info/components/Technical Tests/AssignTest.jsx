@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import { authContext } from '../../../../../context/context'
 import { useForm } from '../../../../../hooks/useForm'
 import { get, post } from '../../../../../services/services'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 
 const AssignTest = ({candidate, vacancyId, setCurrentModalSection}) => {
 
@@ -47,8 +48,10 @@ const AssignTest = ({candidate, vacancyId, setCurrentModalSection}) => {
         Swal.fire("Asignación completada", "La prueba técnica ha sido asignada exitosamente", "success")
         setCurrentModalSection(1)
       }else{
-        Swal.fire("Error al registrar asignación", "La prueba técnica no pudo ser asignada. Intente nuevamente", "error")
+        Swal.fire("Error al registrar asignación", "La prueba técnica no pudo ser asignada. Posiblemente ya ha asignado esta prueba anteriormente al candidato. De no ser así, intente nuevamente", "error")
       }
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
   }
 
@@ -56,7 +59,7 @@ const AssignTest = ({candidate, vacancyId, setCurrentModalSection}) => {
     <>
     <div className='flex items-center px-8 mt-4'>    
       <img  
-        src={`http://127.0.0.1:8000${candidate.foto}`} alt={`${candidate.nombre} ${candidate.apellido}` } 
+        src={`${BASE_URL_FILES}${candidate.foto}`} alt={`${candidate.nombre} ${candidate.apellido}` } 
         className='w-16 h-16 rounded-full' 
       />
       <h5 className='font-semibold ml-4'>{candidate.nombre} {candidate.apellido}</h5>

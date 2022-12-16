@@ -3,6 +3,7 @@ import pdfIcon from '../../../../../assets/icons/pdf.png'
 import remove from '../../../../../assets/icons/eliminar.png'
 import { useContext } from 'react'
 import { authContext } from '../../../../../context/context'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 
 const Cvs = ({cv1, cv1_nombre, cv2, cv2_nombre, setEditableData, onHandleOpenModal, setIsEdited}) => {
   
@@ -35,7 +36,7 @@ const Cvs = ({cv1, cv1_nombre, cv2, cv2_nombre, setEditableData, onHandleOpenMod
 
                             <img src={pdfIcon} alt="" />
                             <p className='ml-2'>{cv1_nombre}</p>
-                            <a href={`http://127.0.0.1:8000${cv1}`} 
+                            <a href={`${BASE_URL_FILES}${cv1}`} 
                                 target='blanck'
                                 className='text-[12px] bg-fourth text-white h-5 rounded-lg px-2 ml-4'
                             >
@@ -58,7 +59,7 @@ const Cvs = ({cv1, cv1_nombre, cv2, cv2_nombre, setEditableData, onHandleOpenMod
                     <div className='flex items-center'>
                         <img src={pdfIcon} alt="" />
                         <p className='ml-2'>{cv2_nombre}</p>
-                        <a href={`http://127.0.0.1:8000${cv2}`} 
+                        <a href={`${BASE_URL_FILES}${cv2}`} 
                             target='blanck'
                             className='text-[12px] bg-fourth text-white h-5 rounded-lg px-2 ml-4'
                         >

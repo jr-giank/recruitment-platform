@@ -43,7 +43,9 @@ const ModalDelete = ({setIsVacancyDelOpen, setVacancies, vacancy, setCurrentVaca
                 Swal.fire("Error al eliminar Vacante", "La Vacante no pudo ser eliminada", "error")
                 console.log(res)
             }
-        })
+        }).catch(e => {
+            Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
+          })
     }
 
     return (

@@ -3,6 +3,7 @@ import { useContext } from 'react'
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 import { authContext } from '../../../../../context/context'
 import { useForm } from '../../../../../hooks/useForm'
 import { post, put } from '../../../../../services/services'
@@ -23,7 +24,7 @@ const FormProjects = ({ onCloseModal, setCandidateData, currentDoc }) => {
   const { auth } = useContext(authContext)
 
   const foto_proyecto = currentDoc?.foto_proyecto 
-                                        ? `http://127.0.0.1:8000${currentDoc.foto_proyecto}` 
+                                        ? `${BASE_URL_FILES}${currentDoc.foto_proyecto}` 
                                         :  null
 
   const [ image, setImage ] = useState( foto_proyecto )
@@ -86,6 +87,8 @@ const FormProjects = ({ onCloseModal, setCandidateData, currentDoc }) => {
       else{
         Swal.fire("Error", "La información del proyecto no se pudo guardar correctamente", "error")
       }
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
   }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { BASE_URL_FILES } from '../../../../constants/baseURL'
 
 const VacancyGridAll = ({vacancy}) => {
 
@@ -10,7 +11,7 @@ const VacancyGridAll = ({vacancy}) => {
     <div className='w-full border-solid border-2 border-fifth rounded-md mt-5 mb-5 pl-4 pr-4 py-4 '>
 
         <div className='flex gap-4'>
-            <img className='w-24 ' src={isServerUrl ? vacancy.empresa.foto :`http://127.0.0.1:8000${vacancy.empresa.foto}`} alt="Scopic Software" />
+            <img className='w-24 ' src={isServerUrl ? vacancy.empresa.foto :`${BASE_URL_FILES}${vacancy.empresa.foto}`} alt="Scopic Software" />
         
             <div>
                 <h4 className='font-bold text-xl'>{vacancy.nombre_puesto}             

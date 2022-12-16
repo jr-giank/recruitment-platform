@@ -101,7 +101,9 @@ const VacancyRegistrationPage = () => {
             Swal.fire("Error al guardar cambios", "Los cambios no se pudieron guardar correctamente", "error")
             console.log(data)
           }
-      })   
+      }).catch(e => {
+        Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
+      })
   }
 
   const handleOnBlur = (e) =>{

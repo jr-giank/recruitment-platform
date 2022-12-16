@@ -31,7 +31,8 @@ const SchedulePage = () => {
         .then(res => {
             if(res.exito){
                 setInterviews(res.data)
-                setFilteredInterviews(filteredInterviews.filter(interview => 
+                console.log(res.data)
+                setFilteredInterviews(res.data.filter(interview => 
                                                             interview.candidato && 
                                                             new Date(interview.fecha) >= new Date() 
                                                             && !interview.completa ))

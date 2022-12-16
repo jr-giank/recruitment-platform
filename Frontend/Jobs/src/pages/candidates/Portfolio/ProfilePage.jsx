@@ -82,6 +82,8 @@ const ProfilePage = () => {
         Swal.fire("Error", "Hubo un erro al guardar los cambios. Intente nuevamente", "error")
       }
       setIsEdited(false)
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
   }, [editableData])
 

@@ -1,6 +1,7 @@
 import React, {useContext, useState}from 'react'
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
+import { BASE_URL_FILES } from '../../../../constants/baseURL';
 import { authContext } from '../../../../context/context';
 import { useForm } from '../../../../hooks/useForm';
 import { get, post } from '../../../../services/services';
@@ -51,7 +52,7 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
         requestToSent.vacante = vacancyId;
         requestToSent.candidato = auth.candidato_id
         requestToSent.status = 'A'
-        requestToSent.cv_url = `http://127.0.0.1:8000${formValues.cv_url}`
+        requestToSent.cv_url = `${BASE_URL_FILES}${formValues.cv_url}`
 
         post('solicitud/', {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`},requestToSent)
         .then((data)=> {
@@ -60,8 +61,10 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
                 onCloseModal()
             }else{
                 console.log(data)
-                Swal.fire("Error al enviar","Hubo un error al procesar esta solicitud. Intentelo nuevamente", "error")
+                Swal.fire("Error al enviar","Hubo un error al procesar esta solicitud. Posiblemente ya ha enviado una solicitud anteriormente a esta vacante. En caso de no ser así Intentelo nuevamente", "error")
             }
+        }).catch(e => {
+          Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
         })
 	};
 
@@ -99,7 +102,7 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
                             candidateData.cv_1 &&  (
                             <div>
                                 <input type="radio" name="cv_url" id="cv_1u" value={candidateData.cv_1} onChange={handleInputChanges} />
-                                <label className='text-[13px]' htmlFor="cv_1u">{candidateData.cv_1}</label>
+                                <label className='text-[13px]' htmlFor="cv_1u">{candidateData.cv1_nombre}</label>
                             </div>)
                         }
                         
@@ -108,7 +111,7 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
                             candidateData.cv_2 &&  (
                             <div>
                                 <input type="radio" name="cv_url" id="cv_2u" value={candidateData.cv_2} onChange={handleInputChanges} />
-                                <label className='text-[13px]' htmlFor="cv_2u">{candidateData.cv_2}</label>
+                                <label className='text-[13px]' htmlFor="cv_2u">{candidateData.cv2_nombre}</label>
                             </div>)
                         }
                     </div>)
@@ -122,7 +125,5 @@ const AplicationGrid = ({vacancyId, onCloseModal}) => {
         }
         </div>
     )
-
-
 }
 export default AplicationGrid

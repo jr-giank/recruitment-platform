@@ -36,8 +36,10 @@ const VacancyDescriptionSingle = ({vacancy}) => {
           if(data.exito){
             Swal.fire("Vacante Guardada", "La vacante se ha guardado correctamente", "success")
           }else{
-            Swal.fire("Error al guardar", "La vacante no pudo ser guardada. Intente nuevamente", "error")
+            Swal.fire("Error al guardar", "La vacante no pudo ser guardada. Posiblemente ya la haya guardado previamente. De no ser así, intente nuevamente", "error")
           }
+        }).catch(e => {
+          Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
         })
   }
 

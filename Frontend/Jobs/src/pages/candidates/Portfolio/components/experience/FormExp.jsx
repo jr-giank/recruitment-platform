@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { authContext } from '../../../../../context/context'
 import { useForm } from '../../../../../hooks/useForm'
 import { post, put } from '../../../../../services/services'
+import Swal from 'sweetalert2'
 
 const FormExp = ({onCloseModal, setCandidateData, currentDoc}) => {
 
@@ -47,7 +48,8 @@ const FormExp = ({onCloseModal, setCandidateData, currentDoc}) => {
           setCandidateData(currentData => ({...currentData, experiencia_laboral : [...currentData.experiencia_laboral, data]}))
         }
       }
-
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
   }
 
