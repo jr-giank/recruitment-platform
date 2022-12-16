@@ -98,7 +98,7 @@ class AccesoMiembroView(APIView):
 
 class RoomMembersView(APIView):
 
-    # permission_classes = [ IsAuthenticated ]
+    permission_classes = [ IsAuthenticated ]
     serialiser_class = MemberSerializer
 
     def get(self, request, *args, **kwargs):
