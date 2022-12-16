@@ -2,7 +2,6 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { authContext } from '../../context/context'
 import { get } from '../../services/services'
 import Loading from '../../sharedComponents/ui/Loading'
@@ -14,6 +13,8 @@ const SchedulePage = () => {
     const [ interviews, setInterviews ] = useState([])
     const [ isLoading, setIsLoading ] = useState(true)
     const isRecruiter = Boolean(auth.empresa_id)
+
+    const [ filteredInterviews, setFilteredInterviews ] = useState([])
 
     useEffect(()=> {
 
@@ -30,6 +31,10 @@ const SchedulePage = () => {
         .then(res => {
             if(res.exito){
                 setInterviews(res.data)
+                setFilteredInterviews(filteredInterviews.filter(interview => 
+                                                            interview.candidato && 
+                                                            new Date(interview.fecha) >= new Date() 
+                                                            && !interview.completa ))
             }
             setIsLoading(false)
         })
@@ -47,9 +52,7 @@ const SchedulePage = () => {
             :(
             <div className='flex flex-col items-center w-3/5 mb-8'>
             {
-                interviews.map((interview, i) => (         
-                    interview.candidato 
-                     &&
+                filteredInterviews.map((interview, i) => (         
                         <ScheduleGrid 
                             key={interview.id} 
                             interview={interview} 
@@ -58,7 +61,7 @@ const SchedulePage = () => {
                         />
             ))
             }
-         { interviews.length === 0 && <p className='mt-8'>No tienes entrevistas pendientes </p> }
+         { filteredInterviews.length === 0 && <p className='mt-8'>No tienes entrevistas pendientes </p> }
         </div>)
         }
     </div>

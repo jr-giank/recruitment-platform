@@ -31,7 +31,7 @@ class GetTokenView(APIView):
         role = 1
         
         try:
-            channelName = request.data['channel']
+            channelName = self.kwargs['room_id']
 
             token = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelName, uid, role, privilegeExpiredTs)
         except:
@@ -41,7 +41,7 @@ class GetTokenView(APIView):
 
 class MemberView(APIView):
     
-    permission_classes = [ IsAuthenticated ]
+    #permission_classes = [ IsAuthenticated ]
     serialiser_class = MemberSerializer
 
     def get(self, request, *args, **kwargs):
@@ -84,6 +84,8 @@ class AccesoMiembroView(APIView):
         staff = self.kwargs['staff']
         usuario_id = self.kwargs['id_usuario']
         room_id = self.kwargs['room_id']
+
+        print(staff, usuario_id, room_id)
 
         try:
             if staff == 1:

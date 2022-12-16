@@ -3,9 +3,10 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { authContext } from '../../../../../context/context'
-import { f_delete, get } from '../../../../../services/services'
+import { f_delete, get, put } from '../../../../../services/services'
 import Loading from '../../../../../sharedComponents/ui/Loading'
 import eliminar from '../../../../../assets/icons/eliminar.png'
+import marcar from '../../../../../assets/icons/correct.png'
 import Swal from 'sweetalert2'
 
 const InterviewsAvailable = ({vacancyId, vacancyName }) => {
@@ -63,6 +64,29 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
     })
   }
 
+  const handleMarkCompleted = (e, sch) => {
+
+    const schCopy = {...sch, completa:true}
+    schCopy.empresa = schCopy.vacante.empresa.id
+    schCopy.candidato = schCopy.candidato ?  schCopy.candidato.candidato_id : null
+    schCopy.vacante = schCopy.vacante.id
+
+    console.log(schCopy)
+
+    put(`entrevista/${sch.id}/`, {'Content-Type': 'application/json', "Authorization":`Bearer ${auth.token}`}, schCopy)
+    .then(res => {
+      console.log(res)
+        if(res.exito){
+            Swal.fire("Agenda de entrevista", "La Entrevista ha sido marcada como completada", "success")
+            console.log(schedule)
+            setSchedules(schedule.map(sch => sch.id === res.data.id ? res.data : sch))
+        }
+        else{
+            Swal.fire("Error", "Los cambios no se pudieron guardar", "error")
+        }
+    })
+  }
+
   return (
     <div className='flex flex-col mx-10 mt-8'>
       {
@@ -105,7 +129,15 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
                   </td>
                   <td className='py-2'> <h5 > {sch.completa ? "Completada" : "Pendiente"} </h5></td>
                   <td className='flex justify-center py-2'>
-                    <button> <img src={eliminar} onClick={(e)=>handleDelete(e,sch)} className='w-6 h-6' alt="" /> </button>
+                    <button> 
+                      <img src={eliminar} onClick={(e)=>handleDelete(e,sch)} className='w-6 h-6' alt="" /> 
+                    </button>
+                    {
+                      !sch.completa &&
+                      <button className='ml-4'> 
+                        <img title='Marcar Como Realizada' src={marcar} onClick={(e)=>handleMarkCompleted(e,sch)} className='w-6 h-6' alt="" /> 
+                      </button>
+                    }
                   </td>
                 </tr>
               ))

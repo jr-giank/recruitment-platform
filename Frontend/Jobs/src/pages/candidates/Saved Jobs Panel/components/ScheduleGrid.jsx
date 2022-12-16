@@ -21,7 +21,7 @@ const ScheduleGrid = ({date, setPickedDate, isPickedByUserOnline, isAvailableToP
           />
           
           <label htmlFor={`radio-${date.id}`} className='ml-2 text-sm flex flex-col'>
-            <p>Fecha: {date.fecha}</p>
+            <p>Fecha: {date.fecha.split("-").reverse().join("-")}</p>
             <p>hora: {date.hora}</p> 
           </label>
         </div>

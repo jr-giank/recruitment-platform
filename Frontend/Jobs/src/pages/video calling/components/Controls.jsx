@@ -9,7 +9,7 @@ import { f_delete } from '../../../services/services'
 import { authContext } from '../../../context/context'
 import { useContext } from 'react'
 
-const Controls = ({tracks, setStart, setInCall, uid, room_name }) => {
+const Controls = ({tracks, setStart, uid, room_name }) => {
 
     const { auth } = useContext(authContext)
 
@@ -35,13 +35,10 @@ const Controls = ({tracks, setStart, setInCall, uid, room_name }) => {
         tracks[0].close()
         tracks[1].close()
         setStart(false)
-        setInCall(false)
-
-        let res = await f_delete('llamada/delete_member/',  
+      
+        await f_delete('llamada/delete_member/',  
                     {"Content-Type": "application/json","Authorization":`Bearer ${auth.token}`},
                     {uid, room_name })
-
-        console.log(res)
     }
 
     return (

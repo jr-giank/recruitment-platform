@@ -3,7 +3,6 @@ import AgendaGrid from './components/AgendaGrid'
 
 const AgendaPage = () => {
 
-
   return (
     <div className='flex w-full mt-14 h-[91%]'>
 

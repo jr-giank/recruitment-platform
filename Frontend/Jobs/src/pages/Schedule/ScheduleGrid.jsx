@@ -28,7 +28,7 @@ const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
             // Si la fecha anterior es false, quiere decir que es el primer horario que se está renderizando.
             (!lastInterview || interview.fecha !== lastInterview.fecha) 
              && 
-             <h3 className='font-bold text-seventh mt-4 w-full'>{interview.fecha}</h3> 
+             <h3 className='font-bold text-seventh mt-4 w-full'>{interview.fecha.split("-").reverse().join("-")}</h3> 
         }
         <div className='flex justify-between flex-wrap w-full mt-4 border border-fifth px-3 shadow py-4'>
         <div>
@@ -62,7 +62,6 @@ const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
                     <p>{interview.vacante.empresa.nombre}</p>
                     </div>
             </div>
-
         }
 
         <div>

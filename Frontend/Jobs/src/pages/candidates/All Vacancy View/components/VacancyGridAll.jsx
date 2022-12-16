@@ -20,7 +20,7 @@ const VacancyGridAll = ({vacancy}) => {
                 <p className='text-base'>{vacancy.empresa.nombre}</p>
                 <ul className='flex space-x-4'>
                     <li><h5 className='font-bold'>Ubicación</h5> {vacancy.empresa.pais}</li>
-                    <li><h5 className='font-bold'>Publicado</h5>{vacancy.fecha}</li>
+                    <li><h5 className='font-bold'>Publicado</h5>{vacancy.fecha.split("-").reverse().join("-")}</li>
                     <li><h5 className='font-bold'>Categoria</h5>{vacancy.categoria.nombre}</li>
                 </ul>
             </div>
@@ -28,9 +28,6 @@ const VacancyGridAll = ({vacancy}) => {
 
         <Link className='flex justify-center cursor-pointer w-full mt-5 p-2 hover:bg-secondary border-solid border-2 border-eighth rounded' to= {`/app/candidate/viewSingleVacancy/${vacancy.id}`} >Ver vacante</Link>  
     </div>
-
-    
-
   )
 }
 

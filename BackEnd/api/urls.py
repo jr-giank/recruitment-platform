@@ -61,7 +61,7 @@ urlpatterns = [
     path('entrevista/empresa/<int:pk>/', v.AgendaEntrevistaEmpresa.as_view(), name='obtener-agenda-entrevista-empresa'),
     path('entrevista/candidato/<int:pk>/', v.AgendaEntrevistaCandidato.as_view(), name='obtener-agenda-entrevista-candidato'),
 
-    path('llamada/get_token/', vm.GetTokenView.as_view()),
+    path('llamada/get_token/<str:room_id>/', vm.GetTokenView.as_view()),
     path('llamada/create_member/', vm.MemberView.as_view()),
     path('llamada/get_member/<str:uid>/<str:room_id>/', vm.MemberView.as_view()),
     path('llamada/delete_member/', vm.MemberView.as_view()),
