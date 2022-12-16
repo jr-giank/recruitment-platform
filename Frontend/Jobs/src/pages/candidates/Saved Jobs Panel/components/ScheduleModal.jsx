@@ -4,6 +4,8 @@ import { useContext } from 'react'
 import { useEffect } from 'react'
 import {Portal} from 'react-portal'
 import Swal from 'sweetalert2'
+import shortUUID from 'short-uuid'
+
 import { authContext } from '../../../../context/context'
 import { get, put } from '../../../../services/services'
 import Loading from '../../../../sharedComponents/ui/Loading'
@@ -53,10 +55,13 @@ const ScheduleModal = ({setIsModalOpen, id_vacante}) => {
         
         if(action === 1){
             pickedCopy.candidato = auth.candidato_id
+            pickedCopy.room_id = shortUUID.generate()
+            console.log(pickedCopy.room_id)
         }
 
         if(action === 0){
             pickedCopy.candidato = null
+            pickedCopy.room_id = null
         }
 
         pickedCopy.empresa = pickedCopy.vacante.empresa.id

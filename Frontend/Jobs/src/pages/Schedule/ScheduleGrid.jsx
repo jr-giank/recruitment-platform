@@ -1,18 +1,28 @@
 import React from 'react'
+import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { authContext } from '../../context/context'
+import { get } from '../../services/services'
 
 const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
 
     const history = useNavigate()
+    const { auth } = useContext(authContext)
 
     const handleAccessVideo = (e) => {
         e.preventDefault()
-        history('/app/video-room', {replace: true})
+        get(`llamada/get_token/${interview.room_id}/`, {"Authorization":`Bearer ${auth.token}`})
+        .then(res => {
+            window.sessionStorage.setItem("token", res.data.token)
+            window.sessionStorage.setItem("uid", res.data.uid)
+            window.sessionStorage.setItem("room_id", interview.room_id)
+            history('/app/video-room', {replace: true})
+        })
     }
   
     return (
     <>
-        {
+    {
             // Esta comparacion busca agrupar la agenda de entrevista por cada fecha distinta comparando la fecha de la entrevista
             // actual recibida con la fecha de la entrevista anterior para determiar cuando cambio la fecha.
             // Si la fecha anterior es false, quiere decir que es el primer horario que se está renderizando.
@@ -67,7 +77,7 @@ const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
             </button>
             <div>
                 <small className='font-semibold'>Room Id:  </small>
-                <small>{interview.roomId || "axacsdfktgsf"}</small>
+                <small>{interview.room_id || "axacsdfktgsf"}</small>
             </div>
         </div>
     </div>
