@@ -5,8 +5,13 @@ import video from '../../../assets/icons/video.svg'
 import { useClient } from '../video.config'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { f_delete } from '../../../services/services'
+import { authContext } from '../../../context/context'
+import { useContext } from 'react'
 
-const Controls = ({tracks, setStart, setInCall }) => {
+const Controls = ({tracks, setStart, setInCall, uid, room_name }) => {
+
+    const { auth } = useContext(authContext)
 
     const client = useClient()
     const [ trackState, setTrackState] = useState({video:true, audio:true})
@@ -31,6 +36,12 @@ const Controls = ({tracks, setStart, setInCall }) => {
         tracks[1].close()
         setStart(false)
         setInCall(false)
+
+        let res = await f_delete('llamada/delete_member/',  
+                    {"Content-Type": "application/json","Authorization":`Bearer ${auth.token}`},
+                    {uid, room_name })
+
+        console.log(res)
     }
 
     return (
