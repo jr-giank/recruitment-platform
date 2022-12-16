@@ -25,7 +25,7 @@ const ProfilePage = () => {
     get(`candidato/${id}/`, {"Authorization":`Bearer ${auth.token}`})
     .then(res => {
       if(res.exito){
-        console.log(res.data)
+        console.log(res)
         setCandidateData({...res.data})
         setEditableData({...res.data.candidato[0]})
         setIsLoading(false)
@@ -51,8 +51,10 @@ const ProfilePage = () => {
     if(editableData.cv_2 === "" || editableData.cv_2 instanceof File){
       dataToSend.append("cv_2", editableData.cv_2)
     }
-
+    
     //dataToSend.append("foto", null)
+    dataToSend.append("cv1_nombre", editableData.cv1_nombre)
+    dataToSend.append("cv2_nombre", editableData.cv2_nombre)
     dataToSend.append("mensage_presentacion", editableData.mensage_presentacion || "")
     dataToSend.append("nacimiento", editableData.nacimiento || "")
     dataToSend.append("sexo", editableData.sexo || "")

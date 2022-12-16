@@ -22,7 +22,7 @@ const TechnicalTestGrid = ({test}) => {
                     <h3>
                         {test?.prueba.titulo}
                     </h3>
-                    <p><strong>Fecha limite:</strong> {test?.fecha_limite}</p>
+                    <p><strong>Fecha limite:</strong> {test?.fecha_limite?.split("-").reverse().join("-")}</p>
                     {test.status === "Finalizada" &&  <p className='mt-1'>Prueba Finalizada</p>}
                     <div className='mt-4'>
                         <button className='justify-center text-[12px] border border-sixth rounded-lg cursor-pointer mr-3  py-2 px-4 hover:bg-secondary ' onClick={handleNavigate} >Ver prueba</button> 

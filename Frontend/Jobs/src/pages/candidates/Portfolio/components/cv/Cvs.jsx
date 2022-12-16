@@ -4,7 +4,7 @@ import remove from '../../../../../assets/icons/eliminar.png'
 import { useContext } from 'react'
 import { authContext } from '../../../../../context/context'
 
-const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
+const Cvs = ({cv1, cv1_nombre, cv2, cv2_nombre, setEditableData, onHandleOpenModal, setIsEdited}) => {
   
     const { auth } = useContext(authContext)
 
@@ -34,7 +34,7 @@ const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
                         <div className='flex items-center'>
 
                             <img src={pdfIcon} alt="" />
-                            <p className='ml-2'>Este es el nombre del archivo PDF</p>
+                            <p className='ml-2'>{cv1_nombre}</p>
                             <a href={`http://127.0.0.1:8000${cv1}`} 
                                 target='blanck'
                                 className='text-[12px] bg-fourth text-white h-5 rounded-lg px-2 ml-4'
@@ -57,7 +57,7 @@ const Cvs = ({cv1, cv2, setEditableData, onHandleOpenModal, setIsEdited}) => {
                     <div className='w-full flex justify-between shadow-md py-3 px-3'>
                     <div className='flex items-center'>
                         <img src={pdfIcon} alt="" />
-                        <p className='ml-2'>Este es el nombre del archivo PDF</p>
+                        <p className='ml-2'>{cv2_nombre}</p>
                         <a href={`http://127.0.0.1:8000${cv2}`} 
                             target='blanck'
                             className='text-[12px] bg-fourth text-white h-5 rounded-lg px-2 ml-4'

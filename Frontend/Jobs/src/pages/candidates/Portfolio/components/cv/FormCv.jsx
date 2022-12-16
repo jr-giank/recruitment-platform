@@ -14,10 +14,10 @@ const FormCv = ({onCloseModal, editableData, setIsEdited, setEditableData}) => {
     e.preventDefault()
   
     if(editableData.cv_1){
-      setEditableData({...editableData, cv_2: selectedFiles})
+      setEditableData({...editableData, cv_2: selectedFiles, cv2_nombre:selectedFiles.name})
     }
     else{
-      setEditableData({...editableData, cv_1: selectedFiles})
+      setEditableData({...editableData, cv_1: selectedFiles, cv1_nombre:selectedFiles.name})
     }
     setIsEdited(true)
 	};

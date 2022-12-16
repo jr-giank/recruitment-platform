@@ -12,6 +12,7 @@
     "agora-rtc-react": "github:AgoraIO-Community/agora-rtc-react#v1.0.1",
     "install": "^0.13.0",
     "jwt-decode": "^3.1.2",
+    "moment": "^2.29.4",
     "npm": "^8.19.2",
     "query-string": "^7.1.1",
     "react": "^18.2.0",

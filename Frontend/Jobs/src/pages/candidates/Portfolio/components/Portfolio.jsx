@@ -86,6 +86,8 @@ const handleOpenForEdit = (e, exp) => {
       
           { currentSection === 1 && <Cvs cv1 ={candidateData.candidato[0].cv_1}  
                                          cv2 ={candidateData.candidato[0].cv_2} 
+                                         cv1_nombre ={candidateData.candidato[0].cv1_nombre} 
+                                         cv2_nombre ={candidateData.candidato[0].cv2_nombre} 
                                          onHandleOpenModal={onHandleOpenModal}
                                          setEditableData={setEditableData}
                                          setIsEdited={setIsEdited}
