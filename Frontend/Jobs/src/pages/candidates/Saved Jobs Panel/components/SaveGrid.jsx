@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { authContext } from '../../../../context/context'
 import { f_delete } from '../../../../services/services'
+import { BASE_URL_FILES } from '../../../../constants/baseURL'
 
 const SaveGrid = ({vacancy, setVacancies}) => {
 
@@ -24,7 +25,7 @@ const SaveGrid = ({vacancy, setVacancies}) => {
     <div className='border-b w-full border-fifth pl-4 pr-4 py-4 '>
 
         <div className='flex gap-4'>
-            <img className='w-16 h-16 rounded-full 'src={`http://127.0.0.1:8000${vacancy.vacante.empresa.foto}`} alt="Scopic Software" />
+            <img className='w-16 h-16 rounded-full 'src={`${BASE_URL_FILES}${vacancy.vacante.empresa.foto}`} alt="Scopic Software" />
         
             <div className='flex flex-col'>
                 <h4 className='font-bold'>{vacancy.vacante.nombre_puesto}               

@@ -38,7 +38,9 @@ const SignInPage = () => {
             else{
                 Swal.fire("Credenciales inválidas", "Su contraseña o correo son incorrectos", "error")
             }
-        })
+        }).catch(e => {
+            Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
+          })
     }
 
     return (

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useEffect } from 'react'
 import { authContext, inVideoContext } from '../../context/context'
 import { f_delete, get, post } from '../../services/services';
+import { BASE_URL_FILES } from '../../constants/baseURL';
 
 import Controls from './components/Controls';
 import Video from './components/Video';
@@ -30,7 +31,7 @@ const Room = () => {
 
     const user_id = auth.rol === 1 ? auth.empresa_id : auth.candidato_id
     const nombre_usuario = auth.rol === 1 ? auth.nombre_empresa : `${auth.first_name} ${auth.last_name}`
-    const foto = `http://127.0.0.1:8000${auth.foto}`
+    const foto = `${BASE_URL_FILES}${auth.foto}`
 
     get(`llamada/acceso/${auth.rol}/${user_id}/${room_id}/`, {"Authorization":`Bearer ${auth.token}`})
     .then(res => {

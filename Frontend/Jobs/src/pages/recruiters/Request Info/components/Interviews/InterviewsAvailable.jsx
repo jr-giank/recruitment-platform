@@ -8,6 +8,7 @@ import Loading from '../../../../../sharedComponents/ui/Loading'
 import eliminar from '../../../../../assets/icons/eliminar.png'
 import marcar from '../../../../../assets/icons/correct.png'
 import Swal from 'sweetalert2'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 
 const InterviewsAvailable = ({vacancyId, vacancyName }) => {
 
@@ -84,6 +85,8 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
         else{
             Swal.fire("Error", "Los cambios no se pudieron guardar", "error")
         }
+    }).catch(e => {
+      Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
     })
   }
 
@@ -120,7 +123,7 @@ const InterviewsAvailable = ({vacancyId, vacancyName }) => {
                     {
                       sch.candidato ? (
                         <div className='flex justify-center items-center'>
-                          <img src={`http://127.0.0.1:8000${sch.candidato.foto}`} className='w-10 h-10 rounded-full ml-2' alt="" />
+                          <img src={`${BASE_URL_FILES}${sch.candidato.foto}`} className='w-10 h-10 rounded-full ml-2' alt="" />
                           <p className='ml-2'>{sch.candidato.nombre} {sch.candidato.apellido}</p> 
                         </div>
                       )

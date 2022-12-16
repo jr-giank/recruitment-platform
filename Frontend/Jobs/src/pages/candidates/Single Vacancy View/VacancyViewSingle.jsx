@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { get } from '../../../services/services'
 import Loading from '../../../sharedComponents/ui/Loading'
 import { authContext } from '../../../context/context'
+import Swal from 'sweetalert2'
 
 const VacancyViewSingle = () => {
 
@@ -28,6 +29,8 @@ const VacancyViewSingle = () => {
               setIsLoading(false)
             })
           }
+      }).catch(e => {
+        Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
       })
       }, [])
 

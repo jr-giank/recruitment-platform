@@ -1,6 +1,7 @@
 import React from 'react'
 import { useContext } from 'react'
 import Swal from 'sweetalert2'
+import { BASE_URL_FILES } from '../../../../constants/baseURL'
 import { authContext } from '../../../../context/context'
 import { useForm } from '../../../../hooks/useForm'
 import { put } from '../../../../services/services'
@@ -59,7 +60,9 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
              else{
                  Swal.fire("Error al actualizar", "La solicitud no pudo ser actualizada. Intente nuevamente", "error")
              }
-         })
+         }).catch(e => {
+            Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
+          })
     }
 
     return (
@@ -67,7 +70,7 @@ const FormAnswerRequest = ({request, setRequests, onCloseModal, vacancyId}) => {
     <form>
 
         <div className='flex mt-1 ml-3'>
-                <img  src={`http://127.0.0.1:8000${request.candidato.foto}`} className='w-16 h-16 rounded-full'/>
+                <img  src={`${BASE_URL_FILES}${request.candidato.foto}`} className='w-16 h-16 rounded-full'/>
                 <span className='ml-2'>
                    <h4>{request.candidato.nombre} {request.candidato.apellido}</h4>
                 <p className='text-sixth font-medium w-full'>{request.candidato.titulo_personal}</p>

@@ -92,7 +92,12 @@ const VacancyRequestsPage = () => {
                     if(res.exito){
                         Swal.fire("Cerrada", "La vacante ha sido cerrada")
                     }
-                })
+                    else{
+                        Swal.fire("Cerrada", "La vacante no se pudo cerrar correctamente", "error")
+                    }
+                }).catch(e => {
+                    Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
+                  })
           }
         })
       }

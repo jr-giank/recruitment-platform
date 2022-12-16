@@ -34,8 +34,12 @@ const FormNewInterview = ({vacancyId}) => {
             console.log(res)
             if(res.exito){
                 Swal.fire("Horario Registrado", "El horario ha sido registrado", "success")
+            }else{
+                Swal.fire("Error al registrar", "El horario no se pudo registrar correctamente", "success")
             }
-        })
+        }).catch(e => {
+            Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
+          })
     }
 
   return (

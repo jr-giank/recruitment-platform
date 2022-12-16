@@ -7,6 +7,7 @@ import { f_delete } from '../../../../../services/services'
 import { authContext } from '../../../../../context/context'
 import { useContext } from 'react'
 import Swal from 'sweetalert2'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 
 const ProjectGrid = ({project, handleOpenForEdit, setCandidateData}) => {
 
@@ -45,7 +46,7 @@ const ProjectGrid = ({project, handleOpenForEdit, setCandidateData}) => {
             <div className='flex justify-between w-full px-3 mt-2 border-b border-b-fifth py-2'>
                     <div className='flex w-4/5'>
                         <img 
-                            src={`http://127.0.0.1:8000${project.foto_proyecto}`} 
+                            src={`${BASE_URL_FILES}${project.foto_proyecto}`} 
                             alt=""
                             className={`${isExpanded ? 'w-56 h-40' : 'w-24 h-20' }`} 
                         />

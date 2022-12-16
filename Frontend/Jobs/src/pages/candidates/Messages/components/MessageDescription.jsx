@@ -1,6 +1,7 @@
 import React, { useEffect, useContext} from 'react'
 import { put } from '../../../../services/services'
 import { authContext } from '../../../../context/context'
+import { BASE_URL_FILES } from '../../../../constants/baseURL'
 
 const MessageDescription = ({message, setMessage}) => {
 
@@ -27,7 +28,7 @@ const MessageDescription = ({message, setMessage}) => {
         <>
         <div className="overflow-hidden bg-fifth shadow  w-full">
             <div className=" flex px-4 py-5 sm:px-6">
-            <img src={`http://127.0.0.1:8000${message.enviadoPor.foto}` } className='w-14 h-14 rounded-full mr-3' alt="" />
+            <img src={`${BASE_URL_FILES}${message.enviadoPor.foto}` } className='w-14 h-14 rounded-full mr-3' alt="" />
             <div>
                 <h1 className="text-lg font-bold leading-6 text-gray-900">{message.enviadoPor.nombre}</h1>
                 <small className="mt-1 max-w-2xl text-sm text-gray-500">Recibido: {message.mensaje.fecha}</small>

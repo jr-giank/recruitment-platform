@@ -1,5 +1,6 @@
 import React from 'react'
 import {  useNavigate } from 'react-router-dom'
+import { BASE_URL_FILES } from '../../../../constants/baseURL'
 
 const TechnicalTestGrid = ({test}) => {
 
@@ -15,7 +16,7 @@ const TechnicalTestGrid = ({test}) => {
 
         <div className='flex gap-4'>
             <div className='flex'>
-                <img src={`http://127.0.0.1:8000${test?.prueba.vacante.empresa.foto}` } className='w-14 h-14 rounded-full mr-3' alt="" />  
+                <img src={`${BASE_URL_FILES}${test?.prueba.vacante.empresa.foto}` } className='w-14 h-14 rounded-full mr-3' alt="" />  
                 
                 <div className='flex flex-col'>
                     <h4 className='font-bold'>{test?.prueba.vacante.empresa.nombre}</h4>

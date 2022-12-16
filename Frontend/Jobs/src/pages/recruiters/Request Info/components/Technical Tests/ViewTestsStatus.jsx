@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { authContext } from '../../../../../context/context'
 import { get } from '../../../../../services/services'
 import Loading from '../../../../../sharedComponents/ui/Loading'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 
 const ViewTestsStatus = ({vacancyId}) => {
   
@@ -53,7 +54,7 @@ const ViewTestsStatus = ({vacancyId}) => {
             {
             assignedTests.map(assign => (
                 <tr className='border-b border-fifth hover:bg-nineth text-[14px] ' key={assign.id}>
-                  <td className='py-2'> <img src={`http://127.0.0.1:8000${assign.candidato.foto}`} className='w-16 h-16 rounded-full ml-2' alt="" /> </td>
+                  <td className='py-2'> <img src={`${BASE_URL_FILES}${assign.candidato.foto}`} className='w-16 h-16 rounded-full ml-2' alt="" /> </td>
                   <td className='py-2'> <h5 > {assign.candidato.nombre} {assign.candidato.apellido} </h5></td>
                   <td className='py-2'>  {assign.prueba.titulo}</td>
                   <td className='py-2'>  {assign.fecha_asignacion}</td>

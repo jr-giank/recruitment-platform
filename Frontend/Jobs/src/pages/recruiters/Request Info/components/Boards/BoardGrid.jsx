@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import pdf from '../../../../../assets/icons/pdf.png'
+import { BASE_URL_FILES } from '../../../../../constants/baseURL'
 import FormAnswerRequest from '../FormAnswerRequest'
 import ReqPresentation from '../ReqPresentation'
 import RequestActionModal from '../RequestActionModal'
@@ -28,7 +29,7 @@ const BoardGrid = ({request, setRequests, vacancyId}) => {
         
         <div className='flex'>
             <img 
-                src={`http://127.0.0.1:8000${request.candidato.foto}`} 
+                src={`${BASE_URL_FILES}${request.candidato.foto}`} 
                 alt=""
                 className='w-12 h-12 rounded-full ml-2' 
             />

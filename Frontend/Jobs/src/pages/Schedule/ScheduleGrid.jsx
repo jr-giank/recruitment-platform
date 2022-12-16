@@ -1,6 +1,7 @@
 import React from 'react'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { BASE_URL_FILES } from '../../constants/baseURL'
 import { authContext } from '../../context/context'
 import { get } from '../../services/services'
 
@@ -42,7 +43,7 @@ const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
                     <h4 className='font-semibold'>Entrevista A:</h4>
                     <div className='flex items-center'>
                         <img 
-                            src={`http://127.0.0.1:8000${interview.candidato.foto}`} 
+                            src={`${BASE_URL_FILES}${interview.candidato.foto}`} 
                             className='w-7 h-7 rounded-full mr-2' 
                             alt="" 
                             />
@@ -55,7 +56,7 @@ const ScheduleGrid = ({interview, lastInterview, isRecruiter}) => {
                 <h4 className='font-semibold'>Empresa:</h4>
                 <div className='flex items-center'>
                     <img 
-                        src={`http://127.0.0.1:8000${interview.vacante.empresa.foto}`} 
+                        src={`${BASE_URL_FILES}${interview.vacante.empresa.foto}`} 
                         className='w-7 h-7 rounded-full mr-2' 
                         alt="" 
                         />
