@@ -65,6 +65,6 @@ urlpatterns = [
     path('llamada/create_member/', vm.MemberView.as_view()),
     path('llamada/get_member/<str:uid>/<str:room_id>/', vm.MemberView.as_view()),
     path('llamada/delete_member/', vm.MemberView.as_view()),
-
+    path('llamada/get_members/<str:room_id>/', vm.RoomMembersView.as_view()),
     path('llamada/acceso/<int:staff>/<int:id_usuario>/<str:room_id>/', vm.AccesoMiembroView.as_view())
 ]

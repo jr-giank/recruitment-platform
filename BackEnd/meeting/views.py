@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 from .serializers import MemberSerializer
+from .models import RoomMember
 
 from vacantes.models import AgendaEntrevista
 
@@ -76,6 +77,8 @@ class MemberView(APIView):
 
 class AccesoMiembroView(APIView):
 
+    permission_classes = [ IsAuthenticated ]
+
     def get(self, request, *args, **kwargs):
 
         staff = self.kwargs['staff']
@@ -92,3 +95,24 @@ class AccesoMiembroView(APIView):
         except:
 
             return Response({'status': status.HTTP_400_BAD_REQUEST, 'exito': False})
+
+class RoomMembersView(APIView):
+
+    # permission_classes = [ IsAuthenticated ]
+    serialiser_class = MemberSerializer
+
+    def get(self, request, *args, **kwargs):
+
+        room_name = self.kwargs['room_id']
+
+        rooms = RoomMember.objects.filter(room_id=room_name)
+
+        data = []
+
+        for room in rooms:
+
+            serializer = self.serialiser_class(room, many=False)
+
+            data.append(serializer.data)
+
+        return Response({'data': data, 'status': status.HTTP_200_OK, 'exito': True})

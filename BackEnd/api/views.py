@@ -113,8 +113,9 @@ class ApiView(APIView):
 
             'video-llamada': {     
                 'obtener-token': 'api/llamada/get_token/',
-                'crear-miembro': 'api/llamada/create_member/',
                 'obtener-miembro': 'api/llamada/get_member/',
+                'obtener-miembros-en-linea': 'llamada/get_members/room_id/',
+                'crear-miembro': 'api/llamada/create_member/',
                 'borrar-miembro': 'api/llamada/delete_member/',
                 'verificar-acceso': 'api/llamada/acceso/is_staff/id_usuario/room_id/',
             }
