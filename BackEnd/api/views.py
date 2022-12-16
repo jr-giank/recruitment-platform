@@ -1,6 +1,3 @@
-import random
-import shortuuid
-
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,8 +13,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from . import serializers as s
 from users.serializers import UserSerializer
 from users.models import CustomUser
-from meeting.serializers import MemberSerializer
-from meeting.models import RoomMember
 
 from vacantes import models as m
 from vacantes.functions import get_tokens_for_user
@@ -116,12 +111,13 @@ class ApiView(APIView):
                 'obtener-agenda-entrevista-candidato': 'api/entrevista/candidato/id_candidato/',
             },
 
-            'video-llamada': {
-                            
+            'video-llamada': {     
                 'obtener-token': 'api/llamada/get_token/',
-                'crear-miembro': 'api/llamada/create_member/',
                 'obtener-miembro': 'api/llamada/get_member/',
+                'obtener-miembros-en-linea': 'llamada/get_members/room_id/',
+                'crear-miembro': 'api/llamada/create_member/',
                 'borrar-miembro': 'api/llamada/delete_member/',
+                'verificar-acceso': 'api/llamada/acceso/is_staff/id_usuario/room_id/',
             }
         }
 
@@ -430,7 +426,9 @@ class CandidatoView(APIView):
             "url_instagram": request.data['url_instagram'],
             "url_linkedin": request.data['url_linkedin'],
             "url_github": request.data['url_github'],
-            "url_telegram": request.data['url_telegram']
+            "url_telegram": request.data['url_telegram'],
+            "cv1_nombre": request.data['cv1_nombre'],
+            "cv2_nombre": request.data['cv2_nombre']
         }
 
         if 'cv_1' in request.data and request.data['cv_1'] == "" or 'cv_2' in request.data and request.data['cv_2'] == "":
@@ -488,11 +486,17 @@ class SolicitudesView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
+        try:
+            solicitud = m.Solicitude.objects.get(candidato=request.data['candidato'], vacante=request.data['vacante'])
+            
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':'Ya existe una solicitud realizada por este usuario'})
+        except:
+        
+            if serializer.is_valid():
+                serializer.save()
 
-            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito': True})
-        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+                return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito': True})
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
 class ActualizarSolicitudesView(APIView):
 
@@ -586,11 +590,17 @@ class VacantesGuardadasView(ApiView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
+        try:
+            vacante_guardada = m.VacantesGuardada.objects.get(usuario=request.data['usuario'], vacante=request.data['vacante'])
+            
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':'Esta vacante ya a sido guardada'})
+        except:
+            
+            if serializer.is_valid():
+                serializer.save()
 
-            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
-        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+                return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
     def delete(self, request, *args, **kwargs):
         id_usuario = self.kwargs['id_usuario']
@@ -919,11 +929,17 @@ class CrearPruebaTecnicaAsignadaView(APIView):
 
         serializer = self.serializer_class(data=request.data)
 
-        if serializer.is_valid():
-            serializer.save()
+        try:
+            prueba_asignada = m.PruebaTecnicaAsignada.objects.get(candidato=request.data['candidato'], prueba=request.data['prueba'])
+        
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':"Esta prueba tecnica ya fue asignada a este candidato"})
+        except:
 
-            return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
-        return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
+            if serializer.is_valid():
+                serializer.save()
+
+                return Response({'data':serializer.data, 'status':status.HTTP_200_OK, 'exito':True})
+            return Response({'data':None, 'status':status.HTTP_400_BAD_REQUEST, 'exito':False, 'error message':serializer.errors})
 
 class PruebasAsignadasVacante(APIView):
     
