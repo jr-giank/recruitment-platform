@@ -66,7 +66,9 @@ class Candidato_Serializer(serializers.ModelSerializer):
             "url_telegram",
             "url_twitter",
             "cv_1",
-            "cv_2"
+            "cv_2",
+            "cv1_nombre",
+            "cv2_nombre"
         ]
 
     def to_representation(self, obj):
