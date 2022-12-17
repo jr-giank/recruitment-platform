@@ -113,9 +113,12 @@ const CompanyRegistrationPage = () => {
 
     post('register/empresa/', {}, dataToSend, true)
     .then(data => {
+      console.log(data)
 
       if(data.exito){
          setLogged({...data.token})
+      }else{
+        Swal.fire("Error", "No se pudo crear la cuenta correctamente", "error")
       }
     }).catch(e => {
       Swal.fire("Error", "Hubo un error al conectarse al servidor", "error")
