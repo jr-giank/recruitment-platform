@@ -9,6 +9,7 @@ import logout from '../../assets/icons/desconectar.png'
 import test from '../../assets/icons/desarrollo-web.png'
 import calendar from '../../assets/icons/calendar.png'
 import videocall from '../../assets/icons/videocall.png'
+import { BASE_URL_FILES } from '../../constants/baseURL' 
 
 const RecruitersMenu = ({onAccount}) => {
 
@@ -53,7 +54,7 @@ const RecruitersMenu = ({onAccount}) => {
 
         <span className='ml-6 cursor-pointer' onClick={onAccount}>
           <img 
-            src={`http://127.0.0.1:8000${auth.foto}`} 
+            src={`${BASE_URL_FILES}${auth.foto}`} 
             alt=""
             className='w-7 h-7 rounded-full ml-2' 
             />
@@ -63,7 +64,7 @@ const RecruitersMenu = ({onAccount}) => {
         <div id='account' className="hidden absolute text-black bg-white top-14 right-2 w-48 shadow-lg pb-2">
           
           <div className='flex flex-col w-full items-center justify-center mt-2'>
-            <img src={`http://127.0.0.1:8000${auth.foto}`} 
+            <img src={`${BASE_URL_FILES}${auth.foto}`}  
               alt=""
               className='w-14 h-14 rounded-full ml-2' 
             />

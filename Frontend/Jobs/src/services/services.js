@@ -2,8 +2,6 @@ import { BASE_URL } from "../constants/baseURL"
 
 export const post = async (endpoint, headers, body, isFormData) =>  {
 
-    console.log(body)
-
     const request = {
         method: 'POST',
         headers,
