@@ -11,9 +11,13 @@ The project idea is to create a platform for recruitment processes employment in
 ## FrontEnd:
 
 - HTML 5
-- CSS 3
+- Tailwind CSS
 - JavaScript
 - React
+
+## Database
+
+- PosgreSQL
 
 ## Third Party App:
 
