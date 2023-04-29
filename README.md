@@ -20,7 +20,7 @@ This is the page where a user can login into the application.
 
 ### 3. Vacancy list
 
-When a company enter into the application can see the list of vacancies, in this case they have not created a vacancies. 
+When a company enter into the application can see the list of vacancies, in this case they have not created any vacancy. 
 
 ![vacancies](./Screenshots/vacancy-list.png)
 
