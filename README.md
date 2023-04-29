@@ -2,6 +2,23 @@
 
 The project idea is to create a platform for recruitment processes employment in the software development area. There will be recruiters, who must publish job offers following a defined structure and candidates who will be looking for a job.
 
+## BackEnd:
+
+- Python
+- Django
+- Django Rest Framework
+
+## FrontEnd:
+
+- HTML 5
+- CSS 3
+- JavaScript
+- React
+
+## Third Party App:
+
+- Agora
+
 ## Company role
 
 ### 1. Company Sign-up 
